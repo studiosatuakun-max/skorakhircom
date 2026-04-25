@@ -1,5 +1,6 @@
 import { Flag, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
+import SafeImage from '@/components/shared/SafeImage';
 import FeaturedCarousel from './FeaturedCarousel';
 import { supabase } from '@/lib/supabase';
 
@@ -40,7 +41,7 @@ export default async function NewsList() {
           {sidebarNews.map((news) => (
             <Link href={`/berita/${news.slug}`} key={news.id} className="group cursor-pointer flex gap-3 sm:gap-4 pb-4 border-b border-slate-800 last:border-0 last:pb-0 block">
               <div className="w-24 sm:w-32 aspect-square bg-slate-800 shrink-0 relative overflow-hidden">
-                <img src={news.featured_image || 'https://via.placeholder.com/150'} alt={news.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                <SafeImage src={news.featured_image || 'https://via.placeholder.com/150'} alt={news.title} fill sizes="120px" className="object-cover group-hover:scale-110 transition-transform duration-500" />
               </div>
               
               <div className="flex-1 flex flex-col justify-center">

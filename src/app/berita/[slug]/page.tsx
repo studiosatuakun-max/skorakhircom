@@ -10,6 +10,7 @@ import AdBanner from '@/components/shared/AdBanner';
 import ArticleActions from '@/components/article/ArticleActions';
 import FloatingActions from '@/components/article/FloatingActions';
 import RelatedArticles from '@/components/article/RelatedArticles';
+import SafeImage from '@/components/shared/SafeImage';
 
 import { supabase } from '@/lib/supabase';
 import { notFound } from 'next/navigation';
@@ -182,10 +183,13 @@ export default async function NewsDetail({ params }: Props) {
               </header>
 
               <figure className="mb-10 w-full aspect-video bg-slate-900 overflow-hidden relative border border-slate-800">
-                <img 
+                <SafeImage 
                   src={article.image} 
                   alt={article.title} 
-                  className="w-full h-full object-cover"
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 66vw"
+                  className="object-cover"
                 />
                 <figcaption className="absolute bottom-2 right-2 bg-slate-950/80 px-2 py-1 text-[9px] font-bold text-slate-400">
                   Ilustrasi: {article.title}

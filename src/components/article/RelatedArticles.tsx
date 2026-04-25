@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import useEmblaCarousel from 'embla-carousel-react';
-import Image from 'next/image';
+import SafeImage from '@/components/shared/SafeImage';
 
 type RelatedArticle = {
   title: string;
@@ -35,7 +35,7 @@ export default function RelatedArticles({ articles }: { articles: RelatedArticle
               className="flex-none w-[70%] sm:w-[45%] md:w-[48%] group flex flex-col bg-slate-900 border border-slate-800 hover:border-slate-600 transition-colors h-full"
             >
               <div className="aspect-video bg-slate-800 relative overflow-hidden">
-                <Image 
+                <SafeImage 
                   src={rel.featured_image || 'https://via.placeholder.com/400x225'} 
                   alt={rel.title} 
                   fill

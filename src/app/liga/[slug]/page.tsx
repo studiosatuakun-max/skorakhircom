@@ -2,6 +2,7 @@ import Header from '@/components/shared/Header';
 import Footer from '@/components/shared/Footer';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
+import SafeImage from '@/components/shared/SafeImage';
 import { ArrowLeft, Rss } from 'lucide-react';
 import AdBanner from '@/components/shared/AdBanner';
 
@@ -79,9 +80,10 @@ export default async function LeaguePage({ params }: { params: Promise<{ slug: s
               <Link key={item.id} href={`/berita/${item.slug}`} className="flex flex-col group cursor-pointer h-full">
                 <div className="bg-slate-900 aspect-video relative overflow-hidden mb-4 border border-slate-800 group-hover:border-slate-500 transition-colors">
                   <div className="absolute inset-0 bg-slate-950/20 group-hover:bg-transparent transition-colors z-10" />
-                  <img 
+                  <SafeImage 
                     src={item.featured_image || 'https://via.placeholder.com/400x225'} 
                     alt={item.title} 
+                    fill
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
                   />
                   <span className="absolute bottom-2 left-2 z-20 bg-red-600 text-white px-2 py-0.5 text-[10px] font-black uppercase">

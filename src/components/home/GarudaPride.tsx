@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Image from 'next/image';
+import SafeImage from '@/components/shared/SafeImage';
 import { supabase } from '@/lib/supabase';
 
 export const revalidate = 60;
@@ -29,7 +29,7 @@ export default async function GarudaPride() {
         <div className="md:w-1/2 group cursor-pointer">
           <Link href={`/berita/${heroItem.slug}`} className="block h-full aspect-[4/3] bg-slate-900 border border-slate-800 relative overflow-hidden flex items-end p-6">
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-transparent z-10" />
-            <Image 
+            <SafeImage 
               src={heroItem.featured_image || 'https://via.placeholder.com/800x600'} 
               alt={heroItem.title} 
               fill
@@ -52,7 +52,7 @@ export default async function GarudaPride() {
           {listItems.map((item) => (
             <Link key={item.id} href={`/berita/${item.slug}`} className="flex items-center gap-4 group p-4 border border-slate-800 bg-slate-900 hover:border-slate-600 transition-colors">
               <div className="w-16 h-16 sm:w-20 sm:h-20 shrink-0 bg-slate-800 relative overflow-hidden">
-                <Image 
+                <SafeImage 
                   src={item.featured_image || 'https://via.placeholder.com/150'} 
                   alt={item.title} 
                   fill
