@@ -9,6 +9,7 @@ import { ArrowLeft } from 'lucide-react';
 import AdBanner from '@/components/shared/AdBanner';
 import ArticleActions from '@/components/article/ArticleActions';
 import FloatingActions from '@/components/article/FloatingActions';
+import RelatedArticles from '@/components/article/RelatedArticles';
 
 import { supabase } from '@/lib/supabase';
 import { notFound } from 'next/navigation';
@@ -53,7 +54,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: article.title,
       description: article.content.substring(0, 150).replace(/<[^>]+>/g, '') + '...',
-      url: `https://skorakhir.com/berita/${article.slug}`,
+      url: `/berita/${article.slug}`,
       siteName: 'SkorAkhir',
       images: [
         {
@@ -67,6 +68,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       publishedTime: article.date,
       authors: [article.author],
     },
+    twitter: {
+      card: 'summary_large_image',
+      title: article.title,
+      description: article.content.substring(0, 150).replace(/<[^>]+>/g, '') + '...',
+      images: [article.image],
+    }
   };
 }
 
@@ -83,7 +90,7 @@ export default async function NewsDetail({ params }: Props) {
     .eq('category_id', article.category_id)
     .neq('slug', slug)
     .order('created_at', { ascending: false })
-    .limit(2);
+    .limit(4);
 
   const relatedArticles = relatedRaw || [];
 
@@ -170,7 +177,7 @@ export default async function NewsDetail({ params }: Props) {
                     </div>
                   </div>
 
-                  <ArticleActions title={article.title} url={`https://skorakhir.com/berita/${article.slug}`} />
+                  <ArticleActions title={article.title} slug={article.slug} />
                 </div>
               </header>
 
@@ -210,25 +217,7 @@ export default async function NewsDetail({ params }: Props) {
                   <h2 id="related-articles" className="text-xl sm:text-2xl font-black italic tracking-tight uppercase text-white">Artikel Terkait</h2>
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {relatedArticles.length > 0 ? (
-                    relatedArticles.map((rel) => (
-                      <Link key={rel.slug} href={`/berita/${rel.slug}`} className="group flex flex-col bg-slate-900 border border-slate-800 hover:border-slate-600 transition-colors h-full">
-                        <div className="aspect-video bg-slate-800 relative overflow-hidden">
-                          <img src={rel.featured_image || 'https://via.placeholder.com/400x225'} alt={rel.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                        </div>
-                        <div className="p-4 flex-1 flex flex-col">
-                          <span className="text-[10px] font-bold text-red-500 mb-2">{(rel as any).categories?.name || 'UMUM'}</span>
-                          <h3 className="text-base font-black italic text-slate-100 group-hover:text-yellow-400 transition-colors leading-snug line-clamp-2">
-                            {rel.title}
-                          </h3>
-                        </div>
-                      </Link>
-                    ))
-                  ) : (
-                    <p className="text-slate-500 italic text-sm">Belum ada artikel terkait di kategori ini.</p>
-                  )}
-                </div>
+                <RelatedArticles articles={relatedArticles} />
               </section>
               
               <AdBanner />

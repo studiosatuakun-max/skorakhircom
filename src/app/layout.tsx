@@ -8,6 +8,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://skorakhircom.vercel.app'),
   title: 'SKORAKHIR. | Portal Berita Olahraga',
   description: 'Portal berita olahraga cepat, bersih, dan terupdate. Fokus pada Sepak Bola, MotoGP, Bulutangkis, Voli, dan E-Sport.',
 };

@@ -3,16 +3,17 @@
 import React from 'react';
 import { Share2, BookmarkPlus } from 'lucide-react';
 
-export default function ArticleActions({ title, url }: { title: string, url: string }) {
+export default function ArticleActions({ title, slug }: { title: string, slug: string }) {
   const handleShare = async () => {
     try {
+      const currentUrl = window.location.origin + '/berita/' + slug;
       if (navigator.share) {
         await navigator.share({
           title: `SkorAkhir: ${title}`,
-          url: url,
+          url: currentUrl,
         });
       } else {
-        await navigator.clipboard.writeText(url);
+        await navigator.clipboard.writeText(currentUrl);
         alert('Tautan artikel berhasil disalin!');
       }
     } catch (err) {
