@@ -5,8 +5,10 @@ import TrendingTopics from '@/components/home/TrendingTopics';
 import LeagueCarousel from '@/components/home/LeagueCarousel'; // Import LeagueCarousel
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { Share2, BookmarkPlus, ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import AdBanner from '@/components/shared/AdBanner';
+import ArticleActions from '@/components/article/ArticleActions';
+import FloatingActions from '@/components/article/FloatingActions';
 
 import { supabase } from '@/lib/supabase';
 import { notFound } from 'next/navigation';
@@ -28,6 +30,7 @@ async function getArticle(slug: string) {
     author: article.author || 'Tim Redaksi',
     content: article.content,
     image: article.featured_image || 'https://via.placeholder.com/1200x630/1e293b/facc15?text=SkorAkhir',
+    category_id: article.category_id,
     tags: [article.categories?.name || 'SPORT'],
   };
 }
@@ -72,6 +75,17 @@ export default async function NewsDetail({ params }: Props) {
   const article = await getArticle(slug);
 
   if (!article) return notFound();
+
+  // Ambil artikel terkait dari Supabase
+  const { data: relatedRaw } = await supabase
+    .from('news')
+    .select('title, slug, categories(name), featured_image')
+    .eq('category_id', article.category_id)
+    .neq('slug', slug)
+    .order('created_at', { ascending: false })
+    .limit(2);
+
+  const relatedArticles = relatedRaw || [];
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -141,7 +155,7 @@ export default async function NewsDetail({ params }: Props) {
                   </time>
                 </div>
                 
-                <h1 className="text-3xl md:text-5xl font-black italic tracking-tight leading-[1.1] mb-6 text-white">
+                <h1 className="text-3xl md:text-5xl font-black italic tracking-tight leading-[1.1] mb-6 text-white break-words">
                   {article.title}
                 </h1>
                 
@@ -156,14 +170,7 @@ export default async function NewsDetail({ params }: Props) {
                     </div>
                   </div>
 
-                  <div className="flex gap-2">
-                    <button className="p-2 bg-slate-900 border border-slate-800 hover:border-slate-600 rounded text-slate-400 hover:text-white transition-all active:scale-95" aria-label="Simpan Artikel">
-                      <BookmarkPlus className="w-5 h-5" />
-                    </button>
-                    <button className="p-2 bg-slate-900 border border-slate-800 hover:border-slate-600 rounded text-slate-400 hover:text-white transition-all active:scale-95" aria-label="Bagikan Artikel">
-                      <Share2 className="w-5 h-5" />
-                    </button>
-                  </div>
+                  <ArticleActions title={article.title} url={`https://skorakhir.com/berita/${article.slug}`} />
                 </div>
               </header>
 
@@ -204,17 +211,23 @@ export default async function NewsDetail({ params }: Props) {
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {[1, 2].map((i) => (
-                    <Link key={i} href="#" className="group flex flex-col bg-slate-900 border border-slate-800 hover:border-slate-600 transition-colors">
-                      <div className="aspect-video bg-slate-800 relative overflow-hidden" />
-                      <div className="p-4 flex-1 flex flex-col">
-                        <span className="text-[10px] font-bold text-red-500 mb-2">{article.category}</span>
-                        <h3 className="text-base font-black italic text-slate-100 group-hover:text-yellow-400 transition-colors leading-snug line-clamp-2">
-                          Analisis Potensi Mario Aji di Sisa Putaran Grand Prix Benua Erasia
-                        </h3>
-                      </div>
-                    </Link>
-                  ))}
+                  {relatedArticles.length > 0 ? (
+                    relatedArticles.map((rel) => (
+                      <Link key={rel.slug} href={`/berita/${rel.slug}`} className="group flex flex-col bg-slate-900 border border-slate-800 hover:border-slate-600 transition-colors h-full">
+                        <div className="aspect-video bg-slate-800 relative overflow-hidden">
+                          <img src={rel.featured_image || 'https://via.placeholder.com/400x225'} alt={rel.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        </div>
+                        <div className="p-4 flex-1 flex flex-col">
+                          <span className="text-[10px] font-bold text-red-500 mb-2">{(rel as any).categories?.name || 'UMUM'}</span>
+                          <h3 className="text-base font-black italic text-slate-100 group-hover:text-yellow-400 transition-colors leading-snug line-clamp-2">
+                            {rel.title}
+                          </h3>
+                        </div>
+                      </Link>
+                    ))
+                  ) : (
+                    <p className="text-slate-500 italic text-sm">Belum ada artikel terkait di kategori ini.</p>
+                  )}
                 </div>
               </section>
               
@@ -236,6 +249,7 @@ export default async function NewsDetail({ params }: Props) {
         </div>
       </main>
 
+      <FloatingActions />
       <Footer />
     </>
   );

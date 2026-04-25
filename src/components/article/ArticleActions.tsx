@@ -1,0 +1,45 @@
+'use client';
+
+import React from 'react';
+import { Share2, BookmarkPlus } from 'lucide-react';
+
+export default function ArticleActions({ title, url }: { title: string, url: string }) {
+  const handleShare = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: `SkorAkhir: ${title}`,
+          url: url,
+        });
+      } else {
+        await navigator.clipboard.writeText(url);
+        alert('Tautan artikel berhasil disalin!');
+      }
+    } catch (err) {
+      console.log('Error sharing:', err);
+    }
+  };
+
+  const handleBookmark = () => {
+    alert('Artikel disimpan ke daftar bacaan! (Fitur segera hadir)');
+  };
+
+  return (
+    <div className="flex gap-2">
+      <button 
+        onClick={handleBookmark}
+        className="p-2 bg-slate-900 border border-slate-800 hover:border-yellow-400 rounded text-slate-400 hover:text-yellow-400 transition-all active:scale-95" 
+        aria-label="Simpan Artikel"
+      >
+        <BookmarkPlus className="w-5 h-5" />
+      </button>
+      <button 
+        onClick={handleShare}
+        className="p-2 bg-slate-900 border border-slate-800 hover:border-yellow-400 rounded text-slate-400 hover:text-yellow-400 transition-all active:scale-95" 
+        aria-label="Bagikan Artikel"
+      >
+        <Share2 className="w-5 h-5" />
+      </button>
+    </div>
+  );
+}
