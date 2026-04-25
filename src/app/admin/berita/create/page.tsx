@@ -90,7 +90,7 @@ export default function CreateNews() {
           <div className="grid grid-cols-2 gap-6">
             {/* Penulis */}
             <div>
-              <label htmlFor="author" className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Nama Penulis</label>
+              <label htmlFor="author" className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Tim Redaksi</label>
               <input 
                 type="text" 
                 id="author" 

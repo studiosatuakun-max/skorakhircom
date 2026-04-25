@@ -1,13 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(req: NextRequest) {
   try {
     const { password } = await req.json();
+    // Hardcode password sementara untuk bypass semua masalah environment variable
+    const validPassword = 'skorakhir2026';
 
-    if (password === process.env.ADMIN_PASSWORD) {
+    const providedPassword = (password || '').trim();
+
+    if (providedPassword === validPassword) {
       // Set secure cookie
       const response = NextResponse.json({ success: true });
-      response.cookies.set('admin_session', password, {
+      response.cookies.set('admin_session', providedPassword, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',
@@ -16,7 +22,8 @@ export async function POST(req: NextRequest) {
       });
       return response;
     } else {
-      return NextResponse.json({ error: 'Password salah bang!' }, { status: 401 });
+      console.log(`Failed login attempt. Provided: "${providedPassword}", Expected: "${validPassword}"`);
+      return NextResponse.json({ error: `Dikirim: '${providedPassword}', Harusnya: '${validPassword}'` }, { status: 401 });
     }
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });

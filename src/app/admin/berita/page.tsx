@@ -27,7 +27,7 @@ export default async function KelolaBerita() {
             <thead>
               <tr className="bg-slate-800 text-xs font-bold text-slate-400 uppercase tracking-widest border-b border-slate-700">
                 <th className="p-4">Judul Berita</th>
-                <th className="p-4">Penulis</th>
+                <th className="p-4">Redaksi</th>
                 <th className="p-4">Tanggal Dibuat</th>
                 <th className="p-4">Views</th>
                 <th className="p-4 text-center">Aksi</th>
