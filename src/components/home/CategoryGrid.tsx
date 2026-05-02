@@ -56,7 +56,7 @@ export default async function CategoryGrid() {
                   return (
                     <Link key={item.id || idx} href={`/berita/${item.slug}`} className="group flex flex-col relative rounded-lg overflow-hidden border border-slate-800 mb-2 h-48 sm:h-56">
                       <SafeImage 
-                        src={item.featured_image || 'https://placehold.co/600x400/1e293b/f97316?text=SkorAkhir'} 
+                        src={item.featured_image || '/images/placeholder.png'} 
                         alt={item.title} 
                         fill 
                         className="object-cover group-hover:scale-110 transition-transform duration-700 opacity-80 group-hover:opacity-100"
@@ -80,7 +80,7 @@ export default async function CategoryGrid() {
                     <Link key={item.id || idx} href={`/berita/${item.slug}`} className="group flex flex-col gap-3 pb-4 border-b border-slate-800 mb-2">
                       <div className="relative w-full aspect-[16/9] overflow-hidden bg-slate-800 rounded-lg">
                         <SafeImage 
-                          src={item.featured_image || 'https://placehold.co/600x400/1e293b/f97316?text=SkorAkhir'} 
+                          src={item.featured_image || '/images/placeholder.png'} 
                           alt={item.title} 
                           fill 
                           className="object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
@@ -103,7 +103,7 @@ export default async function CategoryGrid() {
                   <Link key={item.id || idx} href={`/berita/${item.slug}`} className="flex gap-4 group border-b border-slate-800 pb-4 last:border-0 last:pb-0 items-start">
                     <div className="relative shrink-0 w-20 h-20 overflow-hidden bg-slate-800 rounded-lg">
                       <SafeImage 
-                        src={item.featured_image || 'https://placehold.co/300x300/1e293b/f97316?text=SkorAkhir'} 
+                        src={item.featured_image || '/images/placeholder.png'} 
                         alt={item.title} 
                         fill 
                         className="object-cover group-hover:scale-110 transition-transform duration-500 opacity-90 group-hover:opacity-100"
@@ -122,7 +122,7 @@ export default async function CategoryGrid() {
               })}
             </div>
             <div className="p-4 pt-0 mt-auto bg-slate-900 border-t border-slate-800/50">
-               <Link href="#" className="font-bold text-xs uppercase text-slate-400 hover:text-white flex items-center gap-1 group w-max pt-3">
+               <Link href={`/kategori/${category.title.toLowerCase().replace(/\s+/g, '-')}`} className="font-bold text-xs uppercase text-slate-400 hover:text-white flex items-center gap-1 group w-max pt-3">
                  Lihat Semua <span className="sr-only">{category.title}</span>
                  <span className="group-hover:translate-x-1 transition-transform">→</span>
                </Link>

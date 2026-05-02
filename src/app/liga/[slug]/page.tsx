@@ -154,7 +154,7 @@ export default async function LeaguePage({ params }: { params: Promise<{ slug: s
                 <div className="bg-slate-900 aspect-video relative overflow-hidden mb-4 border border-slate-800 group-hover:border-slate-500 transition-colors">
                   <div className="absolute inset-0 bg-slate-950/20 group-hover:bg-transparent transition-colors z-10" />
                   <SafeImage 
-                    src={item.featured_image || 'https://via.placeholder.com/400x225'} 
+                    src={item.featured_image || '/images/placeholder.png'} 
                     alt={item.title} 
                     fill
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 

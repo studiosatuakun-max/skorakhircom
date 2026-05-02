@@ -15,7 +15,7 @@ export default function CultureSection() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {cultureItems.map((item) => (
-          <Link key={item.id} href="#" className="group flex flex-col block border border-slate-800 bg-slate-900 hover:border-slate-500 transition-colors">
+          <Link key={item.id} href="/kultur" className="group flex flex-col block border border-slate-800 bg-slate-900 hover:border-slate-500 transition-colors">
             <div className="aspect-[4/3] bg-slate-800 relative overflow-hidden flex items-center justify-center">
               <span className="text-slate-600 font-bold text-sm tracking-widest uppercase">{item.imageDesc}</span>
               <div className="absolute inset-0 bg-slate-950/20 group-hover:bg-transparent transition-colors" />

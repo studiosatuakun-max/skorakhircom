@@ -7,7 +7,7 @@ interface SafeImageProps extends ImageProps {
   fallbackSrc?: string;
 }
 
-export default function SafeImage({ src, fallbackSrc = 'https://via.placeholder.com/800x600/1e293b/facc15?text=SkorAkhir', alt, ...props }: SafeImageProps) {
+export default function SafeImage({ src, fallbackSrc = '/images/placeholder.png', alt, ...props }: SafeImageProps) {
   const [imgSrc, setImgSrc] = useState(src);
   const [hasError, setHasError] = useState(false);
 

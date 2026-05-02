@@ -17,7 +17,7 @@ export default function FeaturedCarousel({ newsList }: { newsList: any[] }) {
           <Link href={`/berita/${news.slug}`} key={news.id} className="flex-[0_0_100%] min-w-0 pr-4 group cursor-pointer flex flex-col block">
             <div className="bg-slate-900 aspect-video mb-3 relative overflow-hidden w-full">
               <div className="absolute inset-0 bg-slate-950/20 group-hover:bg-transparent transition-colors z-10" />
-              <SafeImage src={news.featured_image || 'https://via.placeholder.com/800'} alt={news.title} fill priority sizes="(max-width: 1024px) 100vw, 66vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
+              <SafeImage src={news.featured_image || '/images/placeholder.png'} alt={news.title} fill priority sizes="(max-width: 1024px) 100vw, 66vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
             </div>
             
             <div className="flex items-center gap-2 text-[10px] sm:text-xs font-bold text-slate-400 mb-2">

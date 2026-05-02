@@ -11,6 +11,7 @@ import MerchandiseSection from '@/components/home/MerchandiseSection';
 import AdBanner from '@/components/shared/AdBanner';
 import TransferRadar from '@/components/home/TransferRadar';
 import VoxPopuli from '@/components/home/VoxPopuli';
+import ShortsHighlights from '@/components/home/ShortsHighlights';
 
 export default function Home() {
   return (
@@ -34,6 +35,8 @@ export default function Home() {
           </div>
 
           <VoxPopuli />
+          
+          <ShortsHighlights />
 
           <CategoryGrid />
         </div>

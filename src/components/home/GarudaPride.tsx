@@ -20,8 +20,13 @@ export default async function GarudaPride() {
 
   return (
     <section className="container mx-auto px-4 mt-20 mb-8" aria-labelledby="garuda-pride">
-      <div className="flex items-center gap-2 mb-6 border-b-2 border-yellow-400 pb-2">
-        <h2 id="garuda-pride" className="text-2xl sm:text-3xl font-black italic tracking-tight uppercase text-white">Garuda Pride</h2>
+      <div className="flex items-center justify-between mb-6 border-b-2 border-yellow-400 pb-2">
+        <div className="flex items-center gap-2">
+          <h2 id="garuda-pride" className="text-2xl sm:text-3xl font-black italic tracking-tight uppercase text-white">Garuda Pride</h2>
+        </div>
+        <Link href="/garuda-pride" className="text-xs font-bold text-slate-400 hover:text-white uppercase tracking-widest transition-colors flex items-center gap-1 group">
+          Selengkapnya <span className="group-hover:translate-x-1 transition-transform">→</span>
+        </Link>
       </div>
 
       <div className="flex flex-col md:flex-row gap-8">
@@ -30,7 +35,7 @@ export default async function GarudaPride() {
           <Link href={`/berita/${heroItem.slug}`} className="block h-full aspect-[4/3] bg-slate-900 border border-slate-800 relative overflow-hidden flex items-end p-6">
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-transparent z-10" />
             <SafeImage 
-              src={heroItem.featured_image || 'https://via.placeholder.com/800x600'} 
+              src={heroItem.featured_image || '/images/placeholder.png'} 
               alt={heroItem.title} 
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
@@ -53,7 +58,7 @@ export default async function GarudaPride() {
             <Link key={item.id} href={`/berita/${item.slug}`} className="flex items-center gap-4 group p-4 border border-slate-800 bg-slate-900 hover:border-slate-600 transition-colors">
               <div className="w-16 h-16 sm:w-20 sm:h-20 shrink-0 bg-slate-800 relative overflow-hidden">
                 <SafeImage 
-                  src={item.featured_image || 'https://via.placeholder.com/150'} 
+                  src={item.featured_image || '/images/placeholder.png'} 
                   alt={item.title} 
                   fill
                   sizes="80px"

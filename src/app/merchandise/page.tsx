@@ -48,7 +48,7 @@ const products = [
     name: 'Orenz Matchday Scarf',
     category: 'Aksesoris',
     price: 'Rp 129.000',
-    image: 'https://placehold.co/500x500/1e293b/f97316?text=Scarf',
+    image: '/images/placeholder.png',
     link: '#'
   },
   {
@@ -56,7 +56,7 @@ const products = [
     name: 'Orenz Daily Backpack',
     category: 'Aksesoris',
     price: 'Rp 450.000',
-    image: 'https://placehold.co/500x500/1e293b/f97316?text=Backpack',
+    image: '/images/placeholder.png',
     link: '#'
   },
   {
@@ -64,7 +64,7 @@ const products = [
     name: 'Authentic Home Jersey 2026',
     category: 'Jersey',
     price: 'Rp 499.000',
-    image: 'https://placehold.co/500x500/1e293b/f97316?text=Jersey',
+    image: '/images/placeholder.png',
     badge: 'Pre-Order',
     link: '#'
   },
@@ -73,7 +73,7 @@ const products = [
     name: 'Away Jersey Edisi Spesial',
     category: 'Jersey',
     price: 'Rp 499.000',
-    image: 'https://placehold.co/500x500/1e293b/f97316?text=Jersey+Away',
+    image: '/images/placeholder.png',
     link: '#'
   }
 ];

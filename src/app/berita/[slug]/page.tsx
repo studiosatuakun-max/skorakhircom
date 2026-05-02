@@ -31,7 +31,7 @@ async function getArticle(slug: string) {
     date: article.created_at,
     author: article.author || 'Tim Redaksi',
     content: article.content,
-    image: article.featured_image || 'https://via.placeholder.com/1200x630/1e293b/facc15?text=SkorAkhir',
+    image: article.featured_image || '/images/placeholder.png',
     category_id: article.category_id,
     tags: [article.categories?.name || 'SPORT'],
   };

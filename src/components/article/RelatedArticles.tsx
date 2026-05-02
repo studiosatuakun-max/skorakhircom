@@ -36,7 +36,7 @@ export default function RelatedArticles({ articles }: { articles: RelatedArticle
             >
               <div className="aspect-video bg-slate-800 relative overflow-hidden">
                 <SafeImage 
-                  src={rel.featured_image || 'https://via.placeholder.com/400x225'} 
+                  src={rel.featured_image || '/images/placeholder.png'} 
                   alt={rel.title} 
                   fill
                   sizes="(max-width: 768px) 70vw, 45vw"
