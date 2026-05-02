@@ -25,24 +25,24 @@ export default async function LiveScoreAdmin() {
           <form action={createMatch} className="space-y-4">
             <div>
               <label className="block text-xs font-bold text-slate-400 mb-1">Liga / Kompetisi</label>
-              <input type="text" name="league" required placeholder="Contoh: Liga 1, Premier League" className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-red-500" />
+              <input type="text" name="league" required placeholder="Contoh: Liga 1, Premier League" className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-yellow-400" />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-bold text-slate-400 mb-1">Tim Kandang</label>
-                <input type="text" name="home_team" required placeholder="Persib" className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-red-500" />
+                <input type="text" name="home_team" required placeholder="Persib" className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-yellow-400" />
               </div>
               <div>
                 <label className="block text-xs font-bold text-slate-400 mb-1">Tim Tandang</label>
-                <input type="text" name="away_team" required placeholder="Persija" className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-red-500" />
+                <input type="text" name="away_team" required placeholder="Persija" className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-yellow-400" />
               </div>
             </div>
             <div className="flex items-center gap-2 mt-2">
-              <input type="checkbox" name="is_local_pride" id="is_local" className="w-4 h-4 accent-yellow-400 bg-slate-950" />
+              <input type="checkbox" name="is_local_pride" id="is_local" className="w-4 h-4 accent-orange-500 bg-slate-950" />
               <label htmlFor="is_local" className="text-xs font-bold text-slate-300">Tandai Garuda Pride</label>
             </div>
             
-            <button type="submit" className="w-full flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 text-white py-2 rounded font-black text-xs tracking-widest uppercase transition-colors uppercase mt-4">
+            <button type="submit" className="w-full flex justify-center items-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-white py-2 rounded font-black text-xs tracking-widest uppercase transition-colors uppercase mt-4">
               <Plus className="w-4 h-4" /> Mulai Live Match
             </button>
           </form>
@@ -53,7 +53,7 @@ export default async function LiveScoreAdmin() {
           <h2 className="text-sm font-black uppercase text-slate-300 tracking-widest mb-6">Pertandingan Aktif</h2>
           
           <div className="space-y-4">
-            {error && <p className="text-red-500 text-sm font-bold bg-red-950/50 p-4 rounded">{error.message}</p>}
+            {error && <p className="text-yellow-400 text-sm font-bold bg-red-950/50 p-4 rounded">{error.message}</p>}
             {matches?.length === 0 && <p className="text-slate-500 text-xs font-bold">Belum ada pertandingan berjalan.</p>}
             
             {matches?.map((match) => (
@@ -71,9 +71,9 @@ export default async function LiveScoreAdmin() {
 
                 {/* Input Kontrol Skor */}
                 <div className="flex-1 flex gap-2">
-                  <input type="number" name="home_score" defaultValue={match.home_score} className="w-12 h-10 text-center font-black text-xl bg-slate-900 border border-yellow-400/30 text-yellow-400 rounded focus:outline-none focus:border-yellow-400" />
+                  <input type="number" name="home_score" defaultValue={match.home_score} className="w-12 h-10 text-center font-black text-xl bg-slate-900 border border-orange-500/30 text-orange-500 rounded focus:outline-none focus:border-orange-500" />
                   <span className="flex items-center text-slate-500 font-bold">-</span>
-                  <input type="number" name="away_score" defaultValue={match.away_score} className="w-12 h-10 text-center font-black text-xl bg-slate-900 border border-yellow-400/30 text-yellow-400 rounded focus:outline-none focus:border-yellow-400" />
+                  <input type="number" name="away_score" defaultValue={match.away_score} className="w-12 h-10 text-center font-black text-xl bg-slate-900 border border-orange-500/30 text-orange-500 rounded focus:outline-none focus:border-orange-500" />
                 </div>
 
                 <div className="flex flex-col gap-2 w-24">
@@ -86,10 +86,10 @@ export default async function LiveScoreAdmin() {
                 </div>
 
                 <div className="flex flex-col gap-2 ml-auto">
-                  <button type="submit" className="bg-yellow-400 hover:bg-yellow-500 text-slate-900 p-2 rounded flex items-center justify-center transition-colors" title="Update Skor (Tayang di Homepage)">
+                  <button type="submit" className="bg-orange-500 hover:bg-orange-600 text-slate-900 p-2 rounded flex items-center justify-center transition-colors" title="Update Skor (Tayang di Homepage)">
                     <RefreshCw className="w-4 h-4" />
                   </button>
-                  <button formAction={deleteMatch.bind(null, match.id)} className="bg-slate-800 hover:bg-red-900 text-red-500 p-2 rounded flex items-center justify-center transition-colors" title="Hapus Pertandingan">
+                  <button formAction={deleteMatch.bind(null, match.id)} className="bg-slate-800 hover:bg-red-900 text-yellow-400 p-2 rounded flex items-center justify-center transition-colors" title="Hapus Pertandingan">
                     <Trash2 className="w-4 h-4" />
                   </button>
                 </div>

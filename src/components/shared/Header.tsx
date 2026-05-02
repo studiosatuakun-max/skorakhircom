@@ -5,7 +5,7 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-slate-950 border-b border-slate-800">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between text-white">
         <Link href="/" className="flex items-center text-2xl font-black tracking-tighter">
-          SKORAKHIR<span className="text-yellow-400 tracking-normal uppercase">.COM</span>
+          SKORAKHIR<span className="text-orange-500 tracking-normal uppercase">.COM</span>
         </Link>
 
         {/* Top menu categories removed per request */}

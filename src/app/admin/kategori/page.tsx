@@ -43,20 +43,20 @@ export default async function KategoriAdmin() {
           <form action={createCategory} className="space-y-4">
             <div>
               <label className="block text-xs font-bold text-slate-400 mb-2">Nama Kategori</label>
-              <input type="text" name="name" required placeholder="Contoh: MOTO GP" className="w-full bg-slate-950 border border-slate-800 rounded px-4 py-2.5 text-sm text-white focus:outline-none focus:border-yellow-400" />
+              <input type="text" name="name" required placeholder="Contoh: MOTO GP" className="w-full bg-slate-950 border border-slate-800 rounded px-4 py-2.5 text-sm text-white focus:outline-none focus:border-orange-500" />
             </div>
             
             <div>
               <label className="block text-xs font-bold text-slate-400 mb-2">Tema Warna (Pilihan Tailwind)</label>
-              <select name="color_theme" className="w-full bg-slate-950 border border-slate-800 rounded px-4 py-3 text-sm text-white focus:outline-none focus:border-yellow-400">
-                <option value="yellow-400">Yellow (Default)</option>
-                <option value="red-600">Red (Hot / Timnas)</option>
+              <select name="color_theme" className="w-full bg-slate-950 border border-slate-800 rounded px-4 py-3 text-sm text-white focus:outline-none focus:border-orange-500">
+                <option value="orange-500">Yellow (Default)</option>
+                <option value="yellow-400">Red (Hot / Timnas)</option>
                 <option value="blue-500">Blue (Eropa)</option>
                 <option value="green-500">Green (Spesial)</option>
               </select>
             </div>
             
-            <button type="submit" className="w-full flex justify-center items-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-slate-900 py-3 rounded-lg font-black text-xs tracking-widest uppercase transition-colors mt-2">
+            <button type="submit" className="w-full flex justify-center items-center gap-2 bg-orange-500 hover:bg-orange-600 text-slate-900 py-3 rounded-lg font-black text-xs tracking-widest uppercase transition-colors mt-2">
               <Plus className="w-4 h-4" /> Simpan Kategori
             </button>
           </form>
@@ -67,13 +67,13 @@ export default async function KategoriAdmin() {
           <h2 className="text-sm font-black uppercase text-slate-300 tracking-widest mb-6">Kategori Tersedia ({categories?.length || 0})</h2>
           
           <div className="space-y-3">
-            {error && <p className="text-red-500 text-xs">{error.message}</p>}
+            {error && <p className="text-yellow-400 text-xs">{error.message}</p>}
             
             {categories?.map((cat) => (
               <div key={cat.id} className="flex justify-between items-center p-3 border border-slate-800 rounded bg-slate-950">
                 <div>
                   <div className="flex items-center gap-2">
-                    <div className={`w-3 h-3 rounded-full bg-${cat.color_theme || 'yellow-400'}`}></div>
+                    <div className={`w-3 h-3 rounded-full bg-${cat.color_theme || 'orange-500'}`}></div>
                     <h3 className="text-sm font-bold text-white uppercase">{cat.name}</h3>
                   </div>
                   <p className="text-[10px] text-slate-500 font-mono mt-1">/{cat.slug}</p>
@@ -83,7 +83,7 @@ export default async function KategoriAdmin() {
                   'use server';
                   await deleteCategory(cat.id);
                 }}>
-                  <button type="submit" className="p-2 text-slate-500 hover:text-red-500 transition-colors" title="Hapus Kategori">
+                  <button type="submit" className="p-2 text-slate-500 hover:text-yellow-400 transition-colors" title="Hapus Kategori">
                     <Trash2 className="w-4 h-4" />
                   </button>
                 </form>

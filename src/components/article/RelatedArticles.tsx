@@ -44,8 +44,8 @@ export default function RelatedArticles({ articles }: { articles: RelatedArticle
                 />
               </div>
               <div className="p-4 flex-1 flex flex-col">
-                <span className="text-[10px] font-bold text-red-500 mb-2">{catName || 'UMUM'}</span>
-                <h3 className="text-sm md:text-base font-black italic text-slate-100 group-hover:text-yellow-400 transition-colors leading-snug line-clamp-3">
+                <span className="text-[10px] font-bold text-yellow-400 mb-2">{catName || 'UMUM'}</span>
+                <h3 className="text-sm md:text-base font-black italic text-slate-100 group-hover:text-orange-500 transition-colors leading-snug line-clamp-3">
                   {rel.title}
                 </h3>
               </div>

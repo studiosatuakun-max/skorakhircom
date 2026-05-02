@@ -29,14 +29,14 @@ export default function ArticleActions({ title, slug }: { title: string, slug: s
     <div className="flex gap-2">
       <button 
         onClick={handleBookmark}
-        className="p-2 bg-slate-900 border border-slate-800 hover:border-yellow-400 rounded text-slate-400 hover:text-yellow-400 transition-all active:scale-95" 
+        className="p-2 bg-slate-900 border border-slate-800 hover:border-orange-500 rounded text-slate-400 hover:text-orange-500 transition-all active:scale-95" 
         aria-label="Simpan Artikel"
       >
         <BookmarkPlus className="w-5 h-5" />
       </button>
       <button 
         onClick={handleShare}
-        className="p-2 bg-slate-900 border border-slate-800 hover:border-yellow-400 rounded text-slate-400 hover:text-yellow-400 transition-all active:scale-95" 
+        className="p-2 bg-slate-900 border border-slate-800 hover:border-orange-500 rounded text-slate-400 hover:text-orange-500 transition-all active:scale-95" 
         aria-label="Bagikan Artikel"
       >
         <Share2 className="w-5 h-5" />

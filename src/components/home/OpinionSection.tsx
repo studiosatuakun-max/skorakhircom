@@ -32,7 +32,7 @@ export default async function OpinionSection() {
                 <span className="text-[10px] font-bold text-slate-400 uppercase">Jurnalis SkorAkhir</span>
               </div>
             </div>
-            <h4 className="text-lg font-black italic leading-tight text-slate-200 group-hover:text-red-500 transition-colors">
+            <h4 className="text-lg font-black italic leading-tight text-slate-200 group-hover:text-yellow-400 transition-colors">
               "{item.title}"
             </h4>
             <span className="text-[10px] font-bold text-slate-500 mt-auto pt-4">

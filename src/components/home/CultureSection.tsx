@@ -22,7 +22,7 @@ export default function CultureSection() {
             </div>
             <div className="p-5 flex-1 flex flex-col justify-between">
               <div>
-                <span className="text-[10px] font-bold text-yellow-400 block mb-2 tracking-wider">{item.type}</span>
+                <span className="text-[10px] font-bold text-orange-500 block mb-2 tracking-wider">{item.type}</span>
                 <h3 className="text-lg font-black italic text-slate-100 group-hover:text-white transition-colors leading-snug">
                   {item.title}
                 </h3>

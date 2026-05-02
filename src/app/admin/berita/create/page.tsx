@@ -82,7 +82,7 @@ export default function CreateNews() {
               id="title" 
               name="title" 
               required
-              className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-yellow-400 transition-colors font-bold"
+              className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 transition-colors font-bold"
               placeholder="Contoh: Indonesia Menang Dramatis melawan Vietnam..."
             />
           </div>
@@ -97,7 +97,7 @@ export default function CreateNews() {
                 name="author" 
                 defaultValue="Tim Redaksi"
                 required
-                className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-yellow-400 transition-colors"
+                className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 transition-colors"
               />
             </div>
             
@@ -110,7 +110,7 @@ export default function CreateNews() {
                 name="imageFile" 
                 accept="image/*"
                 required
-                className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-[9px] text-white focus:outline-none focus:border-yellow-400 transition-colors file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-yellow-400 file:text-slate-900 hover:file:bg-yellow-500"
+                className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-[9px] text-white focus:outline-none focus:border-orange-500 transition-colors file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-orange-500 file:text-slate-900 hover:file:bg-orange-600"
               />
             </div>
           </div>
@@ -136,7 +136,7 @@ export default function CreateNews() {
               required
               value={excerpt}
               onChange={(e) => setExcerpt(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-yellow-400 transition-colors"
+              className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 transition-colors"
               placeholder="Muncul di kartu Homepage..."
             ></textarea>
           </div>
@@ -173,10 +173,10 @@ export default function CreateNews() {
               type="checkbox" 
               id="is_garuda_pride" 
               name="is_garuda_pride" 
-              className="w-5 h-5 accent-red-600 rounded border-slate-800 bg-slate-900"
+              className="w-5 h-5 accent-yellow-400 rounded border-slate-800 bg-slate-900"
             />
             <label htmlFor="is_garuda_pride" className="text-sm font-bold text-white cursor-pointer select-none">
-              Tandai sebagai <span className="text-red-500 uppercase tracking-wider ml-1">Garuda Pride</span>
+              Tandai sebagai <span className="text-yellow-400 uppercase tracking-wider ml-1">Garuda Pride</span>
             </label>
             <p className="text-xs text-slate-500 italic ml-auto hidden sm:block">Akan muncul di section khusus Timnas.</p>
           </div>
@@ -187,7 +187,7 @@ export default function CreateNews() {
           <Link href="/admin/berita" className="px-6 py-3 font-bold text-sm text-slate-400 hover:text-white transition-colors">
             Batal
           </Link>
-          <button type="submit" className="flex items-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-slate-900 px-6 py-3 rounded-lg font-black uppercase tracking-wider text-sm transition-colors active:scale-95">
+          <button type="submit" className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-slate-900 px-6 py-3 rounded-lg font-black uppercase tracking-wider text-sm transition-colors active:scale-95">
             <Save className="w-4 h-4" /> Publish Sekarang
           </button>
         </div>

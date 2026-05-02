@@ -25,7 +25,7 @@ export default async function NewsList() {
     <section aria-labelledby="latest-news">
       <div className="flex items-center justify-between mb-4 border-b-2 border-white/20 pb-2">
         <h2 id="latest-news" className="text-2xl sm:text-3xl font-black italic tracking-tight uppercase text-white">Berita Terkini</h2>
-        <Link href="#" className="hidden text-sm font-bold text-slate-400 hover:text-yellow-400 md:flex flex-row items-center gap-1 transition-colors group">
+        <Link href="#" className="hidden text-sm font-bold text-slate-400 hover:text-orange-500 md:flex flex-row items-center gap-1 transition-colors group">
           Lihat Semua <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
         </Link>
       </div>
@@ -46,11 +46,11 @@ export default async function NewsList() {
               
               <div className="flex-1 flex flex-col justify-center">
                 <div className="flex items-center gap-2 text-[9px] sm:text-[10px] font-bold text-slate-500 mb-1">
-                  <span className="text-red-500">{news.categories?.name || 'UMUM'}</span>
+                  <span className="text-yellow-400">{news.categories?.name || 'UMUM'}</span>
                   <span>•</span>
                   <span>{new Date(news.created_at).toLocaleDateString('id-ID')}</span>
                 </div>
-                <h3 className="text-sm sm:text-base font-black italic leading-tight text-slate-50 group-hover:text-yellow-400 transition-colors line-clamp-3">
+                <h3 className="text-sm sm:text-base font-black italic leading-tight text-slate-50 group-hover:text-orange-500 transition-colors line-clamp-3">
                   {news.title}
                 </h3>
               </div>

@@ -2,7 +2,7 @@ import React from 'react';
 import Header from '@/components/shared/Header';
 import Footer from '@/components/shared/Footer';
 import TrendingTopics from '@/components/home/TrendingTopics'; 
-import LeagueCarousel from '@/components/home/LeagueCarousel'; // Import LeagueCarousel
+
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
@@ -144,7 +144,7 @@ export default async function NewsDetail({ params }: Props) {
             {/* Kolom Kiri: Artikel */}
             <article className="lg:col-span-8">
               <nav aria-label="breadcrumb" className="mb-6 flex items-center font-bold text-xs uppercase text-slate-500 gap-2">
-                <Link href="/" className="hover:text-yellow-400 transition-colors flex items-center gap-1">
+                <Link href="/" className="hover:text-orange-500 transition-colors flex items-center gap-1">
                   <ArrowLeft className="w-3 h-3" /> Beranda
                 </Link>
                 <span>/</span>
@@ -155,7 +155,7 @@ export default async function NewsDetail({ params }: Props) {
 
               <header className="mb-8">
                 <div className="flex items-center gap-3 mb-4">
-                  <span className="bg-red-600 text-white px-3 py-1 text-xs font-black uppercase tracking-wider">
+                  <span className="bg-yellow-400 text-white px-3 py-1 text-xs font-black uppercase tracking-wider">
                     {article.category}
                   </span>
                   <time dateTime={article.date} className="text-xs font-bold text-slate-400">
@@ -173,7 +173,7 @@ export default async function NewsDetail({ params }: Props) {
                       {article.author.charAt(0)}
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-slate-200">Oleh <span className="text-yellow-400">{article.author}</span></p>
+                      <p className="text-sm font-bold text-slate-200">Oleh <span className="text-orange-500">{article.author}</span></p>
                       <p className="text-[10px] uppercase font-bold text-slate-500">Jurnalis SkorAkhir</p>
                     </div>
                   </div>
@@ -197,19 +197,19 @@ export default async function NewsDetail({ params }: Props) {
               </figure>
 
               <div 
-                className="prose prose-invert prose-lg max-w-none prose-headings:font-black prose-headings:italic prose-a:text-yellow-400 prose-blockquote:border-yellow-400 prose-blockquote:bg-slate-900 prose-blockquote:p-4 prose-blockquote:not-italic"
+                className="prose prose-invert prose-lg max-w-none prose-headings:font-black prose-headings:italic prose-a:text-orange-500 prose-blockquote:border-orange-500 prose-blockquote:bg-slate-900 prose-blockquote:p-4 prose-blockquote:not-italic"
                 dangerouslySetInnerHTML={{ __html: processedContent }}
               />
               <style>{`
                 .prose p { margin-bottom: 1.5rem; color: #cbd5e1; line-height: 1.8; font-size: 1.125rem; }
                 .prose h2 { font-size: 2rem; font-weight: 900; font-style: italic; color: #fff; margin-top: 3rem; margin-bottom: 1.5rem; letter-spacing: -0.025em; }
-                .prose blockquote { border-left: 4px solid #facc15; padding: 1.5rem; background-color: #1e293b; margin: 2rem 0; font-weight: 700; color: #f8fafc; font-size: 1.25rem; line-height: 1.6; }
+                .prose blockquote { border-left: 4px solid #f97316; padding: 1.5rem; background-color: #1e293b; margin: 2rem 0; font-weight: 700; color: #f8fafc; font-size: 1.25rem; line-height: 1.6; }
               `}</style>
 
               <div className="mt-12 flex flex-wrap gap-2 pt-6 border-t border-slate-800 mb-12">
                 <span className="text-xs font-black uppercase text-slate-500 py-2 mr-2">Topik Terkait:</span>
                 {article.tags.map((tag) => (
-                  <Link key={tag} href="#" className="px-3 py-1.5 bg-slate-900 border border-slate-800 text-xs font-bold text-slate-300 hover:bg-yellow-400 hover:text-slate-950 hover:border-yellow-400 transition-colors uppercase">
+                  <Link key={tag} href="#" className="px-3 py-1.5 bg-slate-900 border border-slate-800 text-xs font-bold text-slate-300 hover:bg-orange-500 hover:text-slate-950 hover:border-orange-500 transition-colors uppercase">
                     #{tag}
                   </Link>
                 ))}
@@ -236,10 +236,7 @@ export default async function NewsDetail({ params }: Props) {
           </div>
         </div>
 
-        {/* Global Bottom Section */}
-        <div className="container mx-auto px-4 mt-16">
-          <LeagueCarousel />
-        </div>
+
       </main>
 
       <FloatingActions />

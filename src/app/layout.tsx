@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id" className={`${plusJakartaSans.variable} antialiased`}>
-      <body className="font-sans min-h-screen bg-slate-950 text-slate-50 flex flex-col selection:bg-yellow-400 selection:text-black">
+      <body className="font-sans min-h-screen bg-slate-950 text-slate-50 flex flex-col selection:bg-orange-500 selection:text-black">
         {children}
       </body>
     </html>

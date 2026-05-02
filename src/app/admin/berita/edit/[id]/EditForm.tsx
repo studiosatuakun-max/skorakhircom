@@ -86,7 +86,7 @@ export default function EditForm({ initialData }: { initialData: any }) {
               name="title" 
               defaultValue={initialData.title}
               required
-              className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-yellow-400 text-lg transition-colors"
+              className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 text-lg transition-colors"
             />
           </div>
 
@@ -100,7 +100,7 @@ export default function EditForm({ initialData }: { initialData: any }) {
                 name="author" 
                 defaultValue={initialData.author}
                 required
-                className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-yellow-400 transition-colors"
+                className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 transition-colors"
               />
             </div>
             
@@ -112,7 +112,7 @@ export default function EditForm({ initialData }: { initialData: any }) {
                 id="imageFile" 
                 name="imageFile" 
                 accept="image/*"
-                className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-[9px] text-white focus:outline-none focus:border-yellow-400 transition-colors file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-yellow-400 file:text-slate-900 hover:file:bg-yellow-500"
+                className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-[9px] text-white focus:outline-none focus:border-orange-500 transition-colors file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-orange-500 file:text-slate-900 hover:file:bg-orange-600"
               />
               <p className="text-[10px] text-slate-500 mt-1">Kosongkan jika tidak ingin mengubah gambar.</p>
             </div>
@@ -139,7 +139,7 @@ export default function EditForm({ initialData }: { initialData: any }) {
               required
               value={excerpt}
               onChange={(e) => setExcerpt(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-yellow-400 transition-colors"
+              className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 transition-colors"
             ></textarea>
           </div>
 
@@ -175,17 +175,17 @@ export default function EditForm({ initialData }: { initialData: any }) {
               id="is_garuda_pride" 
               name="is_garuda_pride"
               defaultChecked={initialData.is_garuda_pride}
-              className="w-4 h-4 rounded border-slate-800 text-yellow-400 focus:ring-yellow-400 bg-slate-950"
+              className="w-4 h-4 rounded border-slate-800 text-orange-500 focus:ring-orange-500 bg-slate-950"
             />
             <label htmlFor="is_garuda_pride" className="text-sm font-bold text-slate-300">
-              🔥 Tandai sebagai <span className="text-red-500">Garuda Pride</span> (Eksklusif Timnas/Atlet Lokal)
+              🔥 Tandai sebagai <span className="text-yellow-400">Garuda Pride</span> (Eksklusif Timnas/Atlet Lokal)
             </label>
           </div>
 
         </div>
 
         <div className="flex justify-end pt-6">
-          <button type="submit" className="flex items-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-slate-900 px-8 py-3 rounded-lg font-black tracking-widest uppercase transition-transform active:scale-95">
+          <button type="submit" className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-slate-900 px-8 py-3 rounded-lg font-black tracking-widest uppercase transition-transform active:scale-95">
             <Save className="w-5 h-5" />
             Update Perubahan
           </button>

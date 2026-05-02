@@ -20,7 +20,7 @@ export default async function GarudaPride() {
 
   return (
     <section className="container mx-auto px-4 mt-20 mb-8" aria-labelledby="garuda-pride">
-      <div className="flex items-center gap-2 mb-6 border-b-2 border-red-600 pb-2">
+      <div className="flex items-center gap-2 mb-6 border-b-2 border-yellow-400 pb-2">
         <h2 id="garuda-pride" className="text-2xl sm:text-3xl font-black italic tracking-tight uppercase text-white">Garuda Pride</h2>
       </div>
 
@@ -37,10 +37,10 @@ export default async function GarudaPride() {
               className="absolute inset-0 object-cover opacity-70 group-hover:scale-105 transition-transform duration-700"
             />
             <div className="relative z-20 w-full">
-              <span className="bg-red-600 text-white px-2 py-1 text-[10px] font-bold uppercase mb-3 inline-block">
+              <span className="bg-yellow-400 text-white px-2 py-1 text-[10px] font-bold uppercase mb-3 inline-block">
                 {heroItem.is_garuda_pride ? 'SOROTAN UTAMA' : heroItem.categories?.name}
               </span>
-              <h3 className="text-2xl sm:text-4xl font-black italic text-white leading-tight group-hover:text-yellow-400 transition-colors line-clamp-3">
+              <h3 className="text-2xl sm:text-4xl font-black italic text-white leading-tight group-hover:text-orange-500 transition-colors line-clamp-3">
                 {heroItem.title}
               </h3>
             </div>
@@ -62,7 +62,7 @@ export default async function GarudaPride() {
               </div>
               <div>
                 <span className="text-[10px] font-bold text-slate-400 block mb-1">{item.categories?.name || 'SPORT'}</span>
-                <h4 className="text-sm sm:text-base font-black italic text-slate-200 group-hover:text-red-500 transition-colors leading-snug line-clamp-2">
+                <h4 className="text-sm sm:text-base font-black italic text-slate-200 group-hover:text-yellow-400 transition-colors leading-snug line-clamp-2">
                   {item.title}
                 </h4>
               </div>
