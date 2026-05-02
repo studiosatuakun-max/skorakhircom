@@ -23,7 +23,7 @@ export default function MerchandiseSection() {
             </h2>
             <ShoppingBag className="w-6 h-6 text-orange-500" />
           </div>
-          <Link href="#" className="hidden sm:flex items-center gap-2 text-sm font-bold text-slate-400 hover:text-orange-500 transition-colors uppercase tracking-widest group">
+          <Link href="/merchandise" className="hidden sm:flex items-center gap-2 text-sm font-bold text-slate-400 hover:text-orange-500 transition-colors uppercase tracking-widest group">
             Lihat Katalog <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
@@ -72,7 +72,7 @@ export default function MerchandiseSection() {
         </div>
         
         <div className="mt-8 flex justify-center sm:hidden">
-           <Link href="#" className="flex items-center gap-2 text-xs font-black bg-slate-800 text-white px-6 py-3 uppercase tracking-widest hover:bg-orange-500 hover:text-slate-900 transition-colors active:scale-95">
+           <Link href="/merchandise" className="flex items-center gap-2 text-xs font-black bg-slate-800 text-white px-6 py-3 uppercase tracking-widest hover:bg-orange-500 hover:text-slate-900 transition-colors active:scale-95">
              Lihat Semua Koleksi <ArrowRight className="w-4 h-4" />
            </Link>
         </div>
