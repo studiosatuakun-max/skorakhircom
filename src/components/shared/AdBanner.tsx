@@ -6,7 +6,7 @@ import SafeImage from '@/components/shared/SafeImage';
 export default function AdBanner() {
   return (
     <div className="w-full my-8 flex justify-center items-center">
-      <Link href="#" className="w-full max-w-4xl h-[90px] md:h-[120px] bg-slate-900 border border-slate-800 flex overflow-hidden group hover:border-orange-500 transition-colors relative">
+      <Link href="/merchandise" className="w-full max-w-4xl h-[90px] md:h-[120px] bg-slate-900 border border-slate-800 flex overflow-hidden group hover:border-orange-500 transition-colors relative">
         {/* Background Graphic */}
         <div className="absolute right-0 top-0 bottom-0 w-1/2 bg-gradient-to-l from-orange-500/20 to-transparent"></div>
         

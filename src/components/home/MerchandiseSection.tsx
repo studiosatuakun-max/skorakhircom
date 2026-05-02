@@ -30,7 +30,7 @@ export default function MerchandiseSection() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {products.map((product) => (
-            <article key={product.id} className="group cursor-pointer relative bg-slate-800 flex flex-col overflow-hidden border border-slate-700 hover:border-orange-500 transition-all duration-300">
+            <Link href="/merchandise" key={product.id} className="group cursor-pointer relative bg-slate-800 flex flex-col overflow-hidden border border-slate-700 hover:border-orange-500 transition-all duration-300">
               <div className="relative aspect-[4/5] overflow-hidden bg-slate-950">
                 {/* Sale / New Badge */}
                 {product.id === 1 && (
@@ -67,7 +67,7 @@ export default function MerchandiseSection() {
                   {product.price}
                 </span>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
         
