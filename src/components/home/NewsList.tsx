@@ -34,17 +34,25 @@ export default async function NewsList() {
   let latestNews: any[] = [];
   try {
     const data = await fetchWP(query);
-    latestNews = data?.posts?.nodes?.map((node: any) => ({
-      id: node.id,
-      title: node.title,
-      slug: node.slug,
-      excerpt: node.excerpt ? node.excerpt.replace(/<[^>]+>/g, '').trim() : '',
-      featured_image: node.featuredImage?.node?.sourceUrl || null,
-      created_at: node.date,
-      categories: {
-        name: node.categories?.nodes?.[0]?.name || 'UMUM'
+    latestNews = data?.posts?.nodes?.map((node: any) => {
+      // FIX SEMENTARA: Paksa image ke http:// karena SSL di CMS belum ijo
+      let imgUrl = node.featuredImage?.node?.sourceUrl || null;
+      if (imgUrl && process.env.WORDPRESS_API_URL?.startsWith('http://')) {
+        imgUrl = imgUrl.replace('https://', 'http://');
       }
-    })) || [];
+
+      return {
+        id: node.id,
+        title: node.title,
+        slug: node.slug,
+        excerpt: node.excerpt ? node.excerpt.replace(/<[^>]+>/g, '').trim() : '',
+        featured_image: imgUrl,
+        created_at: node.date,
+        categories: {
+          name: node.categories?.nodes?.[0]?.name || 'UMUM'
+        }
+      };
+    }) || [];
   } catch (error) {
     console.error('Failed to fetch news from WP:', error);
   }
