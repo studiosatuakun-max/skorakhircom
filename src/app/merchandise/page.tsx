@@ -1,9 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
+import { Metadata } from 'next';
 import { ShoppingBag, ArrowRight, Tag, Info } from 'lucide-react';
 import SafeImage from '@/components/shared/SafeImage';
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Katalog Merchandise | The Orenz by SkorAkhir',
   description: 'Koleksi eksklusif The Orenz. Tampil gaya dengan apparel dan merchandise resmi kami.',
 };

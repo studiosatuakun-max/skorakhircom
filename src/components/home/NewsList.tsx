@@ -2,19 +2,55 @@ import { Flag, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import SafeImage from '@/components/shared/SafeImage';
 import FeaturedCarousel from './FeaturedCarousel';
-import { supabase } from '@/lib/supabase';
+import { fetchWP } from '@/lib/wp-graphql';
 
 export const revalidate = 60; // Cache for 60 seconds
 
 export default async function NewsList() {
-  const { data: latestNews, error } = await supabase
-    .from('news')
-    .select('*, categories(name)')
-    .order('created_at', { ascending: false })
-    .limit(6);
+  const query = `
+    query GetLatestNews {
+      posts(first: 6, where: { orderby: { field: DATE, order: DESC } }) {
+        nodes {
+          id
+          title
+          slug
+          date
+          excerpt
+          categories(first: 1) {
+            nodes {
+              name
+            }
+          }
+          featuredImage {
+            node {
+              sourceUrl
+            }
+          }
+        }
+      }
+    }
+  `;
 
-  if (error || !latestNews || latestNews.length === 0) {
-    return <div>Belum ada berita...</div>;
+  let latestNews: any[] = [];
+  try {
+    const data = await fetchWP(query);
+    latestNews = data?.posts?.nodes?.map((node: any) => ({
+      id: node.id,
+      title: node.title,
+      slug: node.slug,
+      excerpt: node.excerpt ? node.excerpt.replace(/<[^>]+>/g, '').trim() : '',
+      featured_image: node.featuredImage?.node?.sourceUrl || null,
+      created_at: node.date,
+      categories: {
+        name: node.categories?.nodes?.[0]?.name || 'UMUM'
+      }
+    })) || [];
+  } catch (error) {
+    console.error('Failed to fetch news from WP:', error);
+  }
+
+  if (!latestNews || latestNews.length === 0) {
+    return <div className="text-slate-400 py-10">Belum ada berita yang diterbitkan...</div>;
   }
 
   // Use up to 3 articles for the carousel, others for sidebar
