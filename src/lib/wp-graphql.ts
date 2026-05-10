@@ -16,11 +16,9 @@ export async function fetchWP(query: string, { variables }: { variables?: any } 
       query,
       variables,
     }),
-    // Use force-cache for production, or Next.js 15 default cache semantics
-    // You can override this per-request by passing standard fetch options if needed.
-    cache: 'force-cache', 
+    // Use ISR with 60 seconds revalidation instead of infinite force-cache
     next: {
-      // Setup global tags for on-demand revalidation
+      revalidate: 60,
       tags: ['wordpress'], 
     }
   });

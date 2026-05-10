@@ -5,5 +5,5 @@ fetch(url, {
   body: JSON.stringify({ query: "{ posts { nodes { title slug } } }" })
 })
 .then(res => res.json())
-.then(console.log)
+.then(res => console.log(JSON.stringify(res, null, 2)))
 .catch(console.error);
