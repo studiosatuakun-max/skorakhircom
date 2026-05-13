@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { LayoutDashboard, Newspaper, ShieldAlert, FileEdit, Settings, LogOut } from 'lucide-react';
+import { LayoutDashboard, Newspaper, ShieldAlert, FileEdit, Settings, LogOut, Bot } from 'lucide-react';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -18,18 +18,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <LayoutDashboard className="w-4 h-4 text-orange-500" />
             Dashboard
           </Link>
-          <Link href="/admin/berita" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-slate-800/50 hover:text-white rounded-lg font-bold text-sm transition-colors">
-            <Newspaper className="w-4 h-4" />
-            Kelola Berita
+          <Link href="/admin/scraper" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-slate-800/50 hover:text-white rounded-lg font-bold text-sm transition-colors">
+            <Bot className="w-4 h-4 text-yellow-400" />
+            Auto-Draft Scraper
           </Link>
-          <Link href="/admin/livescore" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-slate-800/50 hover:text-white rounded-lg font-bold text-sm transition-colors">
-            <ShieldAlert className="w-4 h-4" />
-            Live Score
-          </Link>
-          <Link href="/admin/kategori" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-slate-800/50 hover:text-white rounded-lg font-bold text-sm transition-colors">
-            <FileEdit className="w-4 h-4" />
-            Kategori Topik
-          </Link>
+          <a href="https://cms.skorakhir.com/wp-admin" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-slate-800/50 hover:text-white rounded-lg font-bold text-sm transition-colors">
+            <Newspaper className="w-4 h-4 text-blue-400" />
+            Kelola Berita (WP)
+          </a>
+          <a href="https://cms.skorakhir.com/wp-admin/edit-tags.php?taxonomy=category" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-slate-800/50 hover:text-white rounded-lg font-bold text-sm transition-colors">
+            <FileEdit className="w-4 h-4 text-blue-400" />
+            Kategori Topik (WP)
+          </a>
         </nav>
 
         <div className="p-4 border-t border-slate-800">
