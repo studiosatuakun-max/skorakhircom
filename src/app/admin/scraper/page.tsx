@@ -1,30 +1,82 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Bot, Save, Trash2, Search, Settings } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
 
 export default function ScraperAdmin() {
-  const [keywords, setKeywords] = useState<{ id: string; keyword: string; category: string; daysLeft: number }[]>([
-    { id: '1', keyword: 'Megawati Hangestri Voli', category: 'Bola Voli', daysLeft: 7 },
-    { id: '2', keyword: 'Veda Ega Moto3', category: 'Moto GP', daysLeft: 5 }
-  ]);
+  const [keywords, setKeywords] = useState<{ id: string; keyword: string; category_name: string; days_left: number }[]>([]);
   const [newKeyword, setNewKeyword] = useState('');
   const [newCategory, setNewCategory] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [isScraping, setIsScraping] = useState(false);
 
-  const addKeyword = () => {
-    if (!newKeyword) return;
-    setKeywords([...keywords, { id: Date.now().toString(), keyword: newKeyword, category: newCategory || 'Sport', daysLeft: 7 }]);
-    setNewKeyword('');
-    setNewCategory('');
+  useEffect(() => {
+    fetchTargets();
+  }, []);
+
+  const fetchTargets = async () => {
+    setIsLoading(true);
+    const { data, error } = await supabase
+      .from('scraper_targets')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if (data && !error) {
+      setKeywords(data);
+    }
+    setIsLoading(false);
   };
 
-  const removeKeyword = (id: string) => {
-    setKeywords(keywords.filter(k => k.id !== id));
+  const addKeyword = async () => {
+    if (!newKeyword) return;
+    
+    const targetData = {
+      keyword: newKeyword,
+      category_name: newCategory || 'Sport',
+      days_left: 7
+    };
+
+    const { data, error } = await supabase
+      .from('scraper_targets')
+      .insert([targetData])
+      .select();
+
+    if (!error && data) {
+      setKeywords([data[0], ...keywords]);
+      setNewKeyword('');
+      setNewCategory('');
+    } else {
+      alert('Gagal menyimpan target ke database.');
+    }
+  };
+
+  const removeKeyword = async (id: string) => {
+    const { error } = await supabase.from('scraper_targets').delete().eq('id', id);
+    if (!error) {
+      setKeywords(keywords.filter(k => k.id !== id));
+    }
   };
 
   const runManualScrape = async (keyword: string) => {
-    alert(`Mencoba scraping manual untuk: ${keyword}\n\nPerintah terkirim ke API. Periksa tab Draft di WordPress nanti.`);
-    // Implementasi fetch ke /api/cron/scrape?secret=...&keyword=...
+    if (isScraping) return;
+    setIsScraping(true);
+    alert(`Memulai scraping untuk: ${keyword}\n\nMohon tunggu sekitar 15-30 detik sementara AI meramu artikel...`);
+    
+    try {
+      const res = await fetch(`/api/cron/scrape?secret=skorakhir_xyz123&keyword=${encodeURIComponent(keyword)}`);
+      const data = await res.json();
+      
+      if (data.success) {
+        alert(`Sukses!\n\nJudul Asli: ${data.original_title}\n\nCek Draft di WordPress kamu sekarang!`);
+      } else {
+        alert(`Gagal: ${data.message || data.error}`);
+      }
+    } catch (error: any) {
+      alert(`Terjadi kesalahan jaringan: ${error.message}`);
+    } finally {
+      setIsScraping(false);
+    }
   };
 
   return (
@@ -72,19 +124,22 @@ export default function ScraperAdmin() {
           <h3 className="font-bold text-white uppercase tracking-widest text-sm">Target Aktif Saat Ini</h3>
         </div>
         <div className="divide-y divide-slate-800">
-          {keywords.map((item) => (
+          {isLoading ? (
+            <div className="p-8 text-center text-slate-500 font-bold">Memuat data dari database...</div>
+          ) : keywords.map((item) => (
             <div key={item.id} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-slate-800/50 transition-colors">
               <div>
                 <h4 className="font-black text-lg text-yellow-400">{item.keyword}</h4>
                 <div className="flex items-center gap-3 text-xs font-bold text-slate-400 mt-1 uppercase">
-                  <span className="bg-slate-800 px-2 py-1 rounded">Kategori: {item.category}</span>
-                  <span className="text-orange-500">Aktif: {item.daysLeft} Hari Lagi</span>
+                  <span className="bg-slate-800 px-2 py-1 rounded">Kategori: {item.category_name}</span>
+                  <span className="text-orange-500">Aktif: {item.days_left} Hari Lagi</span>
                 </div>
               </div>
               <div className="flex items-center gap-2">
                 <button 
                   onClick={() => runManualScrape(item.keyword)}
-                  className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold rounded flex items-center gap-1 transition-colors"
+                  disabled={isScraping || item.days_left <= 0}
+                  className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-50 text-white text-xs font-bold rounded flex items-center gap-1 transition-colors"
                 >
                   <Search className="w-3 h-3" /> Tes Scraping
                 </button>
@@ -97,7 +152,7 @@ export default function ScraperAdmin() {
               </div>
             </div>
           ))}
-          {keywords.length === 0 && (
+          {!isLoading && keywords.length === 0 && (
             <div className="p-8 text-center text-slate-500 font-bold">
               Belum ada target scraping yang diatur.
             </div>
