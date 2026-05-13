@@ -53,7 +53,7 @@ export async function GET(request: Request) {
     `;
 
     // 3. Rewrite dengan Gemini
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     const prompt = `
       Anda adalah jurnalis olahraga profesional untuk portal berita "SkorAkhir".
       Tugas Anda adalah meracik sebuah berita olahraga yang unik, tajam, dan SEO-friendly dalam bahasa Indonesia berdasarkan poin-poin berita terbaru berikut ini.
