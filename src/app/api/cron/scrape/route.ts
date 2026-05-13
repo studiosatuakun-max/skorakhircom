@@ -44,40 +44,28 @@ export async function GET(request: Request) {
 
     const latestNews = feed.items[0];
 
-    // 2. Ekstrak Konten
-    const html = await fetchHTML(latestNews.link || '');
-    if (!html) throw new Error('Gagal fetch HTML');
-
-    const $ = cheerio.load(html);
-    $('script, style, header, footer, nav, iframe, .ads, aside').remove();
-    
-    let articleText = '';
-    $('p').each((i, el) => {
-      const text = $(el).text().trim();
-      if (text.length > 50) articleText += text + '\n\n';
-    });
-
-    if (articleText.length < 200) {
-      return NextResponse.json({ 
-        message: 'Konten terlalu pendek atau diblokir oleh anti-bot.',
-        link: latestNews.link 
-      });
-    }
+    // 2. Gunakan Data dari RSS (Judul & Snippet) untuk menghindari blokir anti-bot (Cloudflare/Google)
+    // Berita-berita olahraga biasanya punya snippet yang cukup untuk dijadikan bahan oleh Gemini 1.5 Pro
+    const articleSource = `
+      Judul Asli: ${latestNews.title}
+      Ringkasan Berita: ${latestNews.contentSnippet || latestNews.content || latestNews.title}
+      Sumber Link: ${latestNews.link}
+    `;
 
     // 3. Rewrite dengan Gemini
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
     const prompt = `
       Anda adalah jurnalis olahraga profesional untuk portal berita "SkorAkhir".
-      Tugas Anda adalah me-rewrite artikel berikut menjadi berita olahraga yang unik, menarik, dan SEO-friendly dalam bahasa Indonesia.
+      Tugas Anda adalah meracik sebuah berita olahraga yang unik, tajam, dan SEO-friendly dalam bahasa Indonesia berdasarkan poin-poin berita terbaru berikut ini.
       
-      Aturan:
-      1. Berikan Judul yang clickbait namun elegan (tag <h1>).
-      2. Gunakan tag HTML yang rapi (<h2> untuk sub-heading, <p> untuk paragraf).
-      3. Jangan pernah mengarang fakta.
-      4. Hanya berikan format HTML tanpa teks pengantar.
-      
-      Teks Mentah:
-      ${articleText}
+      BAHAN BERITA:
+      ${articleSource}
+
+      ATURAN:
+      1. Berikan Judul yang clickbait namun elegan (wajib dibungkus tag <h1>).
+      2. Kembangkan bahan di atas menjadi artikel berita minimal 3 paragraf. Anda diizinkan menggunakan pengetahuan luas Anda tentang olahraga tersebut untuk melengkapi konteks berita, namun JANGAN MENGARANG SKOR atau FAKTA KRUSIAL yang bertentangan dengan bahan.
+      3. Gunakan tag HTML yang rapi (<h2> untuk sub-heading, <p> untuk paragraf, <strong> untuk penekanan).
+      4. Hanya keluarkan format HTML murni tanpa teks pengantar seperti "Berikut artikelnya:".
     `;
 
     const result = await model.generateContent(prompt);
