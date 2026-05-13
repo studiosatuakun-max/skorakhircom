@@ -1,21 +1,37 @@
 import Link from 'next/link';
-import { supabase } from '@/lib/supabase';
+import { fetchWP } from '@/lib/wp-graphql';
 
 export const revalidate = 60;
 
 export default async function TrendingTopics() {
-  const thirtyDaysAgo = new Date();
-  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-
-  const { data: trendingNews, error } = await supabase
-    .from('news')
-    .select('*, categories(name)')
-    .gte('created_at', thirtyDaysAgo.toISOString())
-    .order('view_count', { ascending: false })
-    .order('created_at', { ascending: false })
-    .limit(5);
-
-  const topNews = trendingNews || [];
+  let topNews: any[] = [];
+  try {
+    const query = `
+      query GetTrending {
+        posts(first: 5, where: { orderby: { field: DATE, order: DESC } }) {
+          nodes {
+            id
+            title
+            slug
+            categories(first: 1) {
+              nodes {
+                name
+              }
+            }
+          }
+        }
+      }
+    `;
+    const data = await fetchWP(query);
+    topNews = (data?.posts?.nodes || []).map((post: any) => ({
+      id: post.id,
+      title: post.title,
+      slug: post.slug,
+      categories: { name: post.categories?.nodes?.[0]?.name || 'UMUM' },
+    }));
+  } catch (error) {
+    console.error('Failed to fetch trending news:', error);
+  }
 
   return (
     <div className="bg-slate-950 border border-slate-800 p-5 sm:p-6">

@@ -1,17 +1,45 @@
 import Link from 'next/link';
 import SafeImage from '@/components/shared/SafeImage';
-import { supabase } from '@/lib/supabase';
+import { fetchWP } from '@/lib/wp-graphql';
 
 export const revalidate = 60;
 
 export default async function GarudaPride() {
-  const { data: garudaNews } = await supabase
-    .from('news')
-    .select('*, categories(name)')
-    // Prioritaskan yang di-flag garuda pride, kalo nggak ada ambil random terbaru
-    .order('is_garuda_pride', { ascending: false, nullsFirst: false })
-    .order('created_at', { ascending: false })
-    .limit(5);
+  let garudaNews = [];
+  try {
+    const query = `
+      query GetGarudaPride {
+        posts(first: 5, where: { tag: "garuda-pride" }) {
+          nodes {
+            id
+            title
+            slug
+            categories(first: 1) {
+              nodes {
+                name
+              }
+            }
+            featuredImage {
+              node {
+                sourceUrl
+              }
+            }
+          }
+        }
+      }
+    `;
+    const data = await fetchWP(query);
+    garudaNews = (data?.posts?.nodes || []).map((post: any) => ({
+      id: post.id,
+      title: post.title,
+      slug: post.slug,
+      categories: { name: post.categories?.nodes?.[0]?.name || 'SPORT' },
+      featured_image: post.featuredImage?.node?.sourceUrl?.replace(/^https:\/\//i, 'http://') || '/images/placeholder.png',
+      is_garuda_pride: true,
+    }));
+  } catch (error) {
+    console.error('Failed to fetch Garuda Pride news:', error);
+  }
 
   const heroItem = garudaNews?.[0];
   const listItems = garudaNews?.slice(1) || [];
@@ -32,7 +60,7 @@ export default async function GarudaPride() {
       <div className="flex flex-col md:flex-row gap-8">
         {/* Main Highlight */}
         <div className="md:w-1/2 group cursor-pointer">
-          <Link href={`/berita/${heroItem.slug}`} className="block h-full aspect-[4/3] bg-slate-900 border border-slate-800 relative overflow-hidden flex items-end p-6">
+          <Link href={`/berita/${heroItem.slug}`} className="block h-full w-full bg-slate-900 border border-slate-800 relative overflow-hidden flex items-end p-6 min-h-[300px]">
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-transparent z-10" />
             <SafeImage 
               src={heroItem.featured_image || '/images/placeholder.png'} 
@@ -54,7 +82,7 @@ export default async function GarudaPride() {
 
         {/* List items */}
         <div className="md:w-1/2 flex flex-col gap-4 justify-between">
-          {listItems.map((item) => (
+          {listItems.map((item: any) => (
             <Link key={item.id} href={`/berita/${item.slug}`} className="flex items-center gap-4 group p-4 border border-slate-800 bg-slate-900 hover:border-slate-600 transition-colors">
               <div className="w-16 h-16 sm:w-20 sm:h-20 shrink-0 bg-slate-800 relative overflow-hidden">
                 <SafeImage 

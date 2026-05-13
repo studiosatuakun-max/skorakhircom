@@ -1,16 +1,41 @@
 import Link from 'next/link';
-import { supabase } from '@/lib/supabase';
+import { fetchWP } from '@/lib/wp-graphql';
 
 export const revalidate = 60;
 
 export default async function OpinionSection() {
-  const { data: opinions } = await supabase
-    .from('news')
-    .select('*')
-    .order('created_at', { ascending: false })
-    .range(15, 18); // Ambil 4 artikel agak ke belakang sebagai "opini"
-    
-  if (!opinions || opinions.length === 0) return null;
+  let opinions = [];
+  try {
+    const query = `
+      query GetOpinions {
+        posts(first: 4, where: { categoryName: "opini" }) {
+          nodes {
+            id
+            title
+            slug
+            date
+            author {
+              node {
+                name
+              }
+            }
+          }
+        }
+      }
+    `;
+    const data = await fetchWP(query);
+    opinions = (data?.posts?.nodes || []).map((post: any) => ({
+      id: post.id,
+      title: post.title,
+      slug: post.slug,
+      created_at: post.date,
+      author: post.author?.node?.name || 'Redaksi',
+    }));
+  } catch (error) {
+    console.error('Failed to fetch opinions:', error);
+  }
+
+  if (opinions.length === 0) return null;
 
   return (
     <section className="mt-12" aria-labelledby="opini-analisis">
@@ -19,7 +44,7 @@ export default async function OpinionSection() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {opinions.map((item) => (
+        {opinions.map((item: any) => (
           <Link key={item.id} href={`/berita/${item.slug}`} className="flex flex-col bg-slate-900 border border-slate-800 p-5 group hover:border-slate-600 transition-colors cursor-pointer">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-full bg-slate-800 overflow-hidden shrink-0 filter grayscale group-hover:grayscale-0 transition-all">

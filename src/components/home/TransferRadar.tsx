@@ -1,15 +1,56 @@
 import { Radar } from 'lucide-react';
+import { fetchWP } from '@/lib/wp-graphql';
 
-const transferNews = [
-  { id: 1, type: 'DONE DEAL', text: 'Kylian Mbappe resmi diperkenalkan Real Madrid musim depan', color: 'bg-green-500' },
-  { id: 2, type: 'HOT RUMOR', text: 'Manchester United siap tebus klausul rilis Erling Haaland', color: 'bg-orange-500' },
-  { id: 3, type: 'NEGOTIATION', text: 'Liverpool dalam pembicaraan lanjut dengan agen Xabi Alonso', color: 'bg-blue-500' },
-  { id: 4, type: 'DONE DEAL', text: 'Thom Haye sepakat gabung FC Como dengan durasi kontrak 2 tahun', color: 'bg-green-500' },
-  { id: 5, type: 'RUMOR', text: 'Juventus incar gelandang serang Arsenal, Fabio Vieira', color: 'bg-slate-500' },
-];
+export const revalidate = 60;
 
-export default function TransferRadar() {
-  // Duplikat array buat efek marquee infinite
+export default async function TransferRadar() {
+  let transferNews: any[] = [];
+  try {
+    const query = `
+      query GetTransferNews {
+        posts(first: 5, where: { categoryName: "transfer" }) {
+          nodes {
+            id
+            title
+            slug
+            tags(first: 1) {
+              nodes {
+                name
+              }
+            }
+          }
+        }
+      }
+    `;
+    const data = await fetchWP(query);
+    transferNews = (data?.posts?.nodes || []).map((post: any, index: number) => {
+      const tag = post.tags?.nodes?.[0]?.name?.toUpperCase() || 'RUMOR';
+      let color = 'bg-slate-500';
+      if (tag.includes('DONE')) color = 'bg-green-500';
+      else if (tag.includes('HOT')) color = 'bg-orange-500';
+      else if (tag.includes('NEGOTIATION')) color = 'bg-blue-500';
+      
+      return {
+        id: post.id || index,
+        type: tag,
+        text: post.title,
+        color,
+      };
+    });
+  } catch (error) {
+    console.error('Failed to fetch transfer news:', error);
+  }
+
+  if (transferNews.length === 0) {
+    transferNews = [
+      { id: 1, type: 'DONE DEAL', text: 'Kylian Mbappe resmi diperkenalkan Real Madrid musim depan', color: 'bg-green-500' },
+      { id: 2, type: 'HOT RUMOR', text: 'Manchester United siap tebus klausul rilis Erling Haaland', color: 'bg-orange-500' },
+      { id: 3, type: 'NEGOTIATION', text: 'Liverpool dalam pembicaraan lanjut dengan agen Xabi Alonso', color: 'bg-blue-500' },
+      { id: 4, type: 'DONE DEAL', text: 'Thom Haye sepakat gabung FC Como dengan durasi kontrak 2 tahun', color: 'bg-green-500' },
+      { id: 5, type: 'RUMOR', text: 'Juventus incar gelandang serang Arsenal, Fabio Vieira', color: 'bg-slate-500' },
+    ];
+  }
+
   const marqueeItems = [...transferNews, ...transferNews, ...transferNews];
 
   return (

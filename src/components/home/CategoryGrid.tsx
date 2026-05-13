@@ -1,17 +1,48 @@
 import Link from 'next/link';
-import { supabase } from '@/lib/supabase';
+import { fetchWP } from '@/lib/wp-graphql';
 import SafeImage from '@/components/shared/SafeImage';
 
 export const revalidate = 60;
 
+async function getCategoryPosts(categoryName: string) {
+  try {
+    const query = `
+      query GetCatPosts($categoryName: String!) {
+        posts(first: 3, where: { categoryName: $categoryName }) {
+          nodes {
+            id
+            title
+            slug
+            date
+            featuredImage {
+              node {
+                sourceUrl
+              }
+            }
+          }
+        }
+      }
+    `;
+    const data = await fetchWP(query, { variables: { categoryName } });
+    return (data?.posts?.nodes || []).map((post: any) => ({
+      id: post.id,
+      title: post.title,
+      slug: post.slug,
+      created_at: post.date,
+      featured_image: post.featuredImage?.node?.sourceUrl?.replace(/^https:\/\//i, 'http://') || '/images/placeholder.png',
+    }));
+  } catch (error) {
+    console.error(`Failed to fetch category ${categoryName}:`, error);
+    return [];
+  }
+}
+
 export default async function CategoryGrid() {
-  const { data: latestNews } = await supabase
-    .from('news')
-    .select('*')
-    .order('created_at', { ascending: false })
-    .range(5, 14); // Ambil rentang berita lain agar tidak sama persis dengan atas
-    
-  const newsBase = latestNews || [];
+  const [motoGp, bulutangkis, esport] = await Promise.all([
+    getCategoryPosts('moto-gp'),
+    getCategoryPosts('bulutangkis'),
+    getCategoryPosts('e-sport'),
+  ]);
   
   const categoriesData = [
     {
@@ -19,21 +50,21 @@ export default async function CategoryGrid() {
       themeColorBg: 'bg-orange-500',
       themeColorText: 'text-slate-900',
       hoverColorText: 'group-hover:text-orange-700',
-      news: newsBase.slice(0, 3)
+      news: motoGp
     },
     {
       title: 'SMASH BULUTANGKIS',
       themeColorBg: 'bg-yellow-400',
       themeColorText: 'text-white',
       hoverColorText: 'group-hover:text-yellow-400',
-      news: newsBase.slice(3, 6)
+      news: bulutangkis
     },
     {
       title: 'ARENA E-SPORT',
       themeColorBg: 'bg-orange-500',
       themeColorText: 'text-slate-900',
       hoverColorText: 'group-hover:text-orange-700',
-      news: newsBase.slice(6, 9)
+      news: esport
     }
   ];
 
@@ -48,7 +79,7 @@ export default async function CategoryGrid() {
             </div>
             
             <div className="p-4 flex flex-col gap-4">
-              {category.news.map((item, idx) => {
+              {category.news.map((item: any, idx: number) => {
                 const isHero = idx === 0;
                 
                 // Variasi layout: Kolom tengah (catIdx === 1) hero-nya dibikin gaya Poster Overlay

@@ -12,29 +12,63 @@ import FloatingActions from '@/components/article/FloatingActions';
 import RelatedArticles from '@/components/article/RelatedArticles';
 import SafeImage from '@/components/shared/SafeImage';
 
-import { supabase } from '@/lib/supabase';
+import { fetchWP } from '@/lib/wp-graphql';
 import { notFound } from 'next/navigation';
 
 async function getArticle(slug: string) {
-  const { data: article, error } = await supabase
-    .from('news')
-    .select('*, categories(name)')
-    .eq('slug', slug)
-    .single();
+  const query = `
+    query GetPostBySlug($id: ID!) {
+      post(id: $id, idType: SLUG) {
+        title
+        slug
+        content
+        date
+        categories {
+          nodes {
+            name
+            slug
+          }
+        }
+        author {
+          node {
+            name
+          }
+        }
+        featuredImage {
+          node {
+            sourceUrl
+          }
+        }
+        tags {
+          nodes {
+            name
+          }
+        }
+      }
+    }
+  `;
 
-  if (error || !article) return null;
-  
-  return {
-    title: article.title,
-    slug: article.slug,
-    category: article.categories?.name || 'UMUM',
-    date: article.created_at,
-    author: article.author || 'Tim Redaksi',
-    content: article.content,
-    image: article.featured_image || '/images/placeholder.png',
-    category_id: article.category_id,
-    tags: [article.categories?.name || 'SPORT'],
-  };
+  try {
+    const data = await fetchWP(query, { variables: { id: slug } });
+    const post = data?.post;
+
+    if (!post) return null;
+
+    return {
+      title: post.title,
+      slug: post.slug,
+      category: post.categories?.nodes?.[0]?.name || 'UMUM',
+      categorySlug: post.categories?.nodes?.[0]?.slug || 'umum',
+      date: post.date,
+      author: post.author?.node?.name || 'Tim Redaksi',
+      content: post.content,
+      image: post.featuredImage?.node?.sourceUrl?.replace(/^https:\/\//i, 'http://') || '/images/placeholder.png',
+      tags: post.tags?.nodes?.map((t: any) => t.name) || ['SPORT'],
+    };
+  } catch (error) {
+    console.error('Error fetching article:', error);
+    return null;
+  }
 }
 
 type Props = {
@@ -84,16 +118,43 @@ export default async function NewsDetail({ params }: Props) {
 
   if (!article) return notFound();
 
-  // Ambil artikel terkait dari Supabase
-  const { data: relatedRaw } = await supabase
-    .from('news')
-    .select('title, slug, categories(name), featured_image')
-    .eq('category_id', article.category_id)
-    .neq('slug', slug)
-    .order('created_at', { ascending: false })
-    .limit(4);
-
-  const relatedArticles = relatedRaw || [];
+  // Ambil artikel terkait dari WordPress via GraphQL
+  let relatedArticles = [];
+  try {
+    const relatedQuery = `
+      query GetRelatedPosts($categoryName: String!) {
+        posts(where: {categoryName: $categoryName}, first: 5) {
+          nodes {
+            title
+            slug
+            featuredImage {
+              node {
+                sourceUrl
+              }
+            }
+            categories {
+              nodes {
+                name
+              }
+            }
+          }
+        }
+      }
+    `;
+    const relatedData = await fetchWP(relatedQuery, { variables: { categoryName: article.categorySlug } });
+    
+    relatedArticles = (relatedData?.posts?.nodes || [])
+      .filter((post: any) => post.slug !== slug)
+      .slice(0, 4)
+      .map((post: any) => ({
+        title: post.title,
+        slug: post.slug,
+        categories: { name: post.categories?.nodes?.[0]?.name || 'UMUM' },
+        featured_image: post.featuredImage?.node?.sourceUrl?.replace(/^https:\/\//i, 'http://') || '/images/placeholder.png',
+      }));
+  } catch (error) {
+    console.error('Error fetching related articles:', error);
+  }
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -208,7 +269,7 @@ export default async function NewsDetail({ params }: Props) {
 
               <div className="mt-12 flex flex-wrap gap-2 pt-6 border-t border-slate-800 mb-12">
                 <span className="text-xs font-black uppercase text-slate-500 py-2 mr-2">Topik Terkait:</span>
-                {article.tags.map((tag) => (
+                {article.tags.map((tag: string) => (
                   <Link key={tag} href="#" className="px-3 py-1.5 bg-slate-900 border border-slate-800 text-xs font-bold text-slate-300 hover:bg-orange-500 hover:text-slate-950 hover:border-orange-500 transition-colors uppercase">
                     #{tag}
                   </Link>
