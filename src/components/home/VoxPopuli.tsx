@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { BarChart3 } from 'lucide-react';
+import { BarChart3, Share2 } from 'lucide-react';
 import SafeImage from '@/components/shared/SafeImage';
 
 const pollsData = [
@@ -65,6 +65,26 @@ export default function VoxPopuli() {
         }
       };
     });
+  };
+
+  const handleShare = async (poll: typeof pollsData[0], state: any) => {
+    const selectedTeam = state.selected === 'A' ? poll.teamA.name : poll.teamB.name;
+    const shareText = `Gue pilih ${selectedTeam} untuk "${poll.question}" ⚽🔥 Gimana prediksi lu?`;
+    
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Polling SkorAkhir',
+          text: shareText,
+          url: window.location.href,
+        });
+      } catch (err) {
+        console.log('Error sharing:', err);
+      }
+    } else {
+      navigator.clipboard.writeText(`${shareText} ${window.location.href}`);
+      alert('Teks berhasil disalin ke clipboard!');
+    }
   };
 
   return (
@@ -149,9 +169,18 @@ export default function VoxPopuli() {
                   </div>
                   
                   {state.voted ? (
-                    <p className="text-center text-[10px] font-bold text-orange-500 uppercase tracking-widest mt-6">
-                      Terima kasih atas suaramu
-                    </p>
+                    <div className="flex flex-col items-center gap-3 mt-6">
+                      <p className="text-center text-[10px] font-bold text-orange-500 uppercase tracking-widest">
+                        Terima kasih atas suaramu
+                      </p>
+                      <button 
+                        onClick={() => handleShare(poll, state)}
+                        className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-full text-xs font-bold transition-all active:scale-95 border border-slate-700"
+                      >
+                        <Share2 className="w-3 h-3" />
+                        Bagikan Hasil
+                      </button>
+                    </div>
                   ) : (
                     <p className="text-center text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-6">
                       Pilih tim jagoanmu
