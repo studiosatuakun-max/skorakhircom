@@ -9,7 +9,7 @@ export const revalidate = 60; // Cache for 60 seconds
 export default async function NewsList() {
   const query = `
     query GetLatestNews {
-      posts(first: 6, where: { orderby: { field: DATE, order: DESC } }) {
+      posts(first: 4, where: { orderby: { field: DATE, order: DESC } }) {
         nodes {
           id
           title
@@ -61,9 +61,9 @@ export default async function NewsList() {
     return <div className="text-slate-400 py-10">Belum ada berita yang diterbitkan...</div>;
   }
 
-  // Jika artikel di CMS kurang dari 4, kurangi jatah carousel biar sidebar gak kosong melompong
-  const carouselNews = latestNews.length > 3 ? latestNews.slice(0, 3) : latestNews.slice(0, 1);
-  const sidebarNews = latestNews.length > 3 ? latestNews.slice(3, 6) : latestNews.slice(1, 4);
+  // Set 1 artikel terbaru untuk slide (carousel), 3 sisanya untuk sidebar
+  const carouselNews = latestNews.slice(0, 1);
+  const sidebarNews = latestNews.slice(1, 4);
 
   return (
     <section aria-labelledby="latest-news">
