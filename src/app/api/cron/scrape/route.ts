@@ -101,7 +101,7 @@ export async function GET(request: Request) {
         title: postTitle,
         content: postContent,
         status: 'draft',
-        // Opsional: category bisa dicari ID-nya terlebih dahulu via /wp-json/wp/v2/categories?slug=...
+        ...(process.env.WP_DEFAULT_MEDIA_ID ? { featured_media: parseInt(process.env.WP_DEFAULT_MEDIA_ID, 10) } : {})
       })
     });
 
