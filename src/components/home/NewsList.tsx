@@ -61,9 +61,14 @@ export default async function NewsList() {
     return <div className="text-slate-400 py-10">Belum ada berita yang diterbitkan...</div>;
   }
 
-  // 3 artikel terbaru untuk slide (carousel), 3 sisanya untuk sidebar
-  const carouselNews = latestNews.slice(0, 3);
-  const sidebarNews = latestNews.slice(3, 6);
+  // Trik Cerdas: Kalau artikel di WordPress belum sampai 6 (karena baru testing),
+  // kita gandakan (duplicate) artikel yang ada biar layout Carousel & Sidebar tetep full 100%.
+  // Nanti kalau artikel aslinya udah lebih dari 6, dia bakal normal ngambil 6 artikel terbaru tanpa duplikat.
+  const paddedNews = [...latestNews, ...latestNews, ...latestNews, ...latestNews].slice(0, 6);
+  
+  // 3 artikel untuk slide (carousel), 3 sisanya untuk sidebar
+  const carouselNews = paddedNews.slice(0, 3);
+  const sidebarNews = paddedNews.slice(3, 6);
 
   return (
     <section aria-labelledby="latest-news">
