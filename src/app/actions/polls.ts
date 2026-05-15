@@ -17,6 +17,16 @@ export async function getActivePolls() {
   return data || [];
 }
 
+export async function getAllPolls() {
+  const { data, error } = await supabase
+    .from('polls')
+    .select('*')
+    .order('created_at', { ascending: false });
+    
+  if (error) return [];
+  return data || [];
+}
+
 export async function getPollById(id: number) {
   const { data, error } = await supabase
     .from('polls')
@@ -54,4 +64,39 @@ export async function votePoll(pollId: number, team: 'A' | 'B') {
   }
   
   return { success: false };
+}
+
+export async function createPoll(formData: FormData) {
+  const question = formData.get('question') as string;
+  const team_a_name = formData.get('team_a_name') as string;
+  const team_a_logo = formData.get('team_a_logo') as string;
+  const team_b_name = formData.get('team_b_name') as string;
+  const team_b_logo = formData.get('team_b_logo') as string;
+  
+  const { error } = await supabase.from('polls').insert([
+    { question, team_a_name, team_a_logo, team_b_name, team_b_logo }
+  ]);
+  
+  if (!error) {
+    revalidatePath('/admin/polling');
+    revalidatePath('/');
+    return { success: true };
+  }
+  return { success: false };
+}
+
+export async function togglePollStatus(id: number, currentStatus: boolean) {
+  const { error } = await supabase.from('polls').update({ is_active: !currentStatus }).eq('id', id);
+  if (!error) {
+    revalidatePath('/admin/polling');
+    revalidatePath('/');
+  }
+}
+
+export async function deletePoll(id: number) {
+  const { error } = await supabase.from('polls').delete().eq('id', id);
+  if (!error) {
+    revalidatePath('/admin/polling');
+    revalidatePath('/');
+  }
 }
