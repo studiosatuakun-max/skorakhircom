@@ -104,7 +104,7 @@ export default async function AdminPollingPage() {
                       </form>
                       
                       <form action={deletePoll.bind(null, poll.id)} className="inline-block">
-                        <button type="submit" title="Hapus" className="p-2 rounded text-red-600 hover:bg-red-50" onClick={(e) => { if(!confirm('Yakin ingin menghapus polling ini?')) e.preventDefault(); }}>
+                        <button type="submit" title="Hapus" className="p-2 rounded text-red-600 hover:bg-red-50">
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </form>
