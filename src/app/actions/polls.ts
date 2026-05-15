@@ -80,9 +80,7 @@ export async function createPoll(formData: FormData) {
   if (!error) {
     revalidatePath('/admin/polling');
     revalidatePath('/');
-    return { success: true };
   }
-  return { success: false };
 }
 
 export async function togglePollStatus(id: number, currentStatus: boolean) {
