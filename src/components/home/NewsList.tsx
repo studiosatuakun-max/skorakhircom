@@ -61,9 +61,9 @@ export default async function NewsList() {
     return <div className="text-slate-400 py-10">Belum ada berita yang diterbitkan...</div>;
   }
 
-  // Use up to 3 articles for the carousel, others for sidebar
-  const carouselNews = latestNews.slice(0, 3);
-  const sidebarNews = latestNews.slice(3, 6);
+  // Jika artikel di CMS kurang dari 4, kurangi jatah carousel biar sidebar gak kosong melompong
+  const carouselNews = latestNews.length > 3 ? latestNews.slice(0, 3) : latestNews.slice(0, 1);
+  const sidebarNews = latestNews.length > 3 ? latestNews.slice(3, 6) : latestNews.slice(1, 4);
 
   return (
     <section aria-labelledby="latest-news">
