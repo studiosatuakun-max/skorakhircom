@@ -17,7 +17,7 @@ export default async function LeagueHubPage({
 }) {
   const { id } = await params;
   const { tab = 'standings' } = await searchParams;
-  const currentSeason = 2024; // You can make this dynamic if needed
+  const currentSeason = 2025; // Updated to 2025 to match current ongoing season
 
   // Fetch League Info
   const leagueData = await fetchApiSports('/leagues', { id });
