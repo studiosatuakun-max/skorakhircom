@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Background: bg-orange-500 (#f97316) -->
+  <rect width="512" height="512" rx="112" fill="#f97316"/>
+  <!-- Text: text-slate-950 (#020617) matching the branding -->
+  <text x="50%" y="54%" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-style="italic" font-size="340" fill="#020617" text-anchor="middle" dominant-baseline="central">S</text>
+</svg>
