@@ -84,7 +84,8 @@ export async function GET(request: Request) {
     const rewrittenHtml = result.response.text();
 
     // 4. Tahap 2: Tembak WP REST API sebagai Draft
-    const wpUrl = process.env.WORDPRESS_API_URL?.replace('/graphql', '/wp-json/wp/v2/posts');
+    const wpBaseUrl = process.env.WORDPRESS_API_URL?.split('/graphql')[0].replace(/\/$/, '') || 'https://cms.skorakhir.com';
+    const wpUrl = `${wpBaseUrl}/wp-json/wp/v2/posts`;
     const wpUser = process.env.WP_APP_USERNAME;
     const wpPass = process.env.WP_APP_PASSWORD;
 
