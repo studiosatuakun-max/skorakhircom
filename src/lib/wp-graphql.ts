@@ -5,7 +5,10 @@ export async function fetchWP(query: string, { variables }: { variables?: any } 
     throw new Error('WORDPRESS_API_URL is not defined in environment variables.');
   }
 
-  const res = await fetch(WP_API_URL, {
+  // Pastikan URL selalu mengarah ke endpoint /graphql meskipun user lupa menambahkannya di env var
+  const finalUrl = `${WP_API_URL.split('/graphql')[0].replace(/\/$/, '')}/graphql`;
+
+  const res = await fetch(finalUrl, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
