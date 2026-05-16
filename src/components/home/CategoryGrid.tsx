@@ -49,6 +49,7 @@ export default async function CategoryGrid() {
   const categoriesData = [
     {
       title: 'ARENA SEPAK BOLA',
+      slug: 'sepak-bola',
       themeColorBg: 'bg-orange-500',
       themeColorText: 'text-slate-900',
       hoverColorText: 'group-hover:text-orange-700',
@@ -56,6 +57,7 @@ export default async function CategoryGrid() {
     },
     {
       title: 'BLOK BOLA VOLLY',
+      slug: 'bola-volly',
       themeColorBg: 'bg-yellow-400',
       themeColorText: 'text-white',
       hoverColorText: 'group-hover:text-yellow-400',
@@ -63,6 +65,7 @@ export default async function CategoryGrid() {
     },
     {
       title: 'FOKUS MOTO GP',
+      slug: 'moto-gp',
       themeColorBg: 'bg-orange-500',
       themeColorText: 'text-slate-900',
       hoverColorText: 'group-hover:text-orange-700',
@@ -70,6 +73,7 @@ export default async function CategoryGrid() {
     },
     {
       title: 'SMASH BULUTANGKIS',
+      slug: 'bulutangkis',
       themeColorBg: 'bg-yellow-400',
       themeColorText: 'text-white',
       hoverColorText: 'group-hover:text-yellow-400',
@@ -77,6 +81,7 @@ export default async function CategoryGrid() {
     },
     {
       title: 'ARENA E-SPORT',
+      slug: 'e-sport',
       themeColorBg: 'bg-orange-500',
       themeColorText: 'text-slate-900',
       hoverColorText: 'group-hover:text-orange-700',
@@ -169,7 +174,7 @@ export default async function CategoryGrid() {
               })}
             </div>
             <div className="p-4 pt-0 mt-auto bg-slate-900 border-t border-slate-800/50">
-               <Link href={`/kategori/${category.title.toLowerCase().replace(/\s+/g, '-')}`} className="font-bold text-xs uppercase text-slate-400 hover:text-white flex items-center gap-1 group w-max pt-3">
+               <Link href={`/kategori/${category.slug}`} className="font-bold text-xs uppercase text-slate-400 hover:text-white flex items-center gap-1 group w-max pt-3">
                  Lihat Semua <span className="sr-only">{category.title}</span>
                  <span className="group-hover:translate-x-1 transition-transform">→</span>
                </Link>
