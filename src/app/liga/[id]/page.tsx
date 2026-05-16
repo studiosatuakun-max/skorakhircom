@@ -17,7 +17,7 @@ export default async function LeagueHubPage({
 }) {
   const { id } = await params;
   const { tab = 'standings' } = await searchParams;
-  const currentSeason = 2025; // Updated to 2025 to match current ongoing season
+  const currentSeason = 2025; // 2025 in API-Sports refers to the 2025/2026 season
 
   // Fetch League Info
   const leagueData = await fetchApiSports('/leagues', { id });
