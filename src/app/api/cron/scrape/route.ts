@@ -107,7 +107,8 @@ export async function GET(request: Request) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Basic ' + Buffer.from(`${wpUser}:${wpPass}`).toString('base64')
+        'Authorization': 'Basic ' + Buffer.from(`${wpUser}:${wpPass}`).toString('base64'),
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
       },
       body: JSON.stringify({
         title: postTitle,
@@ -117,9 +118,10 @@ export async function GET(request: Request) {
       })
     });
 
-    if (!wpResponse.ok) {
+    const contentType = wpResponse.headers.get('content-type');
+    if (!wpResponse.ok || (contentType && !contentType.includes('application/json'))) {
       const errorData = await wpResponse.text();
-      throw new Error(`Gagal memposting ke WordPress: ${wpResponse.status} ${errorData}`);
+      throw new Error(`Gagal memposting ke WordPress: Status ${wpResponse.status}. Kemungkinan diblokir Firewall/Imunify360. Response: ${errorData.substring(0, 200)}...`);
     }
 
     const wpResult = await wpResponse.json();
