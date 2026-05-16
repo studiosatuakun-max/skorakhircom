@@ -32,7 +32,7 @@ export default function MatchCenter() {
     <section className="mt-6 mb-2" aria-labelledby="match-center">
       <div className="flex items-center justify-between mb-4 border-b-2 border-white/20 pb-2">
         <h2 id="match-center" className="text-xl sm:text-2xl font-black italic tracking-tight uppercase text-white">
-          Match Center
+          Papan Skor
         </h2>
         <Link href="#" className="text-xs font-bold text-orange-500 hover:text-orange-400 uppercase tracking-widest flex items-center gap-1 transition-colors">
           Lihat Semua
