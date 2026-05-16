@@ -4,7 +4,7 @@ import { fetchApiSports } from '@/lib/api-sports';
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const league = searchParams.get('league');
-  const season = searchParams.get('season') || '2025';
+  const season = searchParams.get('season') || '2024';
 
   if (!league) {
     return NextResponse.json({ error: 'League ID is required' }, { status: 400 });
