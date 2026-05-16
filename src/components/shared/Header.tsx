@@ -1,11 +1,19 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-slate-950 border-b border-slate-800">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between text-white">
-        <Link href="/" className="flex items-center text-2xl font-black tracking-tighter">
-          SKORAKHIR<span className="text-orange-500 tracking-normal uppercase">.COM</span>
+        <Link href="/" className="flex items-center">
+          <Image 
+            src="/images/logo.svg" 
+            alt="SkorAkhir.com" 
+            width={180} 
+            height={40} 
+            className="h-8 w-auto" 
+            priority
+          />
         </Link>
 
         {/* Top menu categories removed per request */}

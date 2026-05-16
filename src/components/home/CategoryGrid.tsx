@@ -38,13 +38,29 @@ async function getCategoryPosts(categoryName: string) {
 }
 
 export default async function CategoryGrid() {
-  const [motoGp, bulutangkis, esport] = await Promise.all([
+  const [sepakBola, volly, motoGp, bulutangkis, esport] = await Promise.all([
+    getCategoryPosts('sepak-bola'),
+    getCategoryPosts('bola-volly'),
     getCategoryPosts('moto-gp'),
     getCategoryPosts('bulutangkis'),
     getCategoryPosts('e-sport'),
   ]);
   
   const categoriesData = [
+    {
+      title: 'ARENA SEPAK BOLA',
+      themeColorBg: 'bg-orange-500',
+      themeColorText: 'text-slate-900',
+      hoverColorText: 'group-hover:text-orange-700',
+      news: sepakBola
+    },
+    {
+      title: 'BLOK BOLA VOLLY',
+      themeColorBg: 'bg-yellow-400',
+      themeColorText: 'text-white',
+      hoverColorText: 'group-hover:text-yellow-400',
+      news: volly
+    },
     {
       title: 'FOKUS MOTO GP',
       themeColorBg: 'bg-orange-500',
@@ -69,11 +85,11 @@ export default async function CategoryGrid() {
   ];
 
   return (
-    <section className="mt-12 sm:mt-16" aria-labelledby="kategori-fokus">
+    <section className="mt-12 sm:mt-16 overflow-hidden" aria-labelledby="kategori-fokus">
       <h2 id="kategori-fokus" className="sr-only">Kategori Fokus Olahraga</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div className="flex overflow-x-auto gap-6 hide-scrollbar snap-x snap-mandatory pb-4">
         {categoriesData.map((category, catIdx) => (
-          <div key={category.title} className="flex flex-col border border-slate-800 bg-slate-900 hover:border-slate-600 transition-colors rounded-xl overflow-hidden shadow-lg">
+          <div key={category.title} className="flex flex-col border border-slate-800 bg-slate-900 hover:border-slate-600 transition-colors rounded-xl overflow-hidden shadow-lg w-[85vw] sm:w-[300px] xl:w-[360px] shrink-0 snap-start">
             <div className={`p-3 font-black italic tracking-widest uppercase flex items-center justify-between ${category.themeColorBg} ${category.themeColorText}`}>
               <h3 className="text-sm">{category.title}</h3>
             </div>
@@ -161,6 +177,15 @@ export default async function CategoryGrid() {
           </div>
         ))}
       </div>
+      <style dangerouslySetInnerHTML={{__html: `
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .hide-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}} />
     </section>
   );
 }

@@ -2,6 +2,8 @@ import Header from '@/components/shared/Header';
 import Footer from '@/components/shared/Footer';
 
 import NewsList from '@/components/home/NewsList';
+import MatchCenter from '@/components/home/MatchCenter';
+import MiniStandings from '@/components/home/MiniStandings';
 import OpinionSection from '@/components/home/OpinionSection';
 import TrendingTopics from '@/components/home/TrendingTopics';
 import CategoryGrid from '@/components/home/CategoryGrid';
@@ -26,6 +28,8 @@ export default function Home() {
             <div className="lg:col-span-8 flex flex-col gap-0 h-full justify-between">
               <div>
                 <NewsList />
+                <MatchCenter />
+                <MiniStandings />
                 <OpinionSection />
               </div>
             </div>

@@ -52,8 +52,6 @@ export async function GET(request: Request) {
       Sumber Link: ${latestNews.link}
     `;
 
-    // 3. Rewrite dengan Gemini
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
     const prompt = `
       Anda adalah jurnalis olahraga profesional untuk portal berita "SkorAkhir".
       Tugas Anda adalah meracik sebuah berita olahraga yang unik, tajam, dan SEO-friendly dalam bahasa Indonesia berdasarkan poin-poin berita terbaru berikut ini.
@@ -68,7 +66,21 @@ export async function GET(request: Request) {
       4. Hanya keluarkan format HTML murni tanpa teks pengantar seperti "Berikut artikelnya:".
     `;
 
-    const result = await model.generateContent(prompt);
+    // 3. Rewrite dengan Gemini (dengan sistem Fallback kalau server sibuk)
+    let result;
+    try {
+      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+      result = await model.generateContent(prompt);
+    } catch (error: any) {
+      if (error.message.includes('503') || error.message.includes('busy')) {
+        console.warn('Gemini 2.5 Flash sibuk, pindah ke Gemini 2.0 Flash...');
+        const fallbackModel = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+        result = await fallbackModel.generateContent(prompt);
+      } else {
+        throw error;
+      }
+    }
+
     const rewrittenHtml = result.response.text();
 
     // 4. Tahap 2: Tembak WP REST API sebagai Draft

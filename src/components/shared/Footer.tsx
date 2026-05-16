@@ -1,10 +1,18 @@
+import Image from 'next/image';
+
 export default function Footer() {
   return (
     <footer className="bg-slate-950 border-t border-slate-800 text-white mt-12 py-12">
       <div className="container mx-auto px-4 text-center">
-        <h2 className="text-3xl font-black tracking-tighter mb-4">
-          SKORAKHIR<span className="text-orange-500">.COM</span>
-        </h2>
+        <div className="flex justify-center mb-4">
+          <Image 
+            src="/images/logo.svg" 
+            alt="SkorAkhir.com Logo" 
+            width={180} 
+            height={40} 
+            className="h-10 w-auto" 
+          />
+        </div>
         <p className="text-slate-400 font-medium max-w-md mx-auto mb-6">
           Lebih dari sekadar angka di papan skor. Mengupas tuntas drama, taktik, dan emosi di setiap pertandingan.
         </p>
