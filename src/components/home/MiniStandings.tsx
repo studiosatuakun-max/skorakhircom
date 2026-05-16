@@ -101,7 +101,7 @@ export default function MiniStandings() {
                     <span className="truncate">{row.team.name}</span>
                   </td>
                   <td className="py-3 px-4 text-xs font-medium text-slate-500 text-center">{row.all.played}</td>
-                  <td className="py-3 px-4 text-xs font-medium text-slate-500 text-center">{row.goalsDiff > 0 ? \`+\${row.goalsDiff}\` : row.goalsDiff}</td>
+                  <td className="py-3 px-4 text-xs font-medium text-slate-500 text-center">{row.goalsDiff > 0 ? `+${row.goalsDiff}` : row.goalsDiff}</td>
                   <td className="py-3 px-4 text-sm font-black text-white text-center">{row.points}</td>
                 </tr>
               ))}
@@ -111,7 +111,7 @@ export default function MiniStandings() {
       </div>
       
       {/* Custom CSS for hide-scrollbar so we don't need global css update */}
-      <style dangerouslySetInnerHTML={{__html: \`
+      <style dangerouslySetInnerHTML={{__html: `
         .hide-scrollbar::-webkit-scrollbar {
           display: none;
         }
@@ -119,7 +119,7 @@ export default function MiniStandings() {
           -ms-overflow-style: none;  /* IE and Edge */
           scrollbar-width: none;  /* Firefox */
         }
-      \`}} />
+      `}} />
     </section>
   );
 }
