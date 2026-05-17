@@ -259,11 +259,6 @@ export default async function NewsDetail({ params }: Props) {
               </figure>
 
               <ContentRenderer htmlContent={processedContent} />
-              <style>{`
-                .prose p { margin-bottom: 1.5rem; color: #cbd5e1; line-height: 1.8; font-size: 1.125rem; }
-                .prose h2 { font-size: 2rem; font-weight: 900; font-style: italic; color: #fff; margin-top: 3rem; margin-bottom: 1.5rem; letter-spacing: -0.025em; }
-                .prose blockquote { border-left: 4px solid #f97316; padding: 1.5rem; background-color: #1e293b; margin: 2rem 0; font-weight: 700; color: #f8fafc; font-size: 1.25rem; line-height: 1.6; }
-              `}</style>
 
               <div className="mt-12 flex flex-wrap gap-2 pt-6 border-t border-slate-800 mb-12">
                 <span className="text-xs font-black uppercase text-slate-500 py-2 mr-2">Topik Terkait:</span>

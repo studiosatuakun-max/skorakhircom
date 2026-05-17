@@ -90,7 +90,14 @@ export default function ContentRenderer({ htmlContent }: ContentRendererProps) {
   };
 
   return (
-    <div className="prose prose-invert prose-lg max-w-none prose-headings:font-black prose-headings:italic prose-a:text-orange-500 prose-blockquote:border-orange-500 prose-blockquote:bg-slate-900 prose-blockquote:p-4 prose-blockquote:not-italic">
+    <div className="prose prose-invert prose-lg max-w-none 
+      prose-p:leading-relaxed prose-p:text-slate-300
+      prose-headings:font-black prose-headings:italic prose-headings:text-white prose-headings:tracking-tight
+      prose-h2:mt-12 prose-h2:mb-6
+      prose-a:text-orange-500 prose-a:no-underline hover:prose-a:underline
+      prose-blockquote:border-l-4 prose-blockquote:border-orange-500 prose-blockquote:bg-slate-900 prose-blockquote:py-3 prose-blockquote:px-5 prose-blockquote:not-italic prose-blockquote:font-bold prose-blockquote:text-slate-100
+      prose-li:marker:text-orange-500 prose-ul:my-6 prose-li:my-2
+      prose-strong:text-white prose-strong:font-black">
       {parse(htmlContent, options)}
       
       {/* Fallback: Jika artikel tidak memiliki kata "👉 Cek Spek", slider otomatis muncul di paling bawah artikel */}
