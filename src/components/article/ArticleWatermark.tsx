@@ -13,10 +13,10 @@ export default function ArticleWatermark({ title, url, children }: ArticleWaterm
     <div className="relative w-full">
       {/* 1. VISUAL WATERMARK (Subtle / Tipis) */}
       <div 
-        className="pointer-events-none absolute inset-0 z-0 overflow-hidden flex items-center justify-center opacity-[0.02] select-none"
+        className="pointer-events-none absolute inset-0 z-0 overflow-hidden flex items-center justify-center select-none"
         aria-hidden="true"
       >
-        <div className="transform -rotate-45 text-6xl md:text-9xl font-black text-slate-900 tracking-tighter whitespace-nowrap">
+        <div className="transform -rotate-45 text-6xl md:text-9xl font-black text-white opacity-[0.05] tracking-tighter whitespace-nowrap">
           SKORAKHIR.COM
         </div>
       </div>
