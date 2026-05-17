@@ -81,10 +81,9 @@ export default function AffiliateCard({
           </div>
         </div>
 
-        {/* CTA Button */}
         <div className="mt-auto pt-4 border-t border-slate-800/50">
           <a
-            href={affiliateUrl}
+            href={`/api/track?url=${encodeURIComponent(affiliateUrl)}&product=${encodeURIComponent(productName)}&platform=${encodeURIComponent(platform)}`}
             target="_blank"
             rel="nofollow sponsored"
             className={`w-full flex items-center justify-center gap-2 ${bg} ${text} font-bold text-sm py-3 px-4 rounded-lg hover:opacity-90 active:scale-[0.98] transition-all shadow-md`}
