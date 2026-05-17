@@ -21,7 +21,12 @@ export default function RootLayout({
   return (
     <html lang="id" className={`${plusJakartaSans.variable} antialiased overflow-x-hidden`}>
       <body className="font-sans min-h-screen bg-slate-950 text-slate-50 flex flex-col selection:bg-orange-500 selection:text-black overflow-x-hidden w-full relative">
-        {children}
+        {/* Ambient Stadium Glow */}
+        <div className="fixed top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-orange-600/10 blur-[120px] pointer-events-none z-0"></div>
+        <div className="fixed bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-yellow-500/5 blur-[100px] pointer-events-none z-0"></div>
+        <div className="relative z-10 flex flex-col min-h-screen">
+          {children}
+        </div>
       </body>
     </html>
   );

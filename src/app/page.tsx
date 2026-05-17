@@ -6,9 +6,9 @@ import MiniStandings from '@/components/home/MiniStandings';
 import OpinionSection from '@/components/home/OpinionSection';
 import TrendingTopics from '@/components/home/TrendingTopics';
 import CategoryGrid from '@/components/home/CategoryGrid';
-import CategoryPills from '@/components/home/CategoryPills';
 import GarudaPride from '@/components/home/GarudaPride';
 import GarudaBanner from '@/components/home/GarudaBanner';
+import MatchPredictor from '@/components/home/MatchPredictor';
 import CultureSection from '@/components/home/CultureSection';
 import MerchandiseSection from '@/components/home/MerchandiseSection';
 import AdBanner from '@/components/shared/AdBanner';
@@ -56,7 +56,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           
           {/* Live Ticker */}
-          <div className="bg-orange-500 text-slate-950 font-black text-sm uppercase tracking-widest px-4 py-2 flex items-center gap-3 overflow-hidden rounded-lg mb-4 shadow-md">
+          <div className="bg-orange-500 text-slate-950 font-black text-sm uppercase tracking-widest px-4 py-2 flex items-center gap-3 overflow-hidden rounded-lg mb-6 shadow-md">
             <span className="shrink-0 flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span> LIVE</span>
             <div className="w-full overflow-hidden relative">
               <div className="whitespace-nowrap animate-[marquee_15s_linear_infinite] inline-block">
@@ -64,8 +64,6 @@ export default function Home() {
               </div>
             </div>
           </div>
-
-          <CategoryPills />
 
           <AdBanner />
 
@@ -80,14 +78,15 @@ export default function Home() {
             </aside>
           </div>
 
-          {/* ROW 2: Klasemen & Garuda Banner */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-4">
-            <div className="lg:col-span-8 flex flex-col">
+          {/* ROW 2: Standings & GarudaBanner */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-8">
+            <div className="lg:col-span-8">
               <MiniStandings />
             </div>
-            <aside className="lg:col-span-4 flex flex-col">
+            <div className="lg:col-span-4 flex flex-col">
+              <MatchPredictor />
               <GarudaBanner />
-            </aside>
+            </div>
           </div>
 
           {/* ROW 3: Shorts & Editor's Choice */}

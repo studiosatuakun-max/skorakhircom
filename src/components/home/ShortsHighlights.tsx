@@ -69,29 +69,32 @@ export default function ShortsHighlights() {
               src={short.thumbnail} 
               alt={short.title} 
               fill 
-              className="object-cover group-hover:scale-110 transition-transform duration-700 opacity-70 group-hover:opacity-100"
+              className="object-cover transition-all duration-700 group-hover:scale-110 group-hover:opacity-60"
             />
             
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-transparent"></div>
             
-            {/* Play Button Overlay */}
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
-              <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-orange-500/90 flex items-center justify-center pl-1 shadow-[0_0_30px_rgba(249,115,22,0.6)] backdrop-blur-sm scale-75 group-hover:scale-100 transition-transform duration-300">
-                <Play className="w-5 h-5 md:w-7 md:h-7 text-white fill-white" />
+            {/* Netflix-style Hover Play Overlay */}
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
+              <div className="w-12 h-12 rounded-full bg-orange-500/80 backdrop-blur-sm flex items-center justify-center text-slate-950 animate-pulse">
+                <Play className="w-5 h-5 ml-1" />
               </div>
             </div>
 
-            {/* Content */}
-            <div className="absolute inset-0 p-4 flex flex-col justify-end z-20">
-              <div className="flex items-center gap-1.5 mb-2">
-                <Play className="w-3 h-3 text-orange-500 fill-orange-500" />
-                <span className="text-[10px] md:text-xs font-black text-white tracking-widest">{short.views}</span>
-              </div>
-              <h3 className="text-xs md:text-sm font-bold text-white leading-tight line-clamp-3 mb-4 group-hover:text-orange-400 transition-colors drop-shadow-md">
+            <div className="absolute top-3 left-3 flex gap-2 z-10">
+              <span className="bg-red-600 text-white text-[10px] font-black uppercase px-2 py-0.5 rounded flex items-center gap-1 shadow-lg">
+                <Play className="w-3 h-3" /> Short
+              </span>
+              <span className="bg-slate-950/80 text-orange-400 text-[10px] font-bold px-2 py-0.5 rounded backdrop-blur-md">
+                {short.views}
+              </span>
+            </div>
+            
+            <div className="absolute inset-0 p-4 flex flex-col justify-end z-20 transition-transform duration-300 group-hover:-translate-y-2">
+              <h3 className="font-black italic text-sm sm:text-base text-white leading-tight drop-shadow-md mb-3">
                 {short.title}
               </h3>
               
-              {/* Interaction Bar */}
               <div className="flex items-center gap-4 text-slate-300 border-t border-slate-700/50 pt-3">
                 <button className="flex flex-col items-center hover:text-orange-500 transition-colors group/btn">
                   <Heart className="w-4 h-4 md:w-5 md:h-5 group-hover/btn:fill-orange-500" />
@@ -107,6 +110,10 @@ export default function ShortsHighlights() {
           </div>
         ))}
       </div>
+      <style>{`
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+      `}</style>
     </section>
   );
 }
