@@ -8,7 +8,6 @@ import TrendingTopics from '@/components/home/TrendingTopics';
 import CategoryGrid from '@/components/home/CategoryGrid';
 import GarudaPride from '@/components/home/GarudaPride';
 import GarudaBanner from '@/components/home/GarudaBanner';
-import MatchPredictor from '@/components/home/MatchPredictor';
 import CultureSection from '@/components/home/CultureSection';
 import MerchandiseSection from '@/components/home/MerchandiseSection';
 import AdBanner from '@/components/shared/AdBanner';
@@ -84,7 +83,6 @@ export default function Home() {
               <MiniStandings />
             </div>
             <div className="lg:col-span-4 flex flex-col">
-              <MatchPredictor />
               <GarudaBanner />
             </div>
           </div>

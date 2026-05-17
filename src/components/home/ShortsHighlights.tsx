@@ -8,37 +8,37 @@ const shortsData = [
     id: 1,
     title: "Gol Salto Spektakuler Garnacho vs Everton",
     views: "1.2M",
-    thumbnail: "/images/placeholder.png",
+    thumbnail: "https://images.unsplash.com/photo-1574629810360-7efbb6b69d1b?q=80&w=600&auto=format&fit=crop",
   },
   {
     id: 2,
     title: "Skill Gila Vinicius Jr di El Clasico yang Bikin Lawan Pusing",
     views: "850K",
-    thumbnail: "/images/placeholder.png",
+    thumbnail: "https://images.unsplash.com/photo-1518605368461-1e1e11417079?q=80&w=600&auto=format&fit=crop",
   },
   {
     id: 3,
     title: "Selebrasi Dingin Cole Palmer Usai Cetak Hattrick",
     views: "2.1M",
-    thumbnail: "/images/placeholder.png",
+    thumbnail: "https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=600&auto=format&fit=crop",
   },
   {
     id: 4,
     title: "Momen Haru Perpisahan Jurgen Klopp di Anfield",
     views: "3.5M",
-    thumbnail: "/images/placeholder.png",
+    thumbnail: "https://images.unsplash.com/photo-1508344928928-7165b67de128?q=80&w=600&auto=format&fit=crop",
   },
   {
     id: 5,
     title: "Penyelamatan Krusial Onana Menit Akhir Liga Champions",
     views: "600K",
-    thumbnail: "/images/placeholder.png",
+    thumbnail: "https://images.unsplash.com/photo-1518609878373-06d740f60d8b?q=80&w=600&auto=format&fit=crop",
   },
   {
     id: 6,
     title: "Tendangan Roket Fede Valverde Jarak 30 Meter",
     views: "1.8M",
-    thumbnail: "/images/placeholder.png",
+    thumbnail: "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?q=80&w=600&auto=format&fit=crop",
   }
 ];
 
