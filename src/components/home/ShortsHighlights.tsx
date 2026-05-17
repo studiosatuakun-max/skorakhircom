@@ -53,7 +53,7 @@ export default function ShortsHighlights() {
             <div className="w-1.5 h-6 bg-yellow-500 rounded-full animate-[bounce_1s_infinite_0.4s]"></div>
           </div>
           <h2 id="shorts-title" className="text-xl sm:text-2xl font-black italic tracking-tight uppercase text-white">
-            SkorAkhir <span className="text-orange-500">Shorts</span>
+            <span className="text-orange-500">Shorts</span>
           </h2>
         </div>
         <button className="text-xs font-bold text-slate-400 hover:text-white uppercase tracking-widest transition-colors flex items-center gap-1 group">
@@ -62,7 +62,7 @@ export default function ShortsHighlights() {
       </div>
 
       <div className="flex overflow-x-auto gap-4 md:gap-6 pb-6 scrollbar-hide snap-x snap-mandatory px-1">
-        {shortsData.map((short) => (
+        {shortsData.slice(0, 4).map((short) => (
           <div key={short.id} className="relative shrink-0 snap-center sm:snap-start group cursor-pointer w-[160px] sm:w-[220px] lg:w-[260px] aspect-[9/16] rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 hover:border-orange-500 transition-colors shadow-lg">
             
             <SafeImage 
