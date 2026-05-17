@@ -46,13 +46,14 @@ export default function PostViewer({ slug }: PostViewerProps) {
     return () => window.removeEventListener(`article-shared-${slug}`, handleShareEvent);
   }, [slug]);
 
-  if (stats.views === 0) return null; // Sembunyikan kalau loading
+  // Tampilkan skeleton saat loading (opsional) atau biarkan render 0
+  // if (stats.views === 0) return null; 
 
   return (
     <div className="flex items-center gap-4 text-[10px] sm:text-xs font-bold text-slate-400 mt-2">
       <span className="flex items-center gap-1.5" title="Dibaca">
         <Eye className="w-4 h-4 text-orange-500" />
-        {stats.views.toLocaleString('id-ID')} <span className="hidden sm:inline">Pembaca</span>
+        {stats.views === 0 ? '...' : stats.views.toLocaleString('id-ID')} <span className="hidden sm:inline">Pembaca</span>
       </span>
       <span className="flex items-center gap-1.5" title="Dibagikan">
         <Share2 className="w-4 h-4 text-orange-500" />
