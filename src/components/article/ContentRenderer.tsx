@@ -1,6 +1,7 @@
 import React from 'react';
 import parse, { Element, HTMLReactParserOptions, domToReact } from 'html-react-parser';
 import AffiliateSlider from './AffiliateSlider';
+import AffiliateCard from '../shared/AffiliateCard';
 
 interface ContentRendererProps {
   htmlContent: string;
