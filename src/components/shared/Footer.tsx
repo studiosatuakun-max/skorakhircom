@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Footer() {
   return (
@@ -43,8 +44,15 @@ export default function Footer() {
           </a>
         </div>
 
+        <div className="flex flex-wrap justify-center gap-4 md:gap-6 mb-8 text-sm font-bold">
+          <Link href="/tentang-kami" className="text-slate-400 hover:text-orange-500 transition-colors uppercase tracking-widest">Tentang Kami</Link>
+          <Link href="/redaksi" className="text-slate-400 hover:text-orange-500 transition-colors uppercase tracking-widest">Redaksi</Link>
+          <Link href="/pedoman-media-siber" className="text-slate-400 hover:text-orange-500 transition-colors uppercase tracking-widest">Pedoman Media Siber</Link>
+          <Link href="/kontak" className="text-slate-400 hover:text-orange-500 transition-colors uppercase tracking-widest">Kontak</Link>
+        </div>
+
         <div className="text-sm font-bold text-slate-500 uppercase tracking-widest">
-          © 2026 SKORAKHIR.COM
+          © 2026 SkorAkhir.com - PT Studio Satu Akun
         </div>
       </div>
     </footer>
