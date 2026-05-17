@@ -3,6 +3,8 @@ import Parser from 'rss-parser';
 import * as cheerio from 'cheerio';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
+export const maxDuration = 60; // Extend Vercel timeout
+
 // Inisialisasi API
 const parser = new Parser();
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');

@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 
+export const maxDuration = 60;
+
 // Helper function to call our own scrape API
 async function runScraper(keyword: string, baseUrl: string, secret: string) {
   try {
@@ -40,7 +42,7 @@ export async function GET(request: Request) {
     // Dapatkan base URL (untuk environment local vs vercel)
     const baseUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL 
       ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` 
-      : 'http://localhost:3000';
+      : (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://www.skorakhir.com');
 
     const results = [];
 
