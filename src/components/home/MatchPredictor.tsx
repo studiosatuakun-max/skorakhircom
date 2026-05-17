@@ -42,7 +42,7 @@ export default function MatchPredictor() {
           {voted && (
              <div 
                className="absolute top-0 left-0 h-full bg-orange-500/20 z-0 transition-all duration-1000 ease-out"
-               style={{ width: voted ? \`\${teamA.score}%\` : '0%' }}
+               style={{ width: voted ? `${teamA.score}%` : '0%' }}
              ></div>
           )}
           <div className="relative z-10 flex items-center gap-2">
@@ -68,7 +68,7 @@ export default function MatchPredictor() {
           {voted && (
              <div 
                className="absolute top-0 left-0 h-full bg-slate-600/30 z-0 transition-all duration-1000 ease-out"
-               style={{ width: voted ? \`\${teamB.score}%\` : '0%' }}
+               style={{ width: voted ? `${teamB.score}%` : '0%' }}
              ></div>
           )}
           <div className="relative z-10 flex items-center gap-2">
