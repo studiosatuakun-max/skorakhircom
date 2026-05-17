@@ -67,17 +67,90 @@ const padelAffiliates: any[] = [
 export default function ContentRenderer({ htmlContent }: ContentRendererProps) {
   let hasInjectedSlider = false;
 
+  // Menerima tanda kutip biasa ("), smart quotes (” atau “), dan double prime (″)
+  const sliderRegex = /(?:<p>)?\s*\[SLIDER\s+title=["“”″]([^"“”″]+)["“”″]\]\s*(?:<\/p>)?([\s\S]*?)(?:<p>)?\s*\[\/SLIDER\]\s*(?:<\/p>)?/gi;
+  
+  let processedHTML = htmlContent.replace(sliderRegex, (match, title, innerContent) => {
+    const products: any[] = [];
+    const productRegex = /\[PRODUCT\s+([^\]]+)\]/g;
+    let prodMatch;
+    
+    // Parse setiap [PRODUCT ...] di dalam blok
+    while ((prodMatch = productRegex.exec(innerContent)) !== null) {
+        const attrString = prodMatch[1];
+        const attrs: Record<string, string> = {};
+        const attrRegex = /(\w+)=["“”″]([^"“”″]*)["“”″]/g;
+        let aMatch;
+        while ((aMatch = attrRegex.exec(attrString)) !== null) {
+             attrs[aMatch[1]] = aMatch[2];
+        }
+        
+        products.push({
+            name: attrs.name || "Produk Pilihan",
+            price: attrs.price || "Cek Harga",
+            originalPrice: attrs.originalPrice,
+            imageUrl: attrs.image || "/images/placeholder.png",
+            affiliateUrl: attrs.url || "#",
+            platform: attrs.platform || "Shopee",
+            rating: parseFloat(attrs.rating) || 4.9,
+            discountBadge: attrs.badge
+        });
+    }
+
+    // Kita sembunyikan data JSON ke dalam atribut HTML custom agar aman dibaca parser
+    const productsJSON = encodeURIComponent(JSON.stringify(products));
+    return `<div data-affiliate-slider="true" data-title="${title}" data-products="${productsJSON}"></div>`;
+  });
+
   const options: HTMLReactParserOptions = {
     replace: (domNode: any) => {
-      // Intercept paragraph
-      if (domNode instanceof Element && domNode.name === 'p') {
+      // 1. CEK CUSTOM ELEMENT SLIDER (Dari hasil Preprocessing di atas)
+      if (domNode instanceof Element && domNode.name === 'div' && domNode.attribs['data-affiliate-slider'] === 'true') {
+         const title = domNode.attribs['data-title'];
+         const products = JSON.parse(decodeURIComponent(domNode.attribs['data-products']));
+         
+         return <AffiliateSlider title={title} products={products} />;
+      }
+
+      // 2. INTERCEPT PARAGRAF UNTUK SHORTCODE SINGLE ATAU PADEL
+      if (domNode instanceof Element && (domNode.name === 'p' || domNode.name === 'h1' || domNode.name === 'h2' || domNode.name === 'h3')) {
         const textContent = getText(domNode);
         
-        // Kita cari marker utama: "👉 Cek Spek"
+        // --- DYNAMIC SHORTCODE PARSER SINGLE ---
+        // Format: [AFFILIATE name="Nama Produk" price="Rp 100.000" url="https://..." image="/img.png" platform="Shopee" badge="Promo"]
+        const shortcodeRegex = /\[AFFILIATE\s+([^\]]+)\]/;
+        const shortcodeMatch = textContent.match(shortcodeRegex);
+        
+        if (shortcodeMatch) {
+          const attrString = shortcodeMatch[1];
+          const attrs: Record<string, string> = {};
+          // Menyesuaikan regex untuk menerima smart quotes (” atau “) dan double prime (″) dari WordPress
+          const attrRegex = /(\w+)=["“”″]([^"“”″]*)["“”″]/g;
+          let match;
+          
+          while ((match = attrRegex.exec(attrString)) !== null) {
+             attrs[match[1]] = match[2];
+          }
+          
+          return (
+            <div className="not-prose my-8 block w-full max-w-3xl mx-auto">
+              <AffiliateCard
+                productName={attrs.name || "Produk Rekomendasi"}
+                price={attrs.price || "Cek Harga"}
+                originalPrice={attrs.originalPrice}
+                imageUrl={attrs.image || "/images/placeholder.png"}
+                affiliateUrl={attrs.url || "#"}
+                platform={(attrs.platform as any) || "Shopee"}
+                rating={parseFloat(attrs.rating) || 4.9}
+                discountBadge={attrs.badge}
+              />
+            </div>
+          );
+        }
+
+        // --- LOGIKA PADEL SLIDER (Khusus Artikel Padel Sebelumnya) ---
         if (textContent.includes('👉 Cek Spek') && !hasInjectedSlider) {
           hasInjectedSlider = true;
-          
-          // Ganti baris "👉 Cek Spek..." tersebut dengan satu Slider utuh yang berisi semua produk
           return (
             <AffiliateSlider 
               title="Rekomendasi Gear Padel Pilihan" 
@@ -98,10 +171,10 @@ export default function ContentRenderer({ htmlContent }: ContentRendererProps) {
       prose-blockquote:border-l-4 prose-blockquote:border-orange-500 prose-blockquote:bg-slate-900 prose-blockquote:py-3 prose-blockquote:px-5 prose-blockquote:not-italic prose-blockquote:font-bold prose-blockquote:text-slate-100
       prose-li:marker:text-orange-500 prose-ul:my-6 prose-li:my-2
       prose-strong:text-white prose-strong:font-black">
-      {parse(htmlContent, options)}
+      {parse(processedHTML, options)}
       
-      {/* Fallback: Jika artikel tidak memiliki kata "👉 Cek Spek", slider otomatis muncul di paling bawah artikel */}
-      {!hasInjectedSlider && htmlContent.includes('padel') && (
+      {/* Fallback: Jika artikel padel tidak memiliki kata "👉 Cek Spek", slider otomatis muncul di paling bawah artikel */}
+      {!hasInjectedSlider && processedHTML.includes('padel') && !processedHTML.includes('data-affiliate-slider') && (
         <AffiliateSlider 
           title="Rekomendasi Gear Padel Pilihan" 
           products={padelAffiliates} 
