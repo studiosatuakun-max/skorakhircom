@@ -11,6 +11,7 @@ import ArticleActions from '@/components/article/ArticleActions';
 import FloatingActions from '@/components/article/FloatingActions';
 import RelatedArticles from '@/components/article/RelatedArticles';
 import SafeImage from '@/components/shared/SafeImage';
+import ContentRenderer from '@/components/article/ContentRenderer';
 
 import { fetchWP } from '@/lib/wp-graphql';
 import { notFound } from 'next/navigation';
@@ -257,10 +258,7 @@ export default async function NewsDetail({ params }: Props) {
                 </figcaption>
               </figure>
 
-              <div 
-                className="prose prose-invert prose-lg max-w-none prose-headings:font-black prose-headings:italic prose-a:text-orange-500 prose-blockquote:border-orange-500 prose-blockquote:bg-slate-900 prose-blockquote:p-4 prose-blockquote:not-italic"
-                dangerouslySetInnerHTML={{ __html: processedContent }}
-              />
+              <ContentRenderer htmlContent={processedContent} />
               <style>{`
                 .prose p { margin-bottom: 1.5rem; color: #cbd5e1; line-height: 1.8; font-size: 1.125rem; }
                 .prose h2 { font-size: 2rem; font-weight: 900; font-style: italic; color: #fff; margin-top: 3rem; margin-bottom: 1.5rem; letter-spacing: -0.025em; }
