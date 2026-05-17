@@ -64,6 +64,7 @@ export async function GET(request: Request) {
       2. Kembangkan bahan di atas menjadi artikel berita minimal 3 paragraf. Anda diizinkan menggunakan pengetahuan luas Anda tentang olahraga tersebut untuk melengkapi konteks berita, namun JANGAN MENGARANG SKOR atau FAKTA KRUSIAL yang bertentangan dengan bahan.
       3. Gunakan tag HTML yang rapi (<h2> untuk sub-heading, <p> untuk paragraf, <strong> untuk penekanan).
       4. Hanya keluarkan format HTML murni tanpa teks pengantar seperti "Berikut artikelnya:".
+      5. Di setiap akhir artikel, buat satu paragraf yang merekomendasikan produk relevan (misal: sepatu bola jika berita sepakbola), dan SISIPKAN shortcode ini di paragraf tersebut: [AFFILIATE name="[Nama Produk]" price="[Estimasi Harga misal Rp 500.000]" url="https://shopee.co.id" image="/images/placeholder.png" platform="Shopee" badge="Rekomendasi Editor"]. 
     `;
 
     // 3. Rewrite dengan Gemini (dengan sistem Fallback kalau server sibuk)
