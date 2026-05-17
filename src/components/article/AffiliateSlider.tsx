@@ -16,9 +16,10 @@ interface Product {
 interface AffiliateSliderProps {
   title?: string;
   products: Product[];
+  fullWidthCard?: boolean;
 }
 
-export default function AffiliateSlider({ title = "Pilihan Editor SkorAkhir", products }: AffiliateSliderProps) {
+export default function AffiliateSlider({ title = "Pilihan Editor SkorAkhir", products, fullWidthCard = false }: AffiliateSliderProps) {
   if (!products || products.length === 0) return null;
 
   return (
@@ -33,10 +34,10 @@ export default function AffiliateSlider({ title = "Pilihan Editor SkorAkhir", pr
       {/* Scrollable Container */}
       <div className="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory hide-scrollbar" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
         {products.map((product, idx) => (
-          <div key={idx} className="snap-start shrink-0 w-[280px] md:w-[320px]">
-            <div className="h-full flex flex-col bg-slate-900 border border-slate-800 rounded-xl overflow-hidden hover:border-orange-500/50 transition-all duration-300 group shadow-lg">
+          <div key={idx} className={`snap-start shrink-0 ${fullWidthCard ? 'w-full' : 'w-[280px] md:w-[320px]'}`}>
+            <div className={`h-full flex flex-col ${fullWidthCard ? 'sm:flex-row' : ''} bg-slate-900 border border-slate-800 rounded-xl overflow-hidden hover:border-orange-500/50 transition-all duration-300 group shadow-lg`}>
               {/* Product Image - Forced aspect ratio for slider */}
-              <div className="relative w-full aspect-square bg-slate-950 p-4 flex items-center justify-center">
+              <div className={`relative w-full ${fullWidthCard ? 'sm:w-64 sm:aspect-auto' : ''} aspect-square bg-slate-950 p-4 flex items-center justify-center shrink-0`}>
                 {product.discountBadge && (
                   <div className="absolute top-2 left-2 z-10 bg-orange-500 text-slate-950 text-[10px] font-black px-2 py-1 uppercase tracking-wider rounded">
                     {product.discountBadge}

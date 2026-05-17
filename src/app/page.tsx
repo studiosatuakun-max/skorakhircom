@@ -52,11 +52,18 @@ export default function Home() {
       <main className="py-8 flex flex-col">
         {/* Full-width container components */}
         <div className="container mx-auto px-4">
-          <AdBanner />
           
-          <div className="mt-8 mb-4">
-            <AffiliateSlider title="🔥 Editor's Choice: Hot Deals" products={editorsDeals} />
+          {/* Live Ticker */}
+          <div className="bg-orange-500 text-slate-950 font-black text-sm uppercase tracking-widest px-4 py-2 flex items-center gap-3 overflow-hidden rounded-lg mb-6 shadow-md">
+            <span className="shrink-0 flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span> LIVE</span>
+            <div className="w-full overflow-hidden relative">
+              <div className="whitespace-nowrap animate-[marquee_15s_linear_infinite] inline-block">
+                HOT DEALS HARI INI: Diskon Sepatu Futsal Ortuseight hingga 50% 🔥 Cek rekomendasi editor di bawah! 🔥 Jersey Timnas Indonesia terbaru sudah tersedia!
+              </div>
+            </div>
           </div>
+
+          <AdBanner />
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-8">
             <div className="lg:col-span-8 flex flex-col gap-0 h-full justify-between">
@@ -76,6 +83,11 @@ export default function Home() {
         </div>
 
         <GarudaPride />
+        
+        <div className="container mx-auto px-4 my-8">
+          <AffiliateSlider title="🔥 Editor's Choice: Hot Deals" products={editorsDeals} fullWidthCard={true} />
+        </div>
+
         <MerchandiseSection />
         <CultureSection />
       </main>
