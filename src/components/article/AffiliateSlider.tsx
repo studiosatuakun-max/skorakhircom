@@ -17,13 +17,14 @@ interface AffiliateSliderProps {
   title?: string;
   products: Product[];
   fullWidthCard?: boolean;
+  sidebarMode?: boolean;
 }
 
-export default function AffiliateSlider({ title = "Pilihan Editor SkorAkhir", products, fullWidthCard = false }: AffiliateSliderProps) {
+export default function AffiliateSlider({ title = "Pilihan Editor SkorAkhir", products, fullWidthCard = false, sidebarMode = false }: AffiliateSliderProps) {
   if (!products || products.length === 0) return null;
 
   return (
-    <div className="my-10 not-prose bg-slate-900/50 rounded-xl border border-slate-800 p-4 md:p-6 overflow-hidden">
+    <div className={`${sidebarMode ? 'mt-0' : 'my-10'} not-prose bg-slate-900/50 rounded-xl border border-slate-800 ${sidebarMode ? 'p-3' : 'p-4 md:p-6'} overflow-hidden`}>
       <div className="flex items-center gap-2 mb-6 border-b border-slate-800 pb-3">
         <ShoppingBag className="w-5 h-5 text-orange-500" />
         <h3 className="text-lg md:text-xl font-black italic uppercase text-white tracking-tight">
@@ -34,10 +35,10 @@ export default function AffiliateSlider({ title = "Pilihan Editor SkorAkhir", pr
       {/* Scrollable Container */}
       <div className="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory hide-scrollbar" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
         {products.map((product, idx) => (
-          <div key={idx} className={`snap-start shrink-0 ${fullWidthCard ? 'w-full' : 'w-[280px] md:w-[320px]'}`}>
-            <div className={`h-full flex flex-col ${fullWidthCard ? 'sm:flex-row' : ''} bg-slate-900 border border-slate-800 rounded-xl overflow-hidden hover:border-orange-500/50 transition-all duration-300 group shadow-lg`}>
+          <div key={idx} className={`snap-start shrink-0 ${fullWidthCard ? 'w-full' : (sidebarMode ? 'w-full' : 'w-[280px] md:w-[320px]')}`}>
+            <div className={`h-full flex flex-col ${fullWidthCard && !sidebarMode ? 'sm:flex-row' : ''} bg-slate-900 border border-slate-800 rounded-xl overflow-hidden hover:border-orange-500/50 transition-all duration-300 group shadow-lg`}>
               {/* Product Image - Forced aspect ratio for slider */}
-              <div className={`relative w-full ${fullWidthCard ? 'sm:w-64 sm:aspect-auto' : ''} aspect-square bg-slate-950 p-4 flex items-center justify-center shrink-0`}>
+              <div className={`relative w-full ${fullWidthCard && !sidebarMode ? 'sm:w-64 sm:aspect-auto' : ''} aspect-square bg-slate-950 p-4 flex items-center justify-center shrink-0`}>
                 {product.discountBadge && (
                   <div className="absolute top-2 left-2 z-10 bg-orange-500 text-slate-950 text-[10px] font-black px-2 py-1 uppercase tracking-wider rounded">
                     {product.discountBadge}

@@ -76,6 +76,7 @@ export default function Home() {
             </div>
             <aside className="lg:col-span-4 max-lg:order-last flex flex-col gap-8">
               <TrendingTopics />
+              <AffiliateSlider title="🔥 Editor's Choice" products={editorsDeals} sidebarMode={true} />
             </aside>
           </div>
 
@@ -83,11 +84,6 @@ export default function Home() {
         </div>
 
         <GarudaPride />
-        
-        <div className="container mx-auto px-4 my-8">
-          <AffiliateSlider title="🔥 Editor's Choice: Hot Deals" products={editorsDeals} fullWidthCard={true} />
-        </div>
-
         <MerchandiseSection />
         <CultureSection />
       </main>
