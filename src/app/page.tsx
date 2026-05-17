@@ -6,6 +6,7 @@ import MiniStandings from '@/components/home/MiniStandings';
 import OpinionSection from '@/components/home/OpinionSection';
 import TrendingTopics from '@/components/home/TrendingTopics';
 import CategoryGrid from '@/components/home/CategoryGrid';
+import CategoryPills from '@/components/home/CategoryPills';
 import GarudaPride from '@/components/home/GarudaPride';
 import GarudaBanner from '@/components/home/GarudaBanner';
 import CultureSection from '@/components/home/CultureSection';
@@ -55,7 +56,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           
           {/* Live Ticker */}
-          <div className="bg-orange-500 text-slate-950 font-black text-sm uppercase tracking-widest px-4 py-2 flex items-center gap-3 overflow-hidden rounded-lg mb-6 shadow-md">
+          <div className="bg-orange-500 text-slate-950 font-black text-sm uppercase tracking-widest px-4 py-2 flex items-center gap-3 overflow-hidden rounded-lg mb-4 shadow-md">
             <span className="shrink-0 flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span> LIVE</span>
             <div className="w-full overflow-hidden relative">
               <div className="whitespace-nowrap animate-[marquee_15s_linear_infinite] inline-block">
@@ -63,6 +64,8 @@ export default function Home() {
               </div>
             </div>
           </div>
+
+          <CategoryPills />
 
           <AdBanner />
 
