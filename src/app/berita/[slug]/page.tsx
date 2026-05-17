@@ -12,6 +12,7 @@ import FloatingActions from '@/components/article/FloatingActions';
 import RelatedArticles from '@/components/article/RelatedArticles';
 import SafeImage from '@/components/shared/SafeImage';
 import ContentRenderer from '@/components/article/ContentRenderer';
+import ArticleWatermark from '@/components/article/ArticleWatermark';
 import AffiliateSlider from '@/components/article/AffiliateSlider';
 import GarudaBanner from '@/components/home/GarudaBanner';
 
@@ -292,7 +293,9 @@ export default async function NewsDetail({ params }: Props) {
                 </figcaption>
               </figure>
 
-              <ContentRenderer htmlContent={processedContent} />
+              <ArticleWatermark title={article.title} url={`/berita/${article.slug}`}>
+                <ContentRenderer htmlContent={processedContent} />
+              </ArticleWatermark>
 
               <div className="mt-12 flex flex-wrap gap-2 pt-6 border-t border-slate-800 mb-12">
                 <span className="text-xs font-black uppercase text-slate-500 py-2 mr-2">Topik Terkait:</span>
