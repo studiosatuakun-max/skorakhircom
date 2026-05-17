@@ -7,6 +7,7 @@ import OpinionSection from '@/components/home/OpinionSection';
 import TrendingTopics from '@/components/home/TrendingTopics';
 import CategoryGrid from '@/components/home/CategoryGrid';
 import GarudaPride from '@/components/home/GarudaPride';
+import GarudaBanner from '@/components/home/GarudaBanner';
 import CultureSection from '@/components/home/CultureSection';
 import MerchandiseSection from '@/components/home/MerchandiseSection';
 import AdBanner from '@/components/shared/AdBanner';
@@ -65,17 +66,33 @@ export default function Home() {
 
           <AdBanner />
 
+          {/* ROW 1: Berita Utama & Trending */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-8">
-            <div className="lg:col-span-8 flex flex-col gap-0 h-full justify-between">
-              <div>
-                <NewsList />
-                <OpinionSection />
-                <MiniStandings />
-                <ShortsHighlights />
-              </div>
+            <div className="lg:col-span-8 flex flex-col gap-0">
+              <NewsList />
+              <OpinionSection />
             </div>
-            <aside className="lg:col-span-4 max-lg:order-last flex flex-col gap-8">
+            <aside className="lg:col-span-4 flex flex-col gap-8">
               <TrendingTopics />
+            </aside>
+          </div>
+
+          {/* ROW 2: Klasemen & Garuda Banner */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-4">
+            <div className="lg:col-span-8 flex flex-col">
+              <MiniStandings />
+            </div>
+            <aside className="lg:col-span-4 flex flex-col">
+              <GarudaBanner />
+            </aside>
+          </div>
+
+          {/* ROW 3: Shorts & Editor's Choice */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-4">
+            <div className="lg:col-span-8 flex flex-col">
+              <ShortsHighlights />
+            </div>
+            <aside className="lg:col-span-4 flex flex-col">
               <AffiliateSlider title="🔥 Editor's Choice" products={editorsDeals} sidebarMode={true} />
             </aside>
           </div>
