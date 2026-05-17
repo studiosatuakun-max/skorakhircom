@@ -13,6 +13,7 @@ import RelatedArticles from '@/components/article/RelatedArticles';
 import SafeImage from '@/components/shared/SafeImage';
 import ContentRenderer from '@/components/article/ContentRenderer';
 import ArticleWatermark from '@/components/article/ArticleWatermark';
+import PostViewer from '@/components/article/PostViewer';
 import AffiliateSlider from '@/components/article/AffiliateSlider';
 import GarudaBanner from '@/components/home/GarudaBanner';
 
@@ -272,6 +273,7 @@ export default async function NewsDetail({ params }: Props) {
                     <div>
                       <p className="text-sm font-bold text-slate-200">Oleh <span className="text-orange-500">{article.author}</span></p>
                       <p className="text-[10px] uppercase font-bold text-slate-500">Jurnalis SkorAkhir</p>
+                      <PostViewer slug={article.slug} />
                     </div>
                   </div>
 

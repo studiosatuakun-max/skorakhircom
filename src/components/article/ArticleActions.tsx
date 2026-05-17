@@ -12,9 +12,11 @@ export default function ArticleActions({ title, slug }: { title: string, slug: s
           title: `SkorAkhir: ${title}`,
           url: currentUrl,
         });
+        window.dispatchEvent(new Event(`article-shared-${slug}`));
       } else {
         await navigator.clipboard.writeText(currentUrl);
         alert('Tautan artikel berhasil disalin!');
+        window.dispatchEvent(new Event(`article-shared-${slug}`));
       }
     } catch (err) {
       console.log('Error sharing:', err);
