@@ -12,6 +12,8 @@ import FloatingActions from '@/components/article/FloatingActions';
 import RelatedArticles from '@/components/article/RelatedArticles';
 import SafeImage from '@/components/shared/SafeImage';
 import ContentRenderer from '@/components/article/ContentRenderer';
+import AffiliateSlider from '@/components/article/AffiliateSlider';
+import GarudaBanner from '@/components/home/GarudaBanner';
 
 import { fetchWP } from '@/lib/wp-graphql';
 import { notFound } from 'next/navigation';
@@ -118,6 +120,38 @@ export default async function NewsDetail({ params }: Props) {
   const article = await getArticle(slug);
 
   if (!article) return notFound();
+
+  // Mock data for Editor's Deals (Affiliate Slider) in Sidebar
+  const editorsDeals = [
+    {
+      name: 'Sepatu Futsal Ortuseight Forte',
+      price: 'Rp 450.000',
+      originalPrice: 'Rp 550.000',
+      imageUrl: '/images/affiliate/ianoni.png', // Temporary placeholder
+      affiliateUrl: '#',
+      platform: 'Shopee' as const,
+      rating: 4.9,
+      discountBadge: 'Diskon 20%'
+    },
+    {
+      name: 'Raket Tenis Wilson Pro Staff',
+      price: 'Rp 2.100.000',
+      imageUrl: '/images/affiliate/adidas.png',
+      affiliateUrl: '#',
+      platform: 'Tokopedia' as const,
+      rating: 5.0,
+      discountBadge: 'Terlaris'
+    },
+    {
+      name: 'Jersey Timnas Indonesia Authentic',
+      price: 'Rp 799.000',
+      imageUrl: '/images/affiliate/nox.png',
+      affiliateUrl: '#',
+      platform: 'Shopee' as const,
+      rating: 4.8,
+      discountBadge: 'Official'
+    }
+  ];
 
   // Ambil artikel terkait dari WordPress via GraphQL
   let relatedArticles = [];
@@ -282,9 +316,13 @@ export default async function NewsDetail({ params }: Props) {
             </article>
 
             {/* Kolom Kanan: Sidebar */}
-            <aside className="lg:col-span-4 mt-8 lg:mt-0 flex flex-col gap-12">
+            <aside className="lg:col-span-4 mt-8 lg:mt-0 flex flex-col gap-8">
               <TrendingTopics />
-              {/* Optional: Add an ad slot or another widget here later */}
+              
+              <div className="sticky top-24 flex flex-col gap-8">
+                <AffiliateSlider title="🔥 Pilihan Editor" products={editorsDeals} sidebarMode={true} />
+                <GarudaBanner />
+              </div>
             </aside>
             
           </div>
