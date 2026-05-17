@@ -24,7 +24,7 @@ export default function Home() {
       originalPrice: 'Rp 550.000',
       imageUrl: '/images/affiliate/ianoni.png', // Temporary placeholder
       affiliateUrl: '#',
-      platform: 'Shopee',
+      platform: 'Shopee' as const,
       rating: 4.9,
       discountBadge: 'Diskon 20%'
     },
@@ -33,7 +33,7 @@ export default function Home() {
       price: 'Rp 2.100.000',
       imageUrl: '/images/affiliate/adidas.png',
       affiliateUrl: '#',
-      platform: 'Tokopedia',
+      platform: 'Tokopedia' as const,
       rating: 5.0,
       discountBadge: 'Terlaris'
     },
@@ -42,7 +42,7 @@ export default function Home() {
       price: 'Rp 799.000',
       imageUrl: '/images/affiliate/nox.png',
       affiliateUrl: '#',
-      platform: 'Shopee',
+      platform: 'Shopee' as const,
       rating: 4.8,
       discountBadge: 'Official'
     }
