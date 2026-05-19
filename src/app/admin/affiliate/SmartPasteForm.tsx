@@ -15,6 +15,7 @@ export default function SmartPasteForm({ action }: Props) {
   const [price, setPrice] = useState('');
   const [affiliateUrl, setAffiliateUrl] = useState('');
   const [platform, setPlatform] = useState('Shopee');
+  const [category, setCategory] = useState('umum');
 
   const handleSmartPaste = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const text = e.target.value;
@@ -32,28 +33,45 @@ export default function SmartPasteForm({ action }: Props) {
       else if (urlMatch[1].includes('tiktok')) setPlatform('Tiktok');
     }
 
-    // Parse Harga (Cari "Rp" diikuti angka)
-    const priceMatch = text.match(/Rp\s*([0-9.,]+)/i);
+    // Parse Harga (Cari "Rp" atau angka setelah harga)
+    const priceMatch = text.match(/Rp\s*([0-9.,]+)/i) || text.match(/harga\s*([0-9.,]+)/i);
     if (priceMatch) {
-      // Format jadi Rp xxx.xxx
       setPrice(`Rp ${priceMatch[1].replace(/,/g, '.')}`);
     }
 
-    // Parse Nama Barang (Bisa ambil teks sebelum tulisan 'dengan harga' atau ambil awal kalimat)
-    // Cek format Shopee: "Cek [Nama Barang] dengan harga Rp..."
-    const nameMatchShopee = text.match(/Cek (.*?) dengan harga/i);
+    // Parse Nama Barang
+    let extractedName = '';
+    const nameMatchShopee = text.match(/Cek\s+(.*?)\s+dengan harga/i);
+    const nameMatchBeli = text.match(/Beli\s+(.*?)\s+seharga/i);
+    
     if (nameMatchShopee && nameMatchShopee[1]) {
-      setName(nameMatchShopee[1].trim());
+      extractedName = nameMatchShopee[1];
+    } else if (nameMatchBeli && nameMatchBeli[1]) {
+      extractedName = nameMatchBeli[1];
     } else {
-      // Jika format beda, ambil kalimat pertama yang cukup panjang
-      const sentences = text.split(/[.!?]/);
-      if (sentences.length > 0 && sentences[0].length > 10) {
-        let cleanName = sentences[0].replace(/Cek /i, '').trim();
-        // Potong nama yang terlalu panjang
-        if (cleanName.length > 80) cleanName = cleanName.substring(0, 80) + '...';
-        setName(cleanName);
+      // Fallback: Ambil teks sebelum "Rp" atau link
+      const beforeRp = text.split(/Rp|http/i)[0];
+      if (beforeRp && beforeRp.trim().length > 5) {
+        extractedName = beforeRp.replace(/Cek /i, '').replace(/Beli /i, '').trim();
+      } else {
+        const sentences = text.split(/[.!?\n]/);
+        if (sentences[0].length > 5) extractedName = sentences[0].trim();
       }
     }
+
+    // Bersihkan sisa-sisa karakter
+    extractedName = extractedName.replace(/https?:\/\/\S+/g, '').replace(/^-+|-+$/g, '').trim();
+    if (extractedName.length > 80) extractedName = extractedName.substring(0, 80) + '...';
+    
+    if (extractedName) setName(extractedName);
+
+    // Auto-tebak Kategori
+    const lowerName = extractedName.toLowerCase() + " " + text.toLowerCase();
+    if (lowerName.match(/sepatu|jersey|bola|futsal/)) setCategory('sepakbola');
+    else if (lowerName.match(/raket|shuttlecock|badminton|bulutangkis/)) setCategory('badminton');
+    else if (lowerName.match(/padel|tenis/)) setCategory('padel');
+    else if (lowerName.match(/motor|helm|sarung tangan|biker|sunmori/)) setCategory('otomotif');
+    else setCategory('umum');
 
     // Clear the smart paste area
     setTimeout(() => {
@@ -132,7 +150,7 @@ export default function SmartPasteForm({ action }: Props) {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-xs font-bold text-slate-400 mb-1">Konteks / Kategori</label>
-            <input type="text" name="category_slug" required className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white text-sm focus:border-orange-500 outline-none" placeholder="padel, umum, dll" />
+            <input type="text" name="category_slug" required value={category} onChange={e => setCategory(e.target.value)} className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white text-sm focus:border-orange-500 outline-none" placeholder="padel, umum, dll" />
           </div>
           <div>
             <label className="block text-xs font-bold text-slate-400 mb-1">Badge (Opsional)</label>
