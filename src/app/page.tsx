@@ -6,6 +6,7 @@ import MiniStandings from '@/components/home/MiniStandings';
 import OpinionSection from '@/components/home/OpinionSection';
 import TrendingTopics from '@/components/home/TrendingTopics';
 import CategoryGrid from '@/components/home/CategoryGrid';
+import AdBanner from '@/components/shared/AdBanner';
 import ShortsHighlights from '@/components/home/ShortsHighlights';
 import AffiliateSlider from '@/components/article/AffiliateSlider';
 import CultureSection from '@/components/home/CultureSection';
