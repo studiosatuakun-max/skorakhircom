@@ -10,6 +10,7 @@ import AdBanner from '@/components/shared/AdBanner';
 import ShortsHighlights from '@/components/home/ShortsHighlights';
 import AffiliateSlider from '@/components/article/AffiliateSlider';
 import TransferRadar from '@/components/home/TransferRadar';
+import GarudaPride from '@/components/home/GarudaPride';
 import CultureSection from '@/components/home/CultureSection';
 import { getAffiliateByContext } from '@/lib/affiliateProducts';
 
@@ -50,7 +51,7 @@ export default async function Home() {
               
               <div className="sticky top-24">
                 <AffiliateSlider 
-                  title="🦅 Garuda Pride" 
+                  title="🔥 Pilihan Editor" 
                   products={homepageAffiliates} 
                   sidebarMode={true} 
                 />
@@ -59,6 +60,8 @@ export default async function Home() {
             
           </div>
 
+          <GarudaPride />
+          
           <CategoryGrid />
         </div>
         
