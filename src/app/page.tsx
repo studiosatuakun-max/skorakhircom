@@ -2,9 +2,9 @@ import Header from '@/components/shared/Header';
 import Footer from '@/components/shared/Footer';
 
 import NewsList from '@/components/home/NewsList';
-import MiniStandings from '@/components/home/MiniStandings';
 import OpinionSection from '@/components/home/OpinionSection';
 import TrendingTopics from '@/components/home/TrendingTopics';
+import EditorialShowcase from '@/components/home/EditorialShowcase';
 import CategoryGrid from '@/components/home/CategoryGrid';
 import AdBanner from '@/components/shared/AdBanner';
 import ShortsHighlights from '@/components/home/ShortsHighlights';
@@ -15,6 +15,10 @@ import { getAffiliateByContext } from '@/lib/affiliateProducts';
 export default async function Home() {
   // Ambil data affiliate secara dinamis untuk homepage
   const homepageAffiliates = await getAffiliateByContext('umum');
+  
+  // Pecah produk biar Showcase dan Slider nampilin barang yang beda (kalau stoknya banyak)
+  const showcaseProducts = homepageAffiliates.slice(0, 2);
+  const sliderProducts = homepageAffiliates.length > 2 ? homepageAffiliates.slice(2) : homepageAffiliates;
 
   return (
     <>
@@ -37,7 +41,7 @@ export default async function Home() {
             <div className="lg:col-span-8 flex flex-col gap-12">
               <ShortsHighlights />
               <OpinionSection />
-              <MiniStandings />
+              <EditorialShowcase products={showcaseProducts} />
             </div>
 
             {/* RIGHT COLUMN: Sidebar (Trending & Affiliate) */}
@@ -47,7 +51,7 @@ export default async function Home() {
               <div className="sticky top-24">
                 <AffiliateSlider 
                   title="🔥 Pilihan Editor" 
-                  products={homepageAffiliates} 
+                  products={sliderProducts} 
                   sidebarMode={true} 
                 />
               </div>
