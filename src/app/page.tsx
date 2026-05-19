@@ -42,23 +42,19 @@ export default async function Home() {
             <div className="lg:col-span-8 flex flex-col gap-12">
               <ShortsHighlights />
               <OpinionSection />
-              <EditorialShowcase products={homepageAffiliates} />
             </div>
 
-            {/* RIGHT COLUMN: Sidebar (Trending & Affiliate) */}
+            {/* RIGHT COLUMN: Sidebar (Trending) */}
             <aside className="lg:col-span-4 flex flex-col gap-8">
-              <TrendingTopics />
-              
               <div className="sticky top-24">
-                <AffiliateSlider 
-                  title="🔥 Pilihan Editor" 
-                  products={homepageAffiliates} 
-                  sidebarMode={true} 
-                />
+                <TrendingTopics />
               </div>
             </aside>
             
           </div>
+
+          {/* FULL WIDTH GEAR SPOTLIGHT */}
+          <EditorialShowcase products={homepageAffiliates} />
 
           <GarudaPride />
           

@@ -9,7 +9,7 @@ export default async function GarudaPride() {
   try {
     const query = `
       query GetGarudaPride {
-        posts(first: 5, where: { tag: "garuda-pride" }) {
+        posts(first: 3, where: { tag: "garuda-pride" }) {
           nodes {
             id
             title

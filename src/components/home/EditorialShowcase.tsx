@@ -31,7 +31,7 @@ export default function EditorialShowcase({ products }: { products: AffiliatePro
       <div className="overflow-hidden w-full relative group/carousel pb-4" ref={emblaRef}>
         <div className="flex touch-pan-y -ml-4">
           {products.map((product, idx) => (
-            <div key={idx} className="flex-[0_0_85%] sm:flex-[0_0_45%] md:flex-[0_0_35%] min-w-0 pl-4">
+            <div key={idx} className="flex-[0_0_85%] sm:flex-[0_0_45%] md:flex-[0_0_30%] lg:flex-[0_0_22%] min-w-0 pl-4">
               <div className="group relative rounded-xl overflow-hidden bg-slate-900 border border-slate-800 hover:border-orange-500 transition-colors flex flex-col h-full shadow-lg">
                 {/* Image Box - Lebih Kecil */}
                 <div className="relative w-full aspect-video sm:aspect-square bg-slate-950/50 p-4 flex items-center justify-center overflow-hidden">
