@@ -16,6 +16,7 @@ import ArticleWatermark from '@/components/article/ArticleWatermark';
 import PostViewer from '@/components/article/PostViewer';
 import AffiliateSlider from '@/components/article/AffiliateSlider';
 import GarudaBanner from '@/components/home/GarudaBanner';
+import { getAffiliateByContext } from '@/lib/affiliateProducts';
 
 import { fetchWP } from '@/lib/wp-graphql';
 import { notFound } from 'next/navigation';
@@ -123,37 +124,8 @@ export default async function NewsDetail({ params }: Props) {
 
   if (!article) return notFound();
 
-  // Mock data for Editor's Deals (Affiliate Slider) in Sidebar
-  const editorsDeals = [
-    {
-      name: 'Sepatu Futsal Ortuseight Forte',
-      price: 'Rp 450.000',
-      originalPrice: 'Rp 550.000',
-      imageUrl: '/images/affiliate/ianoni.png', // Temporary placeholder
-      affiliateUrl: '#',
-      platform: 'Shopee' as const,
-      rating: 4.9,
-      discountBadge: 'Diskon 20%'
-    },
-    {
-      name: 'Raket Tenis Wilson Pro Staff',
-      price: 'Rp 2.100.000',
-      imageUrl: '/images/affiliate/adidas.png',
-      affiliateUrl: '#',
-      platform: 'Tokopedia' as const,
-      rating: 5.0,
-      discountBadge: 'Terlaris'
-    },
-    {
-      name: 'Jersey Timnas Indonesia Authentic',
-      price: 'Rp 799.000',
-      imageUrl: '/images/affiliate/nox.png',
-      affiliateUrl: '#',
-      platform: 'Shopee' as const,
-      rating: 4.8,
-      discountBadge: 'Official'
-    }
-  ];
+  // Ambil produk affiliate berdasarkan konteks kategori (bisa Padel atau Umum/Pilihan Editor)
+  const editorsDeals = await getAffiliateByContext(article.categorySlug);
 
   // Ambil artikel terkait dari WordPress via GraphQL
   let relatedArticles = [];

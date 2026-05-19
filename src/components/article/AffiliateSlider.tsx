@@ -34,7 +34,16 @@ export default function AffiliateSlider({ title = "Pilihan Editor SkorAkhir", pr
       
       {/* Scrollable Container */}
       <div className="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory hide-scrollbar" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-        {products.map((product, idx) => (
+        {products.map((product, idx) => {
+          const platformConfig = {
+            Shopee: { bg: 'bg-[#EE4D2D]', text: 'text-white' },
+            Tokopedia: { bg: 'bg-[#00AA5B]', text: 'text-white' },
+            Tiktok: { bg: 'bg-black', text: 'text-white' },
+            Website: { bg: 'bg-orange-500', text: 'text-slate-900' }
+          };
+          const { bg, text } = platformConfig[product.platform] || platformConfig.Website;
+
+          return (
           <div key={idx} className={`snap-start shrink-0 ${fullWidthCard ? 'w-full' : (sidebarMode ? 'w-full' : 'w-[280px] md:w-[320px]')}`}>
             <div className={`h-full flex flex-col ${fullWidthCard && !sidebarMode ? 'sm:flex-row' : ''} bg-slate-900 border border-slate-800 rounded-xl overflow-hidden hover:border-orange-500/50 transition-all duration-300 group shadow-lg`}>
               {/* Product Image - Forced aspect ratio for slider */}
@@ -75,10 +84,10 @@ export default function AffiliateSlider({ title = "Pilihan Editor SkorAkhir", pr
                 {/* CTA Button */}
                 <div className="mt-auto pt-4 border-t border-slate-800/50">
                   <a
-                    href={product.affiliateUrl}
+                    href={`/api/track?url=${encodeURIComponent(product.affiliateUrl)}&product=${encodeURIComponent(product.name)}&platform=${encodeURIComponent(product.platform)}`}
                     target="_blank"
                     rel="nofollow sponsored"
-                    className="w-full flex items-center justify-center gap-2 bg-[#EE4D2D] text-white font-bold text-xs py-2.5 px-3 rounded-lg hover:opacity-90 active:scale-[0.98] transition-all shadow-md"
+                    className={`w-full flex items-center justify-center gap-2 ${bg} ${text} font-bold text-xs py-2.5 px-3 rounded-lg hover:opacity-90 active:scale-[0.98] transition-all shadow-md`}
                   >
                     Beli di {product.platform}
                   </a>
@@ -86,7 +95,7 @@ export default function AffiliateSlider({ title = "Pilihan Editor SkorAkhir", pr
               </div>
             </div>
           </div>
-        ))}
+        )})}
       </div>
       <style>{`
         .hide-scrollbar::-webkit-scrollbar {

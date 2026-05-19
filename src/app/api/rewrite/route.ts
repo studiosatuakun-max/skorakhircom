@@ -27,7 +27,10 @@ Panduan Wajib:
 3. Buat minimal 1 subjudul yang menarik dengan tag <h2> (Jangan gunakan tag h1).
 4. Jika ada kutipan narasumber di teks, pastikan dibungkus dalam tag <blockquote>.
 5. Bumbui dengan beberapa frasa "Local Pride" yang membanggakan jika topiknya relevan dengan Indonesia.
-6. HANYA hasilkan konten dalam elemen HTML murni. DILARANG mencantumkan pengantar, perkenalan, markdown \`\`\`html, atau teks lain selain blok HTML artikel. Format langsung elemen.
+6. SANGAT PENTING: Sisipkan minimal 1 atau 2 rekomendasi produk afiliasi (alat olahraga, jersey, dll) yang RELEVAN dengan konteks artikel. Gunakan format shortcode di dalam tag <p> terpisah, seperti:
+   <p>[AFFILIATE name="Nama Produk" price="Rp X.XXX.XXX" url="https://link-affiliate.com" image="https://domain.com/image.jpg" platform="Shopee" badge="Pilihan Editor"]</p>
+   (Bebas berkreasi dengan dummy data, yang penting relevan dan terformat persis seperti itu).
+7. HANYA hasilkan konten dalam elemen HTML murni. DILARANG mencantumkan pengantar, perkenalan, markdown \`\`\`html, atau teks lain selain blok HTML artikel. Format langsung elemen.
 
 Teks Asli:
 """

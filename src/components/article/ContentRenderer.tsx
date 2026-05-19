@@ -2,6 +2,7 @@ import React from 'react';
 import parse, { Element, HTMLReactParserOptions, domToReact } from 'html-react-parser';
 import AffiliateSlider from './AffiliateSlider';
 import AffiliateCard from '../shared/AffiliateCard';
+import { padelAffiliates } from '@/lib/affiliateProducts';
 
 interface ContentRendererProps {
   htmlContent: string;
@@ -12,58 +13,6 @@ const getText = (node: any): string => {
   if (node.children) return node.children.map(getText).join('');
   return '';
 };
-
-// Database Affiliate Khusus Padel
-const padelAffiliates: any[] = [
-  {
-    name: 'Ianoni Camewin Full Carbon Padel Beginner',
-    price: 'Rp 254.309',
-    originalPrice: 'Rp 450.000',
-    imageUrl: '/images/affiliate/ianoni.png',
-    affiliateUrl: '/out/ianoni-beginner',
-    platform: 'Shopee',
-    rating: 4.8,
-    discountBadge: 'Best for Beginner'
-  },
-  {
-    name: 'Nox Padel X-One 3K Carbon Promo All Levels',
-    price: 'Rp 1.235.000',
-    originalPrice: 'Rp 1.500.000',
-    imageUrl: '/images/affiliate/nox.png',
-    affiliateUrl: '/out/nox-x-one',
-    platform: 'Shopee',
-    rating: 4.9,
-    discountBadge: 'All-Rounder'
-  },
-  {
-    name: 'Adidas Cross It Carbon 2026 Advanced Racket',
-    price: 'Rp 4.500.000',
-    imageUrl: '/images/affiliate/adidas.png',
-    affiliateUrl: '/out/adidas-cross-it',
-    platform: 'Shopee',
-    rating: 5.0,
-    discountBadge: 'Pro Choice'
-  },
-  {
-    name: 'Babolat Overgrip Padel Tenis Comfort',
-    price: 'Rp 28.900',
-    imageUrl: '/images/affiliate/babolat.png',
-    affiliateUrl: '/out/babolat-overgrip',
-    platform: 'Shopee',
-    rating: 4.9,
-    discountBadge: 'Cegah Cedera'
-  },
-  {
-    name: 'SVRG Grip Raket Padel - Boning Grip Anti Slip',
-    price: 'Rp 74.000',
-    originalPrice: 'Rp 100.000',
-    imageUrl: '/images/affiliate/svrg.png',
-    affiliateUrl: '/out/svrg-grip',
-    platform: 'Shopee',
-    rating: 4.9,
-    discountBadge: 'Aksesoris Wajib'
-  }
-];
 
 export default function ContentRenderer({ htmlContent }: ContentRendererProps) {
   let hasInjectedSlider = false;
