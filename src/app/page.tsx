@@ -9,6 +9,7 @@ import CategoryGrid from '@/components/home/CategoryGrid';
 import AdBanner from '@/components/shared/AdBanner';
 import ShortsHighlights from '@/components/home/ShortsHighlights';
 import AffiliateSlider from '@/components/article/AffiliateSlider';
+import TransferRadar from '@/components/home/TransferRadar';
 import CultureSection from '@/components/home/CultureSection';
 import { getAffiliateByContext } from '@/lib/affiliateProducts';
 
@@ -30,6 +31,9 @@ export default async function Home() {
             <NewsList />
           </section>
 
+          {/* BURSA TRANSFER RADAR */}
+          <TransferRadar />
+
           {/* MAIN CONTENT GRID */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
@@ -46,7 +50,7 @@ export default async function Home() {
               
               <div className="sticky top-24">
                 <AffiliateSlider 
-                  title="🔥 Pilihan Editor" 
+                  title="🦅 Garuda Pride" 
                   products={homepageAffiliates} 
                   sidebarMode={true} 
                 />
