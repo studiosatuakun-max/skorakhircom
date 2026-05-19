@@ -15,6 +15,7 @@ import ContentRenderer from '@/components/article/ContentRenderer';
 import ArticleWatermark from '@/components/article/ArticleWatermark';
 import PostViewer from '@/components/article/PostViewer';
 import AffiliateSlider from '@/components/article/AffiliateSlider';
+import EditorialShowcase from '@/components/home/EditorialShowcase';
 import GarudaBanner from '@/components/home/GarudaBanner';
 import { getAffiliateByContext } from '@/lib/affiliateProducts';
 
@@ -278,6 +279,11 @@ export default async function NewsDetail({ params }: Props) {
                     #{tag}
                   </Link>
                 ))}
+              </div>
+
+              {/* Gear Spotlight Affiliate */}
+              <div className="mb-12">
+                <EditorialShowcase products={editorsDeals} />
               </div>
 
               {/* Section Artikel Terkait */}
