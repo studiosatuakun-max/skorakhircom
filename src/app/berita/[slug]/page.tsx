@@ -14,7 +14,7 @@ import SafeImage from '@/components/shared/SafeImage';
 import ContentRenderer from '@/components/article/ContentRenderer';
 import ArticleWatermark from '@/components/article/ArticleWatermark';
 import PostViewer from '@/components/article/PostViewer';
-import AffiliateSlider from '@/components/article/AffiliateSlider';
+import GarudaPrideSidebar from '@/components/article/GarudaPrideSidebar';
 import EditorialShowcase from '@/components/home/EditorialShowcase';
 import GarudaBanner from '@/components/home/GarudaBanner';
 import { getAffiliateByContext } from '@/lib/affiliateProducts';
@@ -303,7 +303,7 @@ export default async function NewsDetail({ params }: Props) {
               <TrendingTopics />
               
               <div className="sticky top-24 flex flex-col gap-8">
-                <AffiliateSlider title="🔥 Pilihan Editor" products={editorsDeals} sidebarMode={true} />
+                <GarudaPrideSidebar />
                 <GarudaBanner />
               </div>
             </aside>
