@@ -6,9 +6,9 @@ import MiniStandings from '@/components/home/MiniStandings';
 import OpinionSection from '@/components/home/OpinionSection';
 import TrendingTopics from '@/components/home/TrendingTopics';
 import CategoryGrid from '@/components/home/CategoryGrid';
-import AdBanner from '@/components/shared/AdBanner';
 import ShortsHighlights from '@/components/home/ShortsHighlights';
 import AffiliateSlider from '@/components/article/AffiliateSlider';
+import CultureSection from '@/components/home/CultureSection';
 import { getAffiliateByContext } from '@/lib/affiliateProducts';
 
 export default async function Home() {
@@ -56,6 +56,9 @@ export default async function Home() {
 
           <CategoryGrid />
         </div>
+        
+        {/* Restore Kultur Article Section */}
+        <CultureSection />
       </main>
       <Footer />
     </>
