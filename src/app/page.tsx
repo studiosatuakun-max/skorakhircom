@@ -15,10 +15,6 @@ import { getAffiliateByContext } from '@/lib/affiliateProducts';
 export default async function Home() {
   // Ambil data affiliate secara dinamis untuk homepage
   const homepageAffiliates = await getAffiliateByContext('umum');
-  
-  // Pecah produk biar Showcase dan Slider nampilin barang yang beda (kalau stoknya banyak)
-  const showcaseProducts = homepageAffiliates.slice(0, 2);
-  const sliderProducts = homepageAffiliates.length > 2 ? homepageAffiliates.slice(2) : homepageAffiliates;
 
   return (
     <>
@@ -41,7 +37,7 @@ export default async function Home() {
             <div className="lg:col-span-8 flex flex-col gap-12">
               <ShortsHighlights />
               <OpinionSection />
-              <EditorialShowcase products={showcaseProducts} />
+              <EditorialShowcase products={homepageAffiliates} />
             </div>
 
             {/* RIGHT COLUMN: Sidebar (Trending & Affiliate) */}
@@ -51,7 +47,7 @@ export default async function Home() {
               <div className="sticky top-24">
                 <AffiliateSlider 
                   title="🔥 Pilihan Editor" 
-                  products={sliderProducts} 
+                  products={homepageAffiliates} 
                   sidebarMode={true} 
                 />
               </div>

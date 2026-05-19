@@ -1,13 +1,21 @@
+'use client';
+
+import React from 'react';
 import Link from 'next/link';
 import SafeImage from '@/components/shared/SafeImage';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ShoppingCart } from 'lucide-react';
 import { AffiliateProduct } from '@/lib/affiliateProducts';
+import useEmblaCarousel from 'embla-carousel-react';
+import Autoplay from 'embla-carousel-autoplay';
 
 export default function EditorialShowcase({ products }: { products: AffiliateProduct[] }) {
+  const [emblaRef] = useEmblaCarousel({ 
+    loop: true, 
+    align: 'start',
+    dragFree: true 
+  }, [Autoplay({ delay: 3500, stopOnInteraction: true })]);
+
   if (!products || products.length === 0) return null;
-  
-  // Ambil maksimal 2 produk terbaik
-  const topPicks = products.slice(0, 2);
 
   return (
     <section className="flex flex-col gap-6" aria-labelledby="editorial-showcase">
@@ -20,63 +28,67 @@ export default function EditorialShowcase({ products }: { products: AffiliatePro
         </span>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        {topPicks.map((product, idx) => (
-          <div key={idx} className="group relative rounded-xl overflow-hidden bg-slate-900 border border-slate-800 hover:border-orange-500 transition-colors flex flex-col h-full shadow-lg">
-            {/* Image Box */}
-            <div className="relative w-full aspect-[4/3] bg-slate-950/50 p-6 flex items-center justify-center overflow-hidden">
-              {product.discountBadge && (
-                <div className="absolute top-4 left-4 z-20 bg-red-600 text-white text-[10px] font-black px-3 py-1 uppercase tracking-wider shadow-md">
-                  {product.discountBadge}
-                </div>
-              )}
-              {/* Glow effect */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              
-              <div className="relative w-full h-full transform group-hover:scale-110 transition-transform duration-700 ease-out z-10 drop-shadow-2xl">
-                <SafeImage 
-                  src={product.imageUrl} 
-                  alt={product.name} 
-                  fill
-                  className="object-contain" 
-                />
-              </div>
-            </div>
-
-            {/* Content */}
-            <div className="p-6 flex flex-col flex-1 border-t border-slate-800/50 bg-gradient-to-b from-transparent to-slate-950/80">
-              <span className="text-orange-500 text-[10px] font-black tracking-widest uppercase mb-2">
-                Pilihan {product.platform}
-              </span>
-              <h3 className="text-lg font-black text-white leading-snug mb-3 line-clamp-2 group-hover:text-yellow-400 transition-colors">
-                {product.name}
-              </h3>
-              
-              <div className="mt-auto pt-4 flex items-center justify-between">
-                <div className="flex flex-col">
-                  {product.originalPrice && (
-                    <span className="text-xs text-slate-500 line-through font-bold">
-                      {product.originalPrice}
-                    </span>
+      <div className="overflow-hidden w-full relative group/carousel pb-4" ref={emblaRef}>
+        <div className="flex touch-pan-y -ml-4">
+          {products.map((product, idx) => (
+            <div key={idx} className="flex-[0_0_85%] sm:flex-[0_0_45%] md:flex-[0_0_35%] min-w-0 pl-4">
+              <div className="group relative rounded-xl overflow-hidden bg-slate-900 border border-slate-800 hover:border-orange-500 transition-colors flex flex-col h-full shadow-lg">
+                {/* Image Box - Lebih Kecil */}
+                <div className="relative w-full aspect-video sm:aspect-square bg-slate-950/50 p-4 flex items-center justify-center overflow-hidden">
+                  {product.discountBadge && (
+                    <div className="absolute top-2 left-2 z-20 bg-red-600 text-white text-[9px] font-black px-2 py-1 uppercase tracking-wider shadow-md rounded-sm">
+                      {product.discountBadge}
+                    </div>
                   )}
-                  <span className="text-xl font-black text-white">
-                    {product.price}
-                  </span>
+                  {/* Glow effect */}
+                  <div className="absolute inset-0 bg-gradient-to-tr from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  
+                  <div className="relative w-[70%] h-[70%] transform group-hover:scale-110 transition-transform duration-700 ease-out z-10 drop-shadow-xl">
+                    <SafeImage 
+                      src={product.imageUrl} 
+                      alt={product.name} 
+                      fill
+                      className="object-contain" 
+                    />
+                  </div>
                 </div>
-                
-                {/* Tracker Link */}
-                <Link 
-                  href={`/api/track?url=${encodeURIComponent(product.affiliateUrl)}&platform=${product.platform.toLowerCase()}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-orange-500 hover:bg-yellow-400 text-slate-950 w-12 h-12 flex items-center justify-center rounded-full transition-all active:scale-95 group-hover:-rotate-12 group-hover:shadow-[0_0_15px_rgba(249,115,22,0.5)]"
-                >
-                  <ArrowRight className="w-5 h-5 font-black" />
-                </Link>
+
+                {/* Content - Lebih Padat */}
+                <div className="p-4 flex flex-col flex-1 border-t border-slate-800/50 bg-gradient-to-b from-transparent to-slate-950/80">
+                  <span className="text-orange-500 text-[9px] font-black tracking-widest uppercase mb-1">
+                    {product.platform}
+                  </span>
+                  <h3 className="text-sm font-black text-white leading-tight mb-2 line-clamp-2 group-hover:text-yellow-400 transition-colors">
+                    {product.name}
+                  </h3>
+                  
+                  <div className="mt-auto pt-2 flex items-center justify-between">
+                    <div className="flex flex-col">
+                      {product.originalPrice && (
+                        <span className="text-[10px] text-slate-500 line-through font-bold">
+                          {product.originalPrice}
+                        </span>
+                      )}
+                      <span className="text-base font-black text-white">
+                        {product.price}
+                      </span>
+                    </div>
+                    
+                    {/* Tracker Link */}
+                    <Link 
+                      href={`/api/track?url=${encodeURIComponent(product.affiliateUrl)}&platform=${product.platform.toLowerCase()}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-orange-500 hover:bg-yellow-400 text-slate-950 w-8 h-8 flex items-center justify-center rounded-full transition-all active:scale-95 group-hover:-rotate-12 group-hover:shadow-[0_0_10px_rgba(249,115,22,0.5)]"
+                    >
+                      <ShoppingCart className="w-3.5 h-3.5 font-black" />
+                    </Link>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );
