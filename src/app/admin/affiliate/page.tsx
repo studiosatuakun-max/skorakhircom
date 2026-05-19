@@ -1,7 +1,7 @@
-import React from 'react';
 import { getAffiliateProducts, deleteAffiliateProduct, addAffiliateProduct } from '@/app/actions/affiliate';
 import { ShoppingCart, Plus, Trash2, ExternalLink } from 'lucide-react';
 import Image from 'next/image';
+import SmartPasteForm from './SmartPasteForm';
 
 export default async function AffiliateAdminPage() {
   const products = await getAffiliateProducts();
@@ -19,63 +19,8 @@ export default async function AffiliateAdminPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
         {/* Form Tambah Produk */}
-        <div className="lg:col-span-1 bg-slate-900 border border-slate-800 rounded-xl p-6 h-fit">
-          <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-            <Plus className="w-5 h-5 text-yellow-400" />
-            Tambah Produk Baru
-          </h2>
-          <form action={addAffiliateProduct} className="space-y-4">
-            <div>
-              <label className="block text-xs font-bold text-slate-400 mb-1">Nama Produk</label>
-              <input type="text" name="name" required className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white text-sm focus:border-orange-500 outline-none" placeholder="Contoh: Sepatu Ortuseight..." />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-bold text-slate-400 mb-1">Harga Diskon</label>
-                <input type="text" name="price" required className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white text-sm focus:border-orange-500 outline-none" placeholder="Rp 450.000" />
-              </div>
-              <div>
-                <label className="block text-xs font-bold text-slate-400 mb-1">Harga Coret (Opsional)</label>
-                <input type="text" name="original_price" className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white text-sm focus:border-orange-500 outline-none" placeholder="Rp 550.000" />
-              </div>
-            </div>
-            <div>
-              <label className="block text-xs font-bold text-slate-400 mb-1">URL Gambar</label>
-              <input type="text" name="image_url" required className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white text-sm focus:border-orange-500 outline-none" placeholder="https://..." />
-            </div>
-            <div>
-              <label className="block text-xs font-bold text-slate-400 mb-1">URL Affiliate Target</label>
-              <input type="text" name="affiliate_url" required className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white text-sm focus:border-orange-500 outline-none" placeholder="https://shope.ee/..." />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-bold text-slate-400 mb-1">Platform</label>
-                <select name="platform" className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white text-sm focus:border-orange-500 outline-none">
-                  <option value="Shopee">Shopee</option>
-                  <option value="Tokopedia">Tokopedia</option>
-                  <option value="Tiktok">Tiktok</option>
-                  <option value="Website">Website Eksternal</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-xs font-bold text-slate-400 mb-1">Rating</label>
-                <input type="number" step="0.1" name="rating" defaultValue="5.0" className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white text-sm focus:border-orange-500 outline-none" />
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-bold text-slate-400 mb-1">Konteks / Kategori</label>
-                <input type="text" name="category_slug" required className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white text-sm focus:border-orange-500 outline-none" placeholder="padel, umum, dll" />
-              </div>
-              <div>
-                <label className="block text-xs font-bold text-slate-400 mb-1">Badge (Opsional)</label>
-                <input type="text" name="discount_badge" className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white text-sm focus:border-orange-500 outline-none" placeholder="Diskon 20%" />
-              </div>
-            </div>
-            <button type="submit" className="w-full bg-orange-500 text-slate-950 font-black py-3 rounded-lg hover:bg-yellow-400 transition-colors mt-4">
-              Simpan Produk
-            </button>
-          </form>
+        <div className="lg:col-span-1">
+          <SmartPasteForm action={addAffiliateProduct} />
         </div>
 
         {/* Daftar Produk */}

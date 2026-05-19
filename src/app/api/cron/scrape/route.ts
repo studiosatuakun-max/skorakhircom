@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import Parser from 'rss-parser';
 import * as cheerio from 'cheerio';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { supabase } from '@/lib/supabase';
 
 export const maxDuration = 60; // Extend Vercel timeout
 
@@ -54,6 +55,22 @@ export async function GET(request: Request) {
       Sumber Link: ${latestNews.link}
     `;
 
+    // Coba ambil 1 produk affiliate dari Supabase secara acak
+    let affiliateRule = `5. Di setiap akhir artikel, buat satu paragraf yang merekomendasikan produk relevan (misal: sepatu bola jika berita sepakbola), dan SISIPKAN shortcode rekomendasi dengan data DUMMY.`;
+    try {
+      const { data, error } = await supabase.from('affiliate_products').select('*');
+      if (!error && data && data.length > 0) {
+        // Pilih satu produk secara acak
+        const randomProduct = data[Math.floor(Math.random() * data.length)];
+        const originalPriceAttr = randomProduct.original_price ? ` originalPrice="${randomProduct.original_price}"` : '';
+        const badgeAttr = randomProduct.discount_badge ? ` badge="${randomProduct.discount_badge}"` : '';
+        
+        affiliateRule = `5. SANGAT PENTING: Di setiap akhir artikel, buat satu paragraf promosi yang luwes dan natural (tanpa kelihatan seperti bot). Lalu SISIPKAN persis kode HTML ini di paragraf tersebut: <p>[AFFILIATE name="${randomProduct.name}" price="${randomProduct.price}"${originalPriceAttr} url="${randomProduct.affiliate_url}" image="${randomProduct.image_url}" platform="${randomProduct.platform}"${badgeAttr}]</p>. JANGAN ubah isi shortcode tersebut sedikitpun, wajib tempel apa adanya.`;
+      }
+    } catch (err) {
+      console.error("Gagal mengambil produk untuk auto-draft:", err);
+    }
+
     const prompt = `
       Anda adalah jurnalis olahraga profesional untuk portal berita "SkorAkhir".
       Tugas Anda adalah meracik sebuah berita olahraga yang unik, tajam, dan SEO-friendly dalam bahasa Indonesia berdasarkan poin-poin berita terbaru berikut ini.
@@ -66,7 +83,7 @@ export async function GET(request: Request) {
       2. Kembangkan bahan di atas menjadi artikel berita minimal 3 paragraf. Anda diizinkan menggunakan pengetahuan luas Anda tentang olahraga tersebut untuk melengkapi konteks berita, namun JANGAN MENGARANG SKOR atau FAKTA KRUSIAL yang bertentangan dengan bahan.
       3. Gunakan tag HTML yang rapi (<h2> untuk sub-heading, <p> untuk paragraf, <strong> untuk penekanan).
       4. Hanya keluarkan format HTML murni tanpa teks pengantar seperti "Berikut artikelnya:".
-      5. Di setiap akhir artikel, buat satu paragraf yang merekomendasikan produk relevan (misal: sepatu bola jika berita sepakbola), dan SISIPKAN shortcode ini di paragraf tersebut: [AFFILIATE name="[Nama Produk]" price="[Estimasi Harga misal Rp 500.000]" url="https://shopee.co.id" image="/images/placeholder.png" platform="Shopee" badge="Rekomendasi Editor"]. 
+      ${affiliateRule}
     `;
 
     // 3. Rewrite dengan Gemini (dengan sistem Fallback kalau server sibuk)
