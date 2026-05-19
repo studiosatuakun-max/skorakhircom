@@ -95,10 +95,10 @@ export default async function NewsList() {
           <QuickReadModal article={heroMain} />
         </div>
 
-        {/* Side Stacked Heroes (Right 4 cols) */}
-        <div className="md:col-span-4 flex flex-col gap-4">
+        {/* Side Stacked Heroes (Right 4 cols) - Geser Samping di Mobile */}
+        <div className="md:col-span-4 flex flex-row md:flex-col gap-4 overflow-x-auto md:overflow-visible snap-x snap-mandatory pb-4 md:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           {[heroSide1, heroSide2].map((news, idx) => (
-            <div key={`${news.id}-${idx}`} className="relative flex-1 rounded-xl overflow-hidden group aspect-video border border-slate-800 hover:border-orange-500 transition-colors">
+            <div key={`${news.id}-${idx}`} className="relative flex-none w-[75%] sm:w-[60%] md:w-full md:flex-1 rounded-xl overflow-hidden group aspect-[4/3] md:aspect-video border border-slate-800 hover:border-orange-500 transition-colors snap-center">
               <Link href={`/berita/${news.slug}`} className="block w-full h-full relative">
                 <SafeImage src={news.featured_image || '/images/placeholder.png'} alt={news.title} fill className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100" />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/60 to-transparent"></div>
@@ -111,29 +111,37 @@ export default async function NewsList() {
                   </h3>
                 </div>
               </Link>
-              <QuickReadModal article={news} />
+              <div className="hidden md:block">
+                <QuickReadModal article={news} />
+              </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* BOTTOM NEWS LIST (NEXT 3) */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-2">
+      {/* BOTTOM NEWS LIST (NEXT 3) - List View (Kiri Kanan) di Mobile */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mt-4 md:mt-2">
         {bottomNews.map((news, idx) => (
-          <div key={`${news.id}-${idx}`} className="group relative flex flex-col gap-3 pb-4 border-b md:border-b-0 md:border-r border-slate-800 md:pr-6 last:border-0 last:pr-0">
-            <Link href={`/berita/${news.slug}`} className="block relative w-full aspect-video rounded-lg overflow-hidden bg-slate-800 mb-2">
+          <div key={`${news.id}-${idx}`} className="group relative flex flex-row md:flex-col gap-4 pb-4 border-b md:border-b-0 md:border-r border-slate-800 md:pr-6 last:border-0 last:pr-0 items-center md:items-start">
+            
+            {/* Thumbnail (Kiri di Mobile, Atas di Desktop) */}
+            <Link href={`/berita/${news.slug}`} className="block relative w-28 h-24 sm:w-32 sm:h-28 md:w-full md:aspect-video shrink-0 rounded-lg overflow-hidden bg-slate-800 md:mb-2">
               <SafeImage src={news.featured_image || '/images/placeholder.png'} alt={news.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100" />
             </Link>
-            <QuickReadModal article={news} />
             
-            <div className="flex-1 flex flex-col">
-              <div className="flex items-center gap-2 text-[10px] font-bold text-slate-500 mb-2">
-                <span className="text-yellow-400">{news.category}</span>
-                <span>•</span>
-                <span>{new Date(news.created_at).toLocaleDateString('id-ID')}</span>
+            <div className="hidden md:block">
+              <QuickReadModal article={news} />
+            </div>
+            
+            {/* Teks Konten (Kanan di Mobile, Bawah di Desktop) */}
+            <div className="flex-1 flex flex-col justify-center">
+              <div className="flex items-center gap-2 text-[9px] md:text-[10px] font-bold text-slate-500 mb-1 md:mb-2">
+                <span className="text-yellow-400 bg-yellow-400/10 px-2 py-0.5 rounded-sm md:bg-transparent md:px-0 md:py-0">{news.category}</span>
+                <span className="hidden md:inline">•</span>
+                <span className="hidden md:inline">{new Date(news.created_at).toLocaleDateString('id-ID')}</span>
               </div>
               <Link href={`/berita/${news.slug}`}>
-                <h3 className="text-base font-black italic leading-tight text-slate-200 group-hover:text-orange-500 transition-colors line-clamp-3">
+                <h3 className="text-sm md:text-base font-black italic leading-snug md:leading-tight text-slate-200 group-hover:text-orange-500 transition-colors line-clamp-3">
                   {news.title}
                 </h3>
               </Link>
