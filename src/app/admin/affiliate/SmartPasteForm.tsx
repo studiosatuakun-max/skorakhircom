@@ -125,8 +125,8 @@ export default function SmartPasteForm({ action }: Props) {
           </div>
         </div>
         <div>
-          <label className="block text-xs font-bold text-slate-400 mb-1">URL Gambar (Manual)</label>
-          <input type="text" name="image_url" required className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white text-sm focus:border-orange-500 outline-none" placeholder="https://..." />
+          <label className="block text-xs font-bold text-slate-400 mb-1">URL Gambar (Bisa lebih dari 1, pisahkan dengan koma)</label>
+          <input type="text" name="image_url" required className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white text-sm focus:border-orange-500 outline-none" placeholder="https://img1.jpg, https://img2.jpg" />
         </div>
         <div>
           <label className="block text-xs font-bold text-slate-400 mb-1">URL Affiliate Target</label>

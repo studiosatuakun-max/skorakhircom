@@ -1,12 +1,53 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import SafeImage from '@/components/shared/SafeImage';
-import { ArrowRight, ShoppingCart } from 'lucide-react';
+import { ShoppingCart } from 'lucide-react';
 import { AffiliateProduct } from '@/lib/affiliateProducts';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
+
+function ProductImageSlider({ product }: { product: AffiliateProduct }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const urls = product.imageUrls && product.imageUrls.length > 0 ? product.imageUrls : [product.imageUrl];
+
+  useEffect(() => {
+    if (urls.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % Math.min(urls.length, 3));
+    }, 2500);
+    return () => clearInterval(interval);
+  }, [urls.length]);
+
+  return (
+    <>
+      {urls.slice(0, 3).map((url, i) => (
+        <div 
+          key={i} 
+          className={`absolute inset-0 transition-opacity duration-500 ease-in-out flex items-center justify-center ${i === currentIndex ? 'opacity-100' : 'opacity-0'}`}
+        >
+          <div className="relative w-[70%] h-[70%] transform group-hover:scale-110 transition-transform duration-700 ease-out z-10 drop-shadow-xl">
+            <SafeImage 
+              src={url} 
+              alt={`${product.name} - slide ${i + 1}`} 
+              fill
+              className="object-contain" 
+            />
+          </div>
+        </div>
+      ))}
+      
+      {urls.length > 1 && (
+        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-20 flex gap-1">
+          {urls.slice(0, 3).map((_, i) => (
+            <div key={i} className={`w-1.5 h-1.5 rounded-full transition-colors ${i === currentIndex ? 'bg-orange-500' : 'bg-slate-700/50'}`} />
+          ))}
+        </div>
+      )}
+    </>
+  );
+}
 
 export default function EditorialShowcase({ products }: { products: AffiliateProduct[] }) {
   const [emblaRef] = useEmblaCarousel({ 
@@ -34,27 +75,21 @@ export default function EditorialShowcase({ products }: { products: AffiliatePro
             <div key={idx} className="flex-[0_0_85%] sm:flex-[0_0_45%] md:flex-[0_0_30%] lg:flex-[0_0_22%] min-w-0 pl-4">
               <div className="group relative rounded-xl overflow-hidden bg-slate-900 border border-slate-800 hover:border-orange-500 transition-colors flex flex-col h-full shadow-lg">
                 {/* Image Box - Lebih Kecil */}
-                <div className="relative w-full aspect-video sm:aspect-square bg-slate-950/50 p-4 flex items-center justify-center overflow-hidden">
+                <div className="relative w-full aspect-video sm:aspect-square bg-slate-950/50 flex items-center justify-center overflow-hidden">
                   {product.discountBadge && (
                     <div className="absolute top-2 left-2 z-20 bg-red-600 text-white text-[9px] font-black px-2 py-1 uppercase tracking-wider shadow-md rounded-sm">
                       {product.discountBadge}
                     </div>
                   )}
                   {/* Glow effect */}
-                  <div className="absolute inset-0 bg-gradient-to-tr from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <div className="absolute inset-0 bg-gradient-to-tr from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0"></div>
                   
-                  <div className="relative w-[70%] h-[70%] transform group-hover:scale-110 transition-transform duration-700 ease-out z-10 drop-shadow-xl">
-                    <SafeImage 
-                      src={product.imageUrl} 
-                      alt={product.name} 
-                      fill
-                      className="object-contain" 
-                    />
-                  </div>
+                  {/* Inner Image Slider */}
+                  <ProductImageSlider product={product} />
                 </div>
 
                 {/* Content - Lebih Padat */}
-                <div className="p-4 flex flex-col flex-1 border-t border-slate-800/50 bg-gradient-to-b from-transparent to-slate-950/80">
+                <div className="p-4 flex flex-col flex-1 border-t border-slate-800/50 bg-gradient-to-b from-transparent to-slate-950/80 relative z-20">
                   <span className="text-orange-500 text-[9px] font-black tracking-widest uppercase mb-1">
                     {product.platform}
                   </span>

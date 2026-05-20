@@ -58,3 +58,34 @@ export async function deleteAffiliateProduct(id: string) {
   revalidatePath('/admin/affiliate');
   revalidatePath('/berita/[slug]');
 }
+
+export async function editAffiliateProduct(id: string, formData: FormData) {
+  const name = formData.get('name') as string;
+  const price = formData.get('price') as string;
+  const original_price = formData.get('original_price') as string;
+  const image_url = formData.get('image_url') as string;
+  const affiliate_url = formData.get('affiliate_url') as string;
+  const platform = formData.get('platform') as string;
+  const rating = parseFloat(formData.get('rating') as string) || 5.0;
+  const discount_badge = formData.get('discount_badge') as string;
+  const category_slug = formData.get('category_slug') as string;
+
+  const { error } = await supabase
+    .from('affiliate_products')
+    .update({
+      name,
+      price,
+      original_price: original_price || null,
+      image_url,
+      affiliate_url,
+      platform,
+      rating,
+      discount_badge: discount_badge || null,
+      category_slug
+    })
+    .eq('id', id);
+
+  if (error) throw new Error(error.message);
+  revalidatePath('/admin/affiliate');
+  revalidatePath('/berita/[slug]');
+}

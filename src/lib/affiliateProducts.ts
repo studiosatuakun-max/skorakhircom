@@ -7,6 +7,7 @@ export interface AffiliateProduct {
   platform: 'Shopee' | 'Tokopedia' | 'Tiktok' | 'Website';
   rating: number;
   discountBadge?: string;
+  imageUrls?: string[];
 }
 
 // Database Affiliate Khusus Padel
@@ -107,16 +108,20 @@ export async function getAffiliateByContext(categorySlug: string): Promise<Affil
 
     // Jika berhasil dan ada datanya, gunakan format dari DB
     if (!error && data && data.length > 0) {
-      return data.map((item: any) => ({
-        name: item.name,
-        price: item.price,
-        originalPrice: item.original_price,
-        imageUrl: item.image_url,
-        affiliateUrl: item.affiliate_url,
-        platform: item.platform,
-        rating: item.rating,
-        discountBadge: item.discount_badge,
-      }));
+      return data.map((item: any) => {
+        const urls = item.image_url ? item.image_url.split(',').map((u: string) => u.trim()) : ['/images/placeholder.png'];
+        return {
+          name: item.name,
+          price: item.price,
+          originalPrice: item.original_price,
+          imageUrl: urls[0],
+          imageUrls: urls,
+          affiliateUrl: item.affiliate_url,
+          platform: item.platform,
+          rating: item.rating,
+          discountBadge: item.discount_badge,
+        };
+      });
     }
     
     // Jika data tidak ditemukan untuk kategori tersebut, coba ambil yang "umum"
@@ -127,16 +132,20 @@ export async function getAffiliateByContext(categorySlug: string): Promise<Affil
       .order('created_at', { ascending: false });
 
     if (!generalError && generalData && generalData.length > 0) {
-       return generalData.map((item: any) => ({
-        name: item.name,
-        price: item.price,
-        originalPrice: item.original_price,
-        imageUrl: item.image_url,
-        affiliateUrl: item.affiliate_url,
-        platform: item.platform,
-        rating: item.rating,
-        discountBadge: item.discount_badge,
-      }));
+       return generalData.map((item: any) => {
+         const urls = item.image_url ? item.image_url.split(',').map((u: string) => u.trim()) : ['/images/placeholder.png'];
+         return {
+          name: item.name,
+          price: item.price,
+          originalPrice: item.original_price,
+          imageUrl: urls[0],
+          imageUrls: urls,
+          affiliateUrl: item.affiliate_url,
+          platform: item.platform,
+          rating: item.rating,
+          discountBadge: item.discount_badge,
+        };
+      });
     }
   } catch (err) {
     console.error("Gagal mengambil data affiliate dari Supabase:", err);
