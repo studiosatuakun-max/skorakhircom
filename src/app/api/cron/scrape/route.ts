@@ -55,17 +55,19 @@ export async function GET(request: Request) {
       Sumber Link: ${latestNews.link}
     `;
 
-    // Coba ambil 1 produk affiliate dari Supabase secara acak
-    let affiliateRule = `5. Di setiap akhir artikel, buat satu paragraf yang merekomendasikan produk relevan (misal: sepatu bola jika berita sepakbola), dan SISIPKAN shortcode rekomendasi dengan data DUMMY.`;
+    // Ambil semua produk affiliate dari Supabase agar AI bisa memilih yang paling relevan
+    let affiliateRule = `5. Di setiap akhir artikel, buat satu paragraf yang merekomendasikan produk relevan, dan SISIPKAN shortcode rekomendasi dengan data DUMMY.`;
     try {
-      const { data, error } = await supabase.from('affiliate_products').select('*');
+      const { data, error } = await supabase.from('affiliate_products').select('name, price, original_price, image_url, affiliate_url, platform, discount_badge, category_slug');
       if (!error && data && data.length > 0) {
-        // Pilih satu produk secara acak
-        const randomProduct = data[Math.floor(Math.random() * data.length)];
-        const originalPriceAttr = randomProduct.original_price ? ` originalPrice="${randomProduct.original_price}"` : '';
-        const badgeAttr = randomProduct.discount_badge ? ` badge="${randomProduct.discount_badge}"` : '';
+        // Buat string list produk untuk AI
+        const productListString = data.map((p, index) => {
+          const originalPriceAttr = p.original_price ? ` originalPrice="${p.original_price}"` : '';
+          const badgeAttr = p.discount_badge ? ` badge="${p.discount_badge}"` : '';
+          return `${index + 1}. [Kategori: ${p.category_slug}] <p>[AFFILIATE name="${p.name}" price="${p.price}"${originalPriceAttr} url="${p.affiliate_url}" image="${p.image_url}" platform="${p.platform}"${badgeAttr}]</p>`;
+        }).join('\n');
         
-        affiliateRule = `5. SANGAT PENTING: Di setiap akhir artikel, buat satu paragraf promosi yang luwes dan natural (tanpa kelihatan seperti bot). Lalu SISIPKAN persis kode HTML ini di paragraf tersebut: <p>[AFFILIATE name="${randomProduct.name}" price="${randomProduct.price}"${originalPriceAttr} url="${randomProduct.affiliate_url}" image="${randomProduct.image_url}" platform="${randomProduct.platform}"${badgeAttr}]</p>. JANGAN ubah isi shortcode tersebut sedikitpun, wajib tempel apa adanya.`;
+        affiliateRule = `5. SANGAT PENTING: Di bawah ini adalah DAFTAR RESMI Produk Affiliate yang tersedia. Pilih SALAH SATU produk yang paling cocok dengan topik berita yang Anda tulis. Di akhir artikel, buat satu paragraf promosi yang luwes dan natural (tanpa kelihatan seperti bot). Lalu SISIPKAN persis kode HTML dari produk yang Anda pilih di akhir paragraf tersebut. JANGAN MENGARANG PRODUK LAIN, wajib pilih dari daftar ini dan tempel kode HTML-nya apa adanya:\n\nDAFTAR PRODUK:\n${productListString}`;
       }
     } catch (err) {
       console.error("Gagal mengambil produk untuk auto-draft:", err);
