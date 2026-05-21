@@ -9,13 +9,13 @@ async function getMegaMenuData() {
       sepakBola: posts(first: 3, where: {categoryName: "Sepak Bola"}) {
         nodes { title, slug, featuredImage { node { sourceUrl } } }
       }
-      bulutangkis: posts(first: 3, where: {categoryName: "Bulu Tangkis"}) {
+      bulutangkis: posts(first: 3, where: {categoryName: "Bulutangkis"}) {
         nodes { title, slug, featuredImage { node { sourceUrl } } }
       }
-      motoGp: posts(first: 3, where: {categoryName: "MotoGP"}) {
+      motoGp: posts(first: 3, where: {categoryName: "Moto GP"}) {
         nodes { title, slug, featuredImage { node { sourceUrl } } }
       }
-      eSport: posts(first: 3, where: {categoryName: "Esports"}) {
+      eSport: posts(first: 3, where: {categoryName: "E-Sport"}) {
         nodes { title, slug, featuredImage { node { sourceUrl } } }
       }
     }
