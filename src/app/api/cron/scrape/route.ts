@@ -203,7 +203,7 @@ export async function GET(request: Request) {
       body: JSON.stringify({
         title: postTitle,
         content: postContent,
-        status: 'publish',
+        status: 'draft',
         categories: [categoryId],
         ...(mediaId ? { featured_media: mediaId } : {})
       })
