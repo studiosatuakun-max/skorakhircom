@@ -82,9 +82,11 @@ export async function GET(request: Request) {
 
       ATURAN:
       1. Berikan Judul yang clickbait namun elegan (wajib dibungkus tag <h1>).
-      2. Kembangkan bahan di atas menjadi artikel berita minimal 3 paragraf. Anda diizinkan menggunakan pengetahuan luas Anda tentang olahraga tersebut untuk melengkapi konteks berita, namun JANGAN MENGARANG SKOR atau FAKTA KRUSIAL yang bertentangan dengan bahan.
-      3. Gunakan tag HTML yang rapi (<h2> untuk sub-heading, <p> untuk paragraf, <strong> untuk penekanan).
-      4. Hanya keluarkan format HTML murni tanpa teks pengantar seperti "Berikut artikelnya:".
+      2. JANGAN PERNAH menyebutkan atau merujuk nama portal media asal (seperti Bolasport, Bola.com, Kompas, Enamplus, dll). Klaim informasi tersebut seolah-olah adalah laporan eksklusif dari redaksi "SkorAkhir".
+      3. Kembangkan bahan di atas menjadi artikel berita yang panjang dan mendalam.
+      4. FORMATTING SANGAT PENTING: Jangan membuat paragraf yang terlalu rapat/panjang. Pecah tulisan menjadi paragraf-paragraf pendek (maksimal 3-4 kalimat per paragraf). 
+      5. Gunakan tag HTML yang rapi: wajib gunakan <h2> untuk sub-heading di tengah-tengah artikel untuk memecah teks, <p> untuk paragraf pendek, dan <strong> untuk penekanan.
+      6. Hanya keluarkan format HTML murni tanpa teks pengantar seperti "Berikut artikelnya:".
       ${affiliateRule}
     `;
 
