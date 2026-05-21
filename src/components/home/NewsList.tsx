@@ -125,7 +125,7 @@ export default async function NewsList() {
           <div key={`${news.id}-${idx}`} className="group relative flex flex-row md:flex-col gap-4 pb-4 border-b md:border-b-0 md:border-r border-slate-800 md:pr-6 last:border-0 last:pr-0 items-center md:items-start">
             
             {/* Thumbnail (Kiri di Mobile, Atas di Desktop) */}
-            <Link href={`/berita/${news.slug}`} className="block relative w-28 h-24 sm:w-32 sm:h-28 md:w-full md:aspect-video shrink-0 rounded-lg overflow-hidden bg-slate-800 md:mb-2">
+            <Link href={`/berita/${news.slug}`} className="block relative w-28 h-24 sm:w-32 sm:h-28 md:w-full md:h-auto md:aspect-video shrink-0 rounded-lg overflow-hidden bg-slate-800 md:mb-2">
               <SafeImage src={news.featured_image || '/images/placeholder.png'} alt={news.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100" />
             </Link>
             
