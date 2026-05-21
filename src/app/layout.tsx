@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
+import FloatingChatWidget from '@/components/chat/FloatingChatWidget';
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -27,6 +28,7 @@ export default function RootLayout({
         <div className="relative z-10 flex flex-col min-h-screen">
           {children}
         </div>
+        <FloatingChatWidget />
       </body>
     </html>
   );
