@@ -6,7 +6,7 @@ import SafeImage from '@/components/shared/SafeImage';
 import { ShoppingCart } from 'lucide-react';
 import { AffiliateProduct } from '@/lib/affiliateProducts';
 import useEmblaCarousel from 'embla-carousel-react';
-import Autoplay from 'embla-carousel-autoplay';
+import AutoScroll from 'embla-carousel-auto-scroll';
 
 function ProductImageSlider({ product }: { product: AffiliateProduct }) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -54,7 +54,7 @@ export default function EditorialShowcase({ products }: { products: AffiliatePro
     loop: true, 
     align: 'start',
     dragFree: true 
-  }, [Autoplay({ delay: 3500, stopOnInteraction: true })]);
+  }, [AutoScroll({ playOnInit: true, speed: 1.5, stopOnInteraction: false, stopOnMouseEnter: true })]);
 
   if (!products || products.length === 0) return null;
 
