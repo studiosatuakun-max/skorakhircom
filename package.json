@@ -9,11 +9,10 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@ai-sdk/google": "^3.0.78",
     "@google/generative-ai": "^0.24.1",
     "@supabase/supabase-js": "^2.104.1",
     "@tailwindcss/typography": "^0.5.19",
-    "ai": "^6.0.189",
+    "ai": "^3.1.31",
     "cheerio": "^1.2.0",
     "dotenv": "^17.4.2",
     "embla-carousel-auto-scroll": "^8.6.0",
