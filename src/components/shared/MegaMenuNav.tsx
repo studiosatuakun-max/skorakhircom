@@ -4,6 +4,10 @@ import Link from 'next/link';
 import SafeImage from '@/components/shared/SafeImage';
 import { ChevronDown } from 'lucide-react';
 
+export type MegaMenuCategoryPosts = {
+  [key: string]: { title: string; image: string; slug: string }[];
+};
+
 const categories = [
   { name: '⚽ Sepak Bola', slug: '/kategori/sepak-bola' },
   { name: '🏸 Bulutangkis', slug: '/kategori/bulutangkis' },
@@ -11,31 +15,7 @@ const categories = [
   { name: '🎮 E-Sport', slug: '/kategori/e-sport' },
 ];
 
-// Mock data for mega menu images (in production, fetch from API)
-const mockCategoryData: Record<string, any[]> = {
-  '/kategori/sepak-bola': [
-    { title: 'Timnas Lolos Kualifikasi Piala Dunia', image: '/images/placeholder.png' },
-    { title: 'Bursa Transfer: Pemain Bintang Pindah', image: '/images/placeholder.png' },
-    { title: 'Prediksi Line Up El Clasico', image: '/images/placeholder.png' }
-  ],
-  '/kategori/bulutangkis': [
-    { title: 'Ganda Putra Tembus Final All England', image: '/images/placeholder.png' },
-    { title: 'Update Ranking BWF Terbaru', image: '/images/placeholder.png' },
-    { title: 'Kunci Sukses Tunggal Putri', image: '/images/placeholder.png' }
-  ],
-  '/kategori/moto-gp': [
-    { title: 'Jadwal Lengkap Balapan Musim Ini', image: '/images/placeholder.png' },
-    { title: 'Motor Baru Lebih Aerodinamis', image: '/images/placeholder.png' },
-    { title: 'Klasemen Sementara Sangat Ketat', image: '/images/placeholder.png' }
-  ],
-  '/kategori/e-sport': [
-    { title: 'Juara Turnamen Mobile Legends Dunia', image: '/images/placeholder.png' },
-    { title: 'Patch Note Terbaru Bikin Hero Overpower', image: '/images/placeholder.png' },
-    { title: 'Roster Tim Indonesia Berubah Total', image: '/images/placeholder.png' }
-  ]
-};
-
-export default function MegaMenuNav() {
+export default function MegaMenuNav({ categoryPosts }: { categoryPosts: MegaMenuCategoryPosts }) {
   return (
     <nav className="hidden md:flex gap-6 font-bold text-sm tracking-wide h-full items-center">
       {categories.map((cat) => (
@@ -59,8 +39,8 @@ export default function MegaMenuNav() {
               
               <div className="grid grid-cols-4 gap-6">
                 {/* 3 Articles */}
-                {(mockCategoryData[cat.slug] || mockCategoryData['/kategori/sepak-bola']).map((news, idx) => (
-                  <Link href={cat.slug} key={idx} className="group/card block">
+                {(categoryPosts[cat.slug] || []).slice(0, 3).map((news, idx) => (
+                  <Link href={`/berita/${news.slug}`} key={idx} className="group/card block">
                     <div className="relative aspect-video rounded-lg overflow-hidden bg-slate-800 mb-3 border border-slate-800 group-hover/card:border-orange-500 transition-colors">
                       <SafeImage 
                         src={news.image} 
