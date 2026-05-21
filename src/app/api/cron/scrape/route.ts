@@ -10,25 +10,30 @@ export const maxDuration = 60; // Extend Vercel timeout
 const parser = new Parser();
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
+// Fungsi pembantu untuk decode URL Google News
+function decodeGoogleNewsUrl(url: string) {
+  try {
+    const match = url.match(/articles\/([a-zA-Z0-9-_]+)/);
+    if (!match) return url;
+    let base64 = match[1].replace(/-/g, '+').replace(/_/g, '/');
+    while (base64.length % 4 !== 0) base64 += '=';
+    const decoded = Buffer.from(base64, 'base64').toString('utf8');
+    const urlMatch = decoded.match(/(https?:\/\/[a-zA-Z0-9-._~:\/?#[\]@!$&'()*+,;=%]+)/);
+    if (urlMatch) return urlMatch[1];
+  } catch(e) {}
+  return url;
+}
+
 // Fungsi pembantu untuk fetch gambar OG dari link berita asli
 async function extractOgImage(url: string) {
   try {
-    const res = await fetch(url, { redirect: 'follow', headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36' } });
+    const realUrl = decodeGoogleNewsUrl(url);
+    const res = await fetch(realUrl, { redirect: 'follow', headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36' } });
     const html = await res.text();
     const $ = cheerio.load(html);
     let ogImage = $('meta[property="og:image"]').attr('content');
     
-    // Jika itu halaman redirect Google News, coba cari link aslinya
-    if (!ogImage || ogImage.includes('google')) {
-        const realLink = $('a[jsname="tZttre"]').attr('href') || $('a').first().attr('href');
-        if (realLink && realLink.startsWith('http')) {
-           const res2 = await fetch(realLink, { redirect: 'follow', headers: { 'User-Agent': 'Mozilla/5.0' } });
-           const html2 = await res2.text();
-           const $2 = cheerio.load(html2);
-           ogImage = $2('meta[property="og:image"]').attr('content');
-        }
-    }
-    return ogImage;
+    return ogImage && !ogImage.includes('google') ? ogImage : null;
   } catch (e) {
     console.error("Gagal ekstrak gambar OG:", e);
     return null;
