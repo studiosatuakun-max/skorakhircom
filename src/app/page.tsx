@@ -16,7 +16,7 @@ import { getAffiliateByContext } from '@/lib/affiliateProducts';
 
 export default async function Home() {
   // Ambil data affiliate secara dinamis untuk homepage
-  const homepageAffiliates = await getAffiliateByContext('umum');
+  const homepageAffiliates = await getAffiliateByContext('all');
 
   return (
     <>

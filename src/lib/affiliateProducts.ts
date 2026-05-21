@@ -99,12 +99,13 @@ import { supabase } from './supabase';
 // Fungsi untuk menarik data affiliate berdasarkan kategori/konteks
 export async function getAffiliateByContext(categorySlug: string): Promise<AffiliateProduct[]> {
   try {
-    // Coba ambil dari database Supabase
-    const { data, error } = await supabase
-      .from('affiliate_products')
-      .select('*')
-      .eq('category_slug', categorySlug)
-      .order('created_at', { ascending: false });
+    let query = supabase.from('affiliate_products').select('*').order('created_at', { ascending: false });
+    
+    if (categorySlug !== 'all') {
+      query = query.eq('category_slug', categorySlug);
+    }
+
+    const { data, error } = await query;
 
     // Jika berhasil dan ada datanya, gunakan format dari DB
     if (!error && data && data.length > 0) {
