@@ -125,8 +125,8 @@ export default async function NewsDetail({ params }: Props) {
 
   if (!article) return notFound();
 
-  // Ambil produk affiliate berdasarkan konteks kategori (bisa Padel atau Umum/Pilihan Editor)
-  const editorsDeals = await getAffiliateByContext(article.categorySlug);
+  // Ambil SEMUA produk affiliate agar fitur auto-slide Marquee bisa berjalan sempurna seperti di Homepage
+  const editorsDeals = await getAffiliateByContext('all');
 
   // Ambil artikel terkait dari WordPress via GraphQL
   let relatedArticles = [];
