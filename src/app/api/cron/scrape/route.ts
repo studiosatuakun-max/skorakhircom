@@ -10,17 +10,76 @@ export const maxDuration = 60; // Extend Vercel timeout
 const parser = new Parser();
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
-// Fungsi pembantu untuk fetch dengan User-Agent agar tidak diblokir
-async function fetchHTML(url: string) {
+// Fungsi pembantu untuk fetch gambar OG dari link berita asli
+async function extractOgImage(url: string) {
   try {
-    const res = await fetch(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-      }
-    });
-    return await res.text();
+    const res = await fetch(url, { redirect: 'follow', headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36' } });
+    const html = await res.text();
+    const $ = cheerio.load(html);
+    let ogImage = $('meta[property="og:image"]').attr('content');
+    
+    // Jika itu halaman redirect Google News, coba cari link aslinya
+    if (!ogImage || ogImage.includes('google')) {
+        const realLink = $('a[jsname="tZttre"]').attr('href') || $('a').first().attr('href');
+        if (realLink && realLink.startsWith('http')) {
+           const res2 = await fetch(realLink, { redirect: 'follow', headers: { 'User-Agent': 'Mozilla/5.0' } });
+           const html2 = await res2.text();
+           const $2 = cheerio.load(html2);
+           ogImage = $2('meta[property="og:image"]').attr('content');
+        }
+    }
+    return ogImage;
   } catch (e) {
+    console.error("Gagal ekstrak gambar OG:", e);
     return null;
+  }
+}
+
+// Fungsi untuk upload gambar ke WordPress
+async function uploadImageToWP(imageUrl: string, wpUrl: string, authHeader: string) {
+  try {
+    const imgRes = await fetch(imageUrl, { headers: { 'User-Agent': 'Mozilla/5.0' } });
+    if (!imgRes.ok) return null;
+    const arrayBuffer = await imgRes.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    
+    const fileName = `scraped-${Date.now()}.jpg`;
+    const uploadRes = await fetch(`${wpUrl}/wp-json/wp/v2/media`, {
+      method: 'POST',
+      headers: {
+        'Authorization': authHeader,
+        'Content-Disposition': `attachment; filename="${fileName}"`,
+        'Content-Type': 'image/jpeg'
+      },
+      body: buffer
+    });
+    
+    if (uploadRes.ok) {
+      const media = await uploadRes.json();
+      return media.id; // Mengembalikan ID Media WordPress
+    }
+    return null;
+  } catch (e) {
+    console.error("Gagal upload gambar ke WP:", e);
+    return null;
+  }
+}
+
+// Fungsi untuk mencocokkan Kategori dari AI dengan WP
+async function getWpCategoryId(keywordFromAI: string, wpUrl: string, authHeader: string) {
+  try {
+    const res = await fetch(`${wpUrl}/wp-json/wp/v2/categories?per_page=100`, {
+      headers: { 'Authorization': authHeader }
+    });
+    const categories = await res.json();
+    const match = categories.find((c: any) => 
+      c.name.toLowerCase().includes(keywordFromAI.toLowerCase()) || 
+      keywordFromAI.toLowerCase().includes(c.name.toLowerCase())
+    );
+    if (match) return match.id;
+    return categories[0]?.id || 1; // Default fallback
+  } catch(e) {
+    return 1;
   }
 }
 
@@ -47,116 +106,118 @@ export async function GET(request: Request) {
 
     const latestNews = feed.items[0];
 
-    // 2. Gunakan Data dari RSS (Judul & Snippet) untuk menghindari blokir anti-bot (Cloudflare/Google)
-    // Berita-berita olahraga biasanya punya snippet yang cukup untuk dijadikan bahan oleh Gemini 1.5 Pro
     const articleSource = `
       Judul Asli: ${latestNews.title}
       Ringkasan Berita: ${latestNews.contentSnippet || latestNews.content || latestNews.title}
       Sumber Link: ${latestNews.link}
     `;
 
-    // Ambil semua produk affiliate dari Supabase agar AI bisa memilih yang paling relevan
-    let affiliateRule = `5. Di setiap akhir artikel, buat satu paragraf yang merekomendasikan produk relevan, dan SISIPKAN shortcode rekomendasi dengan data DUMMY.`;
+    // Ambil produk affiliate
+    let affiliateRule = `5. Di setiap akhir artikel, buat satu paragraf promosi dan sisipkan kode [AFFILIATE] dummy.`;
     try {
-      const { data, error } = await supabase.from('affiliate_products').select('name, price, original_price, image_url, affiliate_url, platform, discount_badge, category_slug');
+      const { data, error } = await supabase.from('affiliate_products').select('*');
       if (!error && data && data.length > 0) {
-        // Buat string list produk untuk AI
-        const productListString = data.map((p, index) => {
-          const originalPriceAttr = p.original_price ? ` originalPrice="${p.original_price}"` : '';
-          const badgeAttr = p.discount_badge ? ` badge="${p.discount_badge}"` : '';
-          return `${index + 1}. [Kategori: ${p.category_slug}] <p>[AFFILIATE name="${p.name}" price="${p.price}"${originalPriceAttr} url="${p.affiliate_url}" image="${p.image_url}" platform="${p.platform}"${badgeAttr}]</p>`;
-        }).join('\n');
-        
-        affiliateRule = `5. SANGAT PENTING: Di bawah ini adalah DAFTAR RESMI Produk Affiliate yang tersedia. Pilih SALAH SATU produk yang paling cocok dengan topik berita yang Anda tulis. Di akhir artikel, buat satu paragraf promosi yang luwes dan natural (tanpa kelihatan seperti bot). Lalu SISIPKAN persis kode HTML dari produk yang Anda pilih di akhir paragraf tersebut. JANGAN MENGARANG PRODUK LAIN, wajib pilih dari daftar ini dan tempel kode HTML-nya apa adanya:\n\nDAFTAR PRODUK:\n${productListString}`;
+        const productListString = data.map((p, i) => `${i + 1}. <p>[AFFILIATE name="${p.name}" price="${p.price}" url="${p.affiliate_url}" image="${p.image_url}" platform="${p.platform}"]</p>`).join('\\n');
+        affiliateRule = `5. Di bawah ini adalah DAFTAR RESMI Produk Affiliate. Pilih SALAH SATU produk yang paling cocok. Di akhir artikel, buat paragraf promosi yang luwes, lalu SISIPKAN persis kode HTML dari produk yang Anda pilih:\n\nDAFTAR PRODUK:\n${productListString}`;
       }
-    } catch (err) {
-      console.error("Gagal mengambil produk untuk auto-draft:", err);
-    }
+    } catch (err) {}
 
     const prompt = `
-      Anda adalah jurnalis olahraga profesional untuk portal berita "SkorAkhir".
-      Tugas Anda adalah meracik sebuah berita olahraga yang unik, tajam, dan SEO-friendly dalam bahasa Indonesia berdasarkan poin-poin berita terbaru berikut ini.
+      Anda adalah jurnalis olahraga profesional "SkorAkhir". Buat artikel berita yang unik dan tajam.
       
       BAHAN BERITA:
       ${articleSource}
 
       ATURAN:
-      1. Berikan Judul yang clickbait namun elegan (wajib dibungkus tag <h1>).
-      2. JANGAN PERNAH menyebutkan atau merujuk nama portal media asal (seperti Bolasport, Bola.com, Kompas, Enamplus, dll). Klaim informasi tersebut seolah-olah adalah laporan eksklusif dari redaksi "SkorAkhir".
-      3. Kembangkan bahan di atas menjadi artikel berita yang panjang dan mendalam.
-      4. FORMATTING SANGAT PENTING: Jangan membuat paragraf yang terlalu rapat/panjang. Pecah tulisan menjadi paragraf-paragraf pendek (maksimal 3-4 kalimat per paragraf). 
-      5. Gunakan tag HTML yang rapi: wajib gunakan <h2> untuk sub-heading di tengah-tengah artikel untuk memecah teks, <p> untuk paragraf pendek, dan <strong> untuk penekanan.
-      6. Hanya keluarkan format HTML murni tanpa teks pengantar seperti "Berikut artikelnya:".
+      1. Berikan Judul yang clickbait namun elegan (tag <h1>).
+      2. JANGAN PERNAH menyebutkan portal media asal. Klaim ini eksklusif dari "SkorAkhir".
+      3. Pecah tulisan menjadi paragraf-paragraf pendek (maksimal 3-4 kalimat). 
+      4. Gunakan tag HTML yang rapi (<h2>, <p>, <strong>).
+      5. Anda WAJIB merespon DALAM FORMAT JSON murni (tanpa tag markdown) dengan struktur berikut:
+      {
+        "title": "Judul artikel tanpa tag h1",
+        "category": "Pilih satu: Sepak Bola / Bulu Tangkis / MotoGP / Basket / Umum",
+        "content": "<h1>Judul</h1><p>Isi artikel...</p><h2>Subjudul</h2>..."
+      }
       ${affiliateRule}
     `;
 
-    // 3. Rewrite dengan Gemini (dengan sistem Fallback kalau server sibuk)
     let result;
     try {
       const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
       result = await model.generateContent(prompt);
     } catch (error: any) {
-      if (error.message.includes('503') || error.message.includes('busy')) {
-        console.warn('Gemini 2.5 Flash sibuk, pindah ke Gemini 2.0 Flash...');
-        const fallbackModel = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-        result = await fallbackModel.generateContent(prompt);
-      } else {
-        throw error;
-      }
+      const fallbackModel = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+      result = await fallbackModel.generateContent(prompt);
     }
 
-    const rewrittenHtml = result.response.text();
+    let responseText = result.response.text();
+    // Bersihkan dari markdown block jika AI membandel
+    responseText = responseText.replace(/^```json/m, '').replace(/^```/m, '').trim();
+    
+    let parsedData;
+    try {
+      parsedData = JSON.parse(responseText);
+    } catch(e) {
+      return NextResponse.json({ error: 'Gagal memparsing JSON dari AI', raw: responseText });
+    }
 
-    // 4. Tahap 2: Tembak WP REST API sebagai Draft
+    const postTitle = parsedData.title || latestNews.title;
+    const postContent = parsedData.content.replace(/<h1>.*?<\/h1>/i, '').trim();
+    const suggestedCategory = parsedData.category || 'Umum';
+
     const wpBaseUrl = process.env.WORDPRESS_API_URL?.split('/graphql')[0].replace(/\/$/, '') || 'https://cms.skorakhir.com';
-    const wpUrl = `${wpBaseUrl}/wp-json/wp/v2/posts`;
     const wpUser = process.env.WP_APP_USERNAME;
     const wpPass = process.env.WP_APP_PASSWORD;
+    const authHeader = 'Basic ' + Buffer.from(`${wpUser}:${wpPass}`).toString('base64');
 
-    if (!wpUrl || !wpUser || !wpPass) {
-      return NextResponse.json({ 
-        success: true, 
-        message: 'Berhasil rewrite tapi WP Credentials belum diset di .env.local',
-        rewritten_html: rewrittenHtml 
-      });
+    if (!wpUser || !wpPass) {
+      return NextResponse.json({ message: 'WP Credentials belum diset', data: parsedData });
     }
 
-    // Ekstrak H1 dari HTML Gemini untuk jadi Title
-    const titleMatch = rewrittenHtml.match(/<h1>(.*?)<\/h1>/i);
-    const postTitle = titleMatch ? titleMatch[1] : `Prediksi/Berita: ${latestNews.title}`;
+    // 1. Ekstrak & Upload Gambar Asli
+    let mediaId = process.env.WP_DEFAULT_MEDIA_ID ? parseInt(process.env.WP_DEFAULT_MEDIA_ID, 10) : null;
+    const ogImageUrl = await extractOgImage(latestNews.link || '');
+    if (ogImageUrl) {
+      const uploadedMediaId = await uploadImageToWP(ogImageUrl, wpBaseUrl, authHeader);
+      if (uploadedMediaId) mediaId = uploadedMediaId;
+    }
 
-    // Bersihkan H1 dari body konten agar tidak double judul
-    const postContent = rewrittenHtml.replace(/<h1>.*?<\/h1>/i, '').trim();
+    // 2. Cocokkan Kategori
+    const categoryId = await getWpCategoryId(suggestedCategory, wpBaseUrl, authHeader);
 
+    // 3. Posting langsung PUBLISH
+    const wpUrl = `${wpBaseUrl}/wp-json/wp/v2/posts`;
     const wpResponse = await fetch(wpUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Basic ' + Buffer.from(`${wpUser}:${wpPass}`).toString('base64'),
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        'Authorization': authHeader,
+        'User-Agent': 'Mozilla/5.0'
       },
       body: JSON.stringify({
         title: postTitle,
         content: postContent,
-        status: 'draft',
-        ...(process.env.WP_DEFAULT_MEDIA_ID ? { featured_media: parseInt(process.env.WP_DEFAULT_MEDIA_ID, 10) } : {})
+        status: 'publish',
+        categories: [categoryId],
+        ...(mediaId ? { featured_media: mediaId } : {})
       })
     });
 
-    const contentType = wpResponse.headers.get('content-type');
-    if (!wpResponse.ok || (contentType && !contentType.includes('application/json'))) {
+    if (!wpResponse.ok) {
       const errorData = await wpResponse.text();
-      throw new Error(`Gagal memposting ke WordPress: Status ${wpResponse.status}. Kemungkinan diblokir Firewall/Imunify360. Response: ${errorData.substring(0, 200)}...`);
+      throw new Error(`Gagal memposting ke WordPress: ${errorData}`);
     }
 
     const wpResult = await wpResponse.json();
 
     return NextResponse.json({ 
       success: true, 
-      message: 'Berhasil membuat Draft di WordPress!',
+      message: 'Berhasil membuat artikel secara Full Auto Pilot!',
       wp_post_id: wpResult.id,
-      original_title: latestNews.title,
-      draft_title: postTitle
+      draft_title: postTitle,
+      category: suggestedCategory,
+      media_id: mediaId
     });
 
   } catch (error: any) {
