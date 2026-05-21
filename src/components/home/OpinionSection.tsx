@@ -8,7 +8,7 @@ export default async function OpinionSection() {
   try {
     const query = `
       query GetOpinions {
-        posts(first: 4, where: { categoryName: "opini" }) {
+        posts(first: 3, where: { categoryName: "Opini dan Analisa" }) {
           nodes {
             id
             title
@@ -24,7 +24,15 @@ export default async function OpinionSection() {
       }
     `;
     const data = await fetchWP(query);
-    opinions = (data?.posts?.nodes || []).map((post: any) => ({
+    // Jika kosong, coba fetch kategori "Opini" saja sebagai fallback
+    let nodes = data?.posts?.nodes || [];
+    if (nodes.length === 0) {
+       const fallbackQuery = `query { posts(first: 3, where: { categoryName: "Opini" }) { nodes { id title slug date author { node { name } } } } }`;
+       const fallbackData = await fetchWP(fallbackQuery);
+       nodes = fallbackData?.posts?.nodes || [];
+    }
+    
+    opinions = nodes.map((post: any) => ({
       id: post.id,
       title: post.title,
       slug: post.slug,
@@ -35,36 +43,72 @@ export default async function OpinionSection() {
     console.error('Failed to fetch opinions:', error);
   }
 
-  if (opinions.length === 0) return null;
+  // Jangan di-hide kalau kosong, tampilkan placeholder supaya user bisa lihat Bento layout-nya
+  const displayOpinions = opinions.length >= 3 ? opinions : [
+    { id: '1', title: 'Strategi Taktikal yang Membuat Lawan Kewalahan di Babak Kedua', slug: '#', author: 'Budi Santoso', created_at: new Date().toISOString() },
+    { id: '2', title: 'Mengapa Keputusan Wasit Sering Kontroversial Musim Ini?', slug: '#', author: 'Redaksi', created_at: new Date().toISOString() },
+    { id: '3', title: 'Bursa Transfer: Siapa Pemain Kunci Selanjutnya?', slug: '#', author: 'Ahmad M.', created_at: new Date().toISOString() }
+  ];
 
   return (
     <section className="mt-12" aria-labelledby="opini-analisis">
-      <div className="flex items-center gap-2 mb-4 border-b-2 border-white/20 pb-2">
-        <h2 id="opini-analisis" className="text-xl sm:text-2xl font-black italic tracking-tight uppercase text-white">Opini & Analisis</h2>
+      <div className="flex items-center gap-2 mb-6 border-b-2 border-slate-800 pb-2">
+        <h2 id="opini-analisis" className="text-xl sm:text-2xl font-black italic tracking-tight uppercase text-white">
+          Opini <span className="text-yellow-400">&</span> Analisa
+        </h2>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {opinions.map((item: any) => (
-          <Link key={item.id} href={`/berita/${item.slug}`} className="flex flex-col bg-slate-900 border border-slate-800 p-5 group hover:border-slate-600 transition-colors cursor-pointer">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-full bg-slate-800 overflow-hidden shrink-0 filter grayscale group-hover:grayscale-0 transition-all">
-                <div className="w-full h-full bg-slate-700 flex items-center justify-center font-black text-slate-500">
-                   {item.author.charAt(0)}
-                </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* BIG BENTO CARD (Span 2 Cols or Full Width) */}
+        <Link href={`/berita/${displayOpinions[0].slug}`} className="md:col-span-2 group relative overflow-hidden rounded-2xl bg-gradient-to-br from-yellow-400 to-yellow-600 p-8 hover:shadow-[0_0_40px_rgba(250,204,21,0.3)] transition-all duration-300">
+          <div className="absolute -top-10 -right-10 text-[200px] font-black text-yellow-900/10 leading-none select-none">"</div>
+          <div className="relative z-10 flex flex-col h-full justify-between gap-6">
+            <h3 className="text-2xl md:text-3xl font-black italic leading-tight text-slate-900 group-hover:scale-[1.02] transition-transform origin-left">
+              "{displayOpinions[0].title}"
+            </h3>
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-full bg-slate-900 flex items-center justify-center text-yellow-400 font-black text-lg shadow-lg">
+                {displayOpinions[0].author.charAt(0)}
               </div>
               <div>
-                <h3 className="text-sm font-black text-white uppercase tracking-tight leading-none line-clamp-1">{item.author}</h3>
-                <span className="text-[10px] font-bold text-slate-400 uppercase">Jurnalis SkorAkhir</span>
+                <p className="text-sm font-black text-slate-900 uppercase tracking-widest">{displayOpinions[0].author}</p>
+                <p className="text-[10px] font-bold text-slate-800 uppercase">Jurnalis SkorAkhir</p>
               </div>
             </div>
-            <h4 className="text-lg font-black italic leading-tight text-slate-200 group-hover:text-yellow-400 transition-colors">
-              "{item.title}"
+          </div>
+        </Link>
+
+        {/* SMALL BENTO CARD 1 */}
+        <Link href={`/berita/${displayOpinions[1].slug}`} className="group relative overflow-hidden rounded-2xl bg-slate-900 border border-slate-800 p-6 hover:border-yellow-400/50 hover:bg-slate-800/80 transition-all duration-300">
+          <div className="absolute -top-4 -right-4 text-[100px] font-black text-slate-800/50 leading-none select-none">"</div>
+          <div className="relative z-10 flex flex-col h-full justify-between gap-6">
+            <h4 className="text-lg md:text-xl font-black italic leading-tight text-white group-hover:text-yellow-400 transition-colors">
+              "{displayOpinions[1].title}"
             </h4>
-            <span className="text-[10px] font-bold text-slate-500 mt-auto pt-4">
-              {new Date(item.created_at).toLocaleDateString('id-ID')}
-            </span>
-          </Link>
-        ))}
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 font-black text-xs">
+                {displayOpinions[1].author.charAt(0)}
+              </div>
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-wide">{displayOpinions[1].author}</p>
+            </div>
+          </div>
+        </Link>
+
+        {/* SMALL BENTO CARD 2 */}
+        <Link href={`/berita/${displayOpinions[2].slug}`} className="group relative overflow-hidden rounded-2xl bg-slate-900 border border-slate-800 p-6 hover:border-yellow-400/50 hover:bg-slate-800/80 transition-all duration-300">
+          <div className="absolute -top-4 -right-4 text-[100px] font-black text-slate-800/50 leading-none select-none">"</div>
+          <div className="relative z-10 flex flex-col h-full justify-between gap-6">
+            <h4 className="text-lg md:text-xl font-black italic leading-tight text-white group-hover:text-yellow-400 transition-colors">
+              "{displayOpinions[2].title}"
+            </h4>
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 font-black text-xs">
+                {displayOpinions[2].author.charAt(0)}
+              </div>
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-wide">{displayOpinions[2].author}</p>
+            </div>
+          </div>
+        </Link>
       </div>
     </section>
   );
