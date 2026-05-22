@@ -33,9 +33,6 @@ export default async function Home() {
             <NewsList />
           </section>
 
-          {/* AI PREDICTION INTERACTIVE DASHBOARD */}
-          <AiPredictionSection />
-
           {/* BURSA TRANSFER RADAR */}
           <TransferRadar />
 
@@ -48,8 +45,9 @@ export default async function Home() {
               <OpinionSection />
             </div>
 
-            {/* RIGHT COLUMN: Sidebar (Trending) */}
+            {/* RIGHT COLUMN: Sidebar (Trending & AI) */}
             <aside className="lg:col-span-4 flex flex-col gap-8">
+              <AiPredictionSection />
               <div className="sticky top-24">
                 <TrendingTopics />
               </div>

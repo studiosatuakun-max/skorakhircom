@@ -18,14 +18,14 @@ export default function AiPredictionSection() {
   }, [messages]);
 
   return (
-    <section className="mt-16 w-full" aria-labelledby="ai-prediction">
+    <section className="w-full" aria-labelledby="ai-prediction">
       <div className="flex items-center gap-3 mb-6">
         <div className="bg-yellow-400 text-slate-950 p-2 rounded-lg">
           <Zap className="w-6 h-6 fill-slate-950" />
         </div>
         <div>
-          <h2 id="ai-prediction" className="text-2xl sm:text-3xl font-black italic tracking-tight uppercase text-white">
-            Prediksi <span className="text-yellow-400">SkorAkhir AI</span>
+          <h2 id="ai-prediction" className="text-xl sm:text-2xl font-black italic tracking-tight uppercase text-white">
+            Prediksi <span className="text-yellow-400">AI</span>
           </h2>
           <p className="text-slate-400 text-sm font-medium mt-1">
             Tanya prediksi skor, analisa taktik, atau statistik pertandingan hari ini.
