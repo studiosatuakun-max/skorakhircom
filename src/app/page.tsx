@@ -36,12 +36,16 @@ export default async function Home() {
           {/* BURSA TRANSFER RADAR */}
           <TransferRadar />
 
+          {/* SHORTS HIGHLIGHTS (FULL WIDTH) */}
+          <section className="w-full">
+            <ShortsHighlights />
+          </section>
+
           {/* MAIN CONTENT GRID */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
             {/* LEFT COLUMN: Deep Content */}
             <div className="lg:col-span-8 flex flex-col gap-12">
-              <ShortsHighlights />
               <OpinionSection />
             </div>
 
