@@ -30,6 +30,7 @@ async function getArticle(slug: string) {
         slug
         content
         date
+        modified
         categories {
           nodes {
             name
@@ -67,6 +68,7 @@ async function getArticle(slug: string) {
       category: post.categories?.nodes?.[0]?.name || 'UMUM',
       categorySlug: post.categories?.nodes?.[0]?.slug || 'umum',
       date: post.date,
+      modified: post.modified || post.date,
       author: post.author?.node?.name || 'Tim Redaksi',
       content: post.content,
       image: post.featuredImage?.node?.sourceUrl?.replace(/^https:\/\//i, 'http://') || '/images/placeholder.png',
@@ -172,7 +174,7 @@ export default async function NewsDetail({ params }: Props) {
     headline: article.title,
     image: [article.image],
     datePublished: article.date,
-    dateModified: article.date,
+    dateModified: article.modified,
     author: [{
       '@type': 'Person',
       name: article.author,
