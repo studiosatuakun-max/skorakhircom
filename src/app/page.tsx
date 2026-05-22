@@ -47,9 +47,9 @@ export default async function Home() {
 
             {/* RIGHT COLUMN: Sidebar (Trending & AI) */}
             <aside className="lg:col-span-4 flex flex-col gap-8">
-              <AiPredictionSection />
+              <TrendingTopics />
               <div className="sticky top-24">
-                <TrendingTopics />
+                <AiPredictionSection />
               </div>
             </aside>
             
