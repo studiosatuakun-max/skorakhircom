@@ -8,7 +8,7 @@ export default async function OpinionSection() {
   try {
     const query = `
       query GetOpinions {
-        posts(first: 3, where: { categoryName: "Opini dan Analisa" }) {
+        posts(first: 3, where: { categoryName: "opini" }) {
           nodes {
             id
             title
@@ -24,13 +24,7 @@ export default async function OpinionSection() {
       }
     `;
     const data = await fetchWP(query);
-    // Jika kosong, coba fetch kategori "Opini" saja sebagai fallback
-    let nodes = data?.posts?.nodes || [];
-    if (nodes.length === 0) {
-       const fallbackQuery = `query { posts(first: 3, where: { categoryName: "Opini" }) { nodes { id title slug date author { node { name } } } } }`;
-       const fallbackData = await fetchWP(fallbackQuery);
-       nodes = fallbackData?.posts?.nodes || [];
-    }
+    const nodes = data?.posts?.nodes || [];
     
     opinions = nodes.map((post: any) => ({
       id: post.id,
