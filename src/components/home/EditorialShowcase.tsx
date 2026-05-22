@@ -75,7 +75,12 @@ export default function EditorialShowcase({ products }: { products: AffiliatePro
             <div key={idx} className="flex-[0_0_85%] sm:flex-[0_0_45%] md:flex-[0_0_30%] lg:flex-[0_0_22%] min-w-0 pl-4">
               <div className="group relative rounded-xl overflow-hidden bg-slate-900 border border-slate-800 hover:border-orange-500 transition-colors flex flex-col h-full shadow-lg">
                 {/* Image Box - Lebih Kecil */}
-                <div className="relative w-full aspect-video sm:aspect-square bg-slate-950/50 flex items-center justify-center overflow-hidden">
+                <Link 
+                  href={`/api/track?url=${encodeURIComponent(product.affiliateUrl)}&platform=${product.platform.toLowerCase()}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="relative w-full aspect-video sm:aspect-square bg-slate-950/50 flex items-center justify-center overflow-hidden block"
+                >
                   {product.discountBadge && (
                     <div className="absolute top-2 left-2 z-20 bg-red-600 text-white text-[9px] font-black px-2 py-1 uppercase tracking-wider shadow-md rounded-sm">
                       {product.discountBadge}
@@ -86,16 +91,22 @@ export default function EditorialShowcase({ products }: { products: AffiliatePro
                   
                   {/* Inner Image Slider */}
                   <ProductImageSlider product={product} />
-                </div>
+                </Link>
 
                 {/* Content - Lebih Padat */}
                 <div className="p-4 flex flex-col flex-1 border-t border-slate-800/50 bg-gradient-to-b from-transparent to-slate-950/80 relative z-20">
                   <span className="text-orange-500 text-[9px] font-black tracking-widest uppercase mb-1">
                     {product.platform}
                   </span>
-                  <h3 className="text-sm font-black text-white leading-tight mb-2 line-clamp-2 group-hover:text-yellow-400 transition-colors">
-                    {product.name}
-                  </h3>
+                  <Link
+                    href={`/api/track?url=${encodeURIComponent(product.affiliateUrl)}&platform=${product.platform.toLowerCase()}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <h3 className="text-sm font-black text-white leading-tight mb-2 line-clamp-2 group-hover:text-yellow-400 transition-colors">
+                      {product.name}
+                    </h3>
+                  </Link>
                   
                   <div className="mt-auto pt-2 flex items-center justify-between">
                     <div className="flex flex-col">
