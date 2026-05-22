@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
-import FloatingChatWidget from '@/components/chat/FloatingChatWidget';
 import { GoogleAnalytics } from '@next/third-parties/google';
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -29,7 +28,6 @@ export default function RootLayout({
         <div className="relative z-10 flex flex-col min-h-screen">
           {children}
         </div>
-        <FloatingChatWidget />
         <GoogleAnalytics gaId="G-CWPJVPBE0Z" />
       </body>
     </html>

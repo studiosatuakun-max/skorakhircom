@@ -2,6 +2,7 @@ import Header from '@/components/shared/Header';
 import Footer from '@/components/shared/Footer';
 
 import NewsList from '@/components/home/NewsList';
+import AiPredictionSection from '@/components/home/AiPredictionSection';
 import OpinionSection from '@/components/home/OpinionSection';
 import TrendingTopics from '@/components/home/TrendingTopics';
 import EditorialShowcase from '@/components/home/EditorialShowcase';
@@ -31,6 +32,9 @@ export default async function Home() {
           <section className="w-full">
             <NewsList />
           </section>
+
+          {/* AI PREDICTION INTERACTIVE DASHBOARD */}
+          <AiPredictionSection />
 
           {/* BURSA TRANSFER RADAR */}
           <TransferRadar />
