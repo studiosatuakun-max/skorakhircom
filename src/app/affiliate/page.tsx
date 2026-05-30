@@ -95,7 +95,7 @@ export default async function AffiliateLandingPage() {
                   <Search className="w-7 h-7" />
                 </div>
                 <h3 className="text-xl font-black text-white uppercase tracking-tight mb-3">SEO Tingkat Dewa</h3>
-                <p className="text-slate-400 text-sm leading-relaxed">Dibangun dengan Next.js 15. JSON-LD Schema Markup, SSR, dan Meta Tags dinamis sudah tertanam. Siap merajai Google News & Discover.</p>
+                <p className="text-slate-400 text-sm leading-relaxed">Struktur website dirancang khusus memenuhi standar ketat mesin pencari. Artikel Anda lebih gampang masuk indeks dan direkomendasikan oleh Google News & Discover.</p>
               </div>
               <div className="bg-slate-900 border border-slate-800 p-8 rounded-2xl hover:border-orange-500/50 transition-colors group">
                 <div className="w-14 h-14 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-center text-orange-500 mb-6 group-hover:scale-110 transition-transform">
@@ -121,7 +121,7 @@ export default async function AffiliateLandingPage() {
                 </h2>
               </div>
               <p className="text-slate-400 text-sm max-w-sm">
-                *Ini adalah contoh tampilan integrasi produk affiliate yang ditarik secara dinamis dari database (Supabase).
+                *Ini adalah contoh tampilan etalase produk affiliate yang bisa Anda kelola dengan mudah.
               </p>
             </div>
 
