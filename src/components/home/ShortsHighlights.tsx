@@ -2,43 +2,36 @@
 
 import { Play, Heart, MessageCircle, Share2 } from 'lucide-react';
 import SafeImage from '@/components/shared/SafeImage';
+import Link from 'next/link';
 
 const shortsData = [
   {
     id: 1,
-    title: "Gol Salto Spektakuler Garnacho vs Everton",
+    title: "What a Moment COMO Fans!!",
     views: "1.2M",
-    thumbnail: "https://images.unsplash.com/photo-1574629810360-7efbb6b69d1b?q=80&w=600&auto=format&fit=crop",
+    thumbnail: "https://i.ytimg.com/vi/BrJqPxwIHvg/maxresdefault.jpg",
+    url: "https://www.youtube.com/shorts/BrJqPxwIHvg"
   },
   {
     id: 2,
-    title: "Skill Gila Vinicius Jr di El Clasico yang Bikin Lawan Pusing",
+    title: "Veda Ega Pratama 'The Rocket Boy'",
     views: "850K",
-    thumbnail: "https://images.unsplash.com/photo-1518605368461-1e1e11417079?q=80&w=600&auto=format&fit=crop",
+    thumbnail: "https://i.ytimg.com/vi/ItRNrvlrPQU/maxresdefault.jpg",
+    url: "https://www.youtube.com/shorts/ItRNrvlrPQU"
   },
   {
     id: 3,
-    title: "Selebrasi Dingin Cole Palmer Usai Cetak Hattrick",
+    title: "COMO Goes to Champion League!",
     views: "2.1M",
-    thumbnail: "https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=600&auto=format&fit=crop",
+    thumbnail: "https://i.ytimg.com/vi/2TR8QybgH3Q/maxresdefault.jpg",
+    url: "https://www.youtube.com/shorts/2TR8QybgH3Q"
   },
   {
     id: 4,
-    title: "Momen Haru Perpisahan Jurgen Klopp di Anfield",
+    title: "Bismillah MotoGP!",
     views: "3.5M",
-    thumbnail: "https://images.unsplash.com/photo-1508344928928-7165b67de128?q=80&w=600&auto=format&fit=crop",
-  },
-  {
-    id: 5,
-    title: "Penyelamatan Krusial Onana Menit Akhir Liga Champions",
-    views: "600K",
-    thumbnail: "https://images.unsplash.com/photo-1518609878373-06d740f60d8b?q=80&w=600&auto=format&fit=crop",
-  },
-  {
-    id: 6,
-    title: "Tendangan Roket Fede Valverde Jarak 30 Meter",
-    views: "1.8M",
-    thumbnail: "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?q=80&w=600&auto=format&fit=crop",
+    thumbnail: "https://i.ytimg.com/vi/So88xT-lM1s/maxresdefault.jpg",
+    url: "https://www.youtube.com/shorts/So88xT-lM1s"
   }
 ];
 
@@ -63,7 +56,7 @@ export default function ShortsHighlights() {
 
       <div className="flex overflow-x-auto gap-4 md:gap-6 pb-6 scrollbar-hide snap-x snap-mandatory px-1">
         {shortsData.slice(0, 4).map((short) => (
-          <div key={short.id} className="relative shrink-0 snap-center sm:snap-start group cursor-pointer w-[160px] sm:w-[220px] lg:w-[260px] aspect-[9/16] rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 hover:border-orange-500 transition-colors shadow-lg">
+          <Link href={short.url} target="_blank" rel="noopener noreferrer" key={short.id} className="relative shrink-0 snap-center sm:snap-start group cursor-pointer w-[160px] sm:w-[220px] lg:w-[260px] aspect-[9/16] rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 hover:border-orange-500 transition-colors shadow-lg block">
             
             <SafeImage 
               src={short.thumbnail} 
@@ -96,18 +89,18 @@ export default function ShortsHighlights() {
               </h3>
               
               <div className="flex items-center gap-4 text-slate-300 border-t border-slate-700/50 pt-3">
-                <button className="flex flex-col items-center hover:text-orange-500 transition-colors group/btn">
+                <div className="flex flex-col items-center hover:text-orange-500 transition-colors group/btn">
                   <Heart className="w-4 h-4 md:w-5 md:h-5 group-hover/btn:fill-orange-500" />
-                </button>
-                <button className="flex flex-col items-center hover:text-orange-500 transition-colors">
+                </div>
+                <div className="flex flex-col items-center hover:text-orange-500 transition-colors">
                   <MessageCircle className="w-4 h-4 md:w-5 md:h-5" />
-                </button>
-                <button className="flex flex-col items-center hover:text-orange-500 transition-colors ml-auto">
+                </div>
+                <div className="flex flex-col items-center hover:text-orange-500 transition-colors ml-auto">
                   <Share2 className="w-4 h-4 md:w-5 md:h-5" />
-                </button>
+                </div>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
       <style>{`
