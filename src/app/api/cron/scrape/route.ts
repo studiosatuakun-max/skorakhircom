@@ -1,14 +1,14 @@
 import { NextResponse } from 'next/server';
 import Parser from 'rss-parser';
 import * as cheerio from 'cheerio';
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import Groq from 'groq-sdk';
 import { supabase } from '@/lib/supabase';
 
 export const maxDuration = 60; // Extend Vercel timeout
 
 // Inisialisasi API
 const parser = new Parser();
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 // Fungsi pembantu untuk decode URL Google News
 function decodeGoogleNewsUrl(url: string) {
@@ -147,16 +147,24 @@ export async function GET(request: Request) {
       ${affiliateRule}
     `;
 
-    let result;
+    let responseText = '';
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-      result = await model.generateContent(prompt);
+      const completion = await groq.chat.completions.create({
+        messages: [{ role: 'user', content: prompt }],
+        model: 'llama-3.3-70b-versatile',
+        temperature: 0.7,
+        response_format: { type: 'json_object' },
+      });
+      responseText = completion.choices[0]?.message?.content || '';
     } catch (error: any) {
-      const fallbackModel = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
-      result = await fallbackModel.generateContent(prompt);
+      const fallbackCompletion = await groq.chat.completions.create({
+        messages: [{ role: 'user', content: prompt }],
+        model: 'llama3-8b-8192',
+        temperature: 0.7,
+        response_format: { type: 'json_object' },
+      });
+      responseText = fallbackCompletion.choices[0]?.message?.content || '';
     }
-
-    let responseText = result.response.text();
     // Bersihkan dari markdown block jika AI membandel
     responseText = responseText.replace(/^```json/m, '').replace(/^```/m, '').trim();
     
