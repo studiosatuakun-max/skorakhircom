@@ -16,12 +16,7 @@ const nextConfig: NextConfig = {
         destination: '/kategori/:slug*',
         permanent: true, // 301 Redirect
       },
-      // Redirect Tag WordPress (Dibuang ke home)
-      {
-        source: '/tag/:slug*',
-        destination: '/',
-        permanent: true,
-      },
+      // Redirect Tag WordPress (Dibuang ke home) - DIHAPUS karena sekarang Tag punya halaman sendiri.
       // Redirect Author WordPress
       {
         source: '/author/:slug*',

@@ -5,7 +5,7 @@ import TrendingTopics from '@/components/home/TrendingTopics';
 
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Tag } from 'lucide-react';
 import AdBanner from '@/components/shared/AdBanner';
 import ArticleActions from '@/components/article/ArticleActions';
 import FloatingActions from '@/components/article/FloatingActions';
@@ -33,6 +33,12 @@ async function getArticle(slug: string) {
         date
         modified
         categories {
+          nodes {
+            name
+            slug
+          }
+        }
+        tags {
           nodes {
             name
             slug
@@ -278,18 +284,25 @@ export default async function NewsDetail({ params }: Props) {
 
               <ArticleWatermark title={article.title} url={`/berita/${article.slug}`}>
                 <ContentRenderer htmlContent={processedContent} />
-              </ArticleWatermark>
 
-              {article.tags.length > 0 && (
-                <div className="mt-12 flex flex-wrap items-center gap-2 pt-6 border-t border-slate-800 mb-12">
-                  <span className="text-xs font-black uppercase text-slate-500 py-2 mr-2">Topik Terkait:</span>
-                  {article.tags.map((tag: {name: string, slug: string}) => (
-                    <Link key={tag.slug} href={`/tag/${tag.slug}`} className="px-3 py-1.5 bg-slate-900 border border-slate-800 text-xs font-bold text-slate-300 hover:bg-orange-500 hover:text-slate-950 hover:border-orange-500 transition-colors uppercase rounded-md">
-                      #{tag.name}
-                    </Link>
-                  ))}
-                </div>
-              )}
+                {/* Tags Section for Internal Linking */}
+                {article.tags?.nodes?.length > 0 && (
+                  <div className="mt-10 pt-6 border-t border-slate-800 flex flex-wrap items-center gap-2">
+                    <span className="text-sm font-bold text-slate-400 mr-2 flex items-center gap-1">
+                      <Tag className="w-4 h-4" /> Topik Terkait:
+                    </span>
+                    {article.tags.nodes.map((tag: any) => (
+                      <Link 
+                        key={tag.slug} 
+                        href={`/tag/${tag.slug}`}
+                        className="bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-orange-500 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors border border-slate-700"
+                      >
+                        #{tag.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </ArticleWatermark>
 
               {/* Gear Spotlight Affiliate */}
               <div className="mb-12">

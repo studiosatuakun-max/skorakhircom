@@ -27,11 +27,6 @@ async function getTagData(slug: string) {
                 sourceUrl
               }
             }
-            categories {
-              nodes {
-                name
-              }
-            }
           }
         }
       }
@@ -51,12 +46,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const tagData = await getTagData(slug);
   
   if (!tagData) {
-    return { title: 'Topik Tidak Ditemukan | SkorAkhir' };
+    return { title: 'Tag Tidak Ditemukan | SkorAkhir' };
   }
   
   return {
     title: `Topik: ${tagData.name} | SkorAkhir`,
-    description: tagData.description || `Kumpulan berita terbaru dan terupdate dengan topik #${tagData.name} di SkorAkhir.`,
+    description: tagData.description || `Kumpulan berita terbaru dengan topik ${tagData.name} di SkorAkhir.`,
   };
 }
 
@@ -74,10 +69,10 @@ export default async function TagPage({ params }: { params: Promise<{ slug: stri
               Error 404
             </span>
             <h1 className="text-4xl md:text-5xl font-black italic tracking-tighter text-white uppercase mb-6">
-              Topik Tidak Ditemukan
+              Tag Tidak Ditemukan
             </h1>
             <p className="text-slate-400 font-bold mb-8">
-              Topik (Tag) yang Anda cari tidak ada atau telah dihapus.
+              Topik yang Anda cari tidak ada atau telah dihapus.
             </p>
             <Link href="/" className="inline-flex items-center gap-2 bg-slate-800 text-white font-black text-xs uppercase tracking-widest px-6 py-3 hover:bg-orange-500 hover:text-slate-900 transition-colors">
               <ArrowLeft className="w-4 h-4" /> Kembali ke Beranda
@@ -96,23 +91,28 @@ export default async function TagPage({ params }: { params: Promise<{ slug: stri
       <Header />
       <main className="py-8 sm:py-12 flex flex-col container mx-auto px-4 min-h-screen">
         {/* Tag Header */}
-        <div className="mb-10 sm:mb-16 border-b border-slate-800 pb-8 sm:pb-12 text-center sm:text-left">
-          <div className="flex flex-col sm:flex-row items-center gap-4 mb-6 justify-center sm:justify-start">
-            <Link href="/" className="text-slate-500 hover:text-orange-500 transition-colors p-2 bg-slate-900 rounded-full hidden sm:block">
-              <ArrowLeft className="w-5 h-5" />
-            </Link>
-            <span className="flex items-center gap-2 bg-slate-800 border border-slate-700 text-slate-300 font-black px-4 py-1.5 text-[10px] sm:text-xs uppercase tracking-widest rounded-md">
-              <Tag className="w-3 h-3 text-orange-500" /> Kumpulan Berita Topik
-            </span>
+        <div className="mb-10 sm:mb-16 border-b border-slate-800 pb-8 sm:pb-12 text-center sm:text-left flex items-center gap-6">
+          <div className="hidden md:flex w-24 h-24 bg-slate-900 border border-slate-800 rounded-full items-center justify-center shrink-0">
+            <Tag className="w-10 h-10 text-orange-500" />
           </div>
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black italic tracking-tighter text-white uppercase">
-            #{tagData.name}
-          </h1>
-          {tagData.description && (
-            <p className="text-slate-400 mt-4 max-w-2xl font-medium leading-relaxed mx-auto sm:mx-0">
-              {tagData.description}
-            </p>
-          )}
+          <div>
+            <div className="flex flex-col sm:flex-row items-center gap-4 mb-4 justify-center sm:justify-start">
+              <Link href="/" className="text-slate-500 hover:text-orange-500 transition-colors p-2 bg-slate-900 rounded-full hidden sm:block">
+                <ArrowLeft className="w-5 h-5" />
+              </Link>
+              <span className="bg-orange-500 text-slate-900 font-black px-4 py-1.5 text-[10px] sm:text-xs uppercase tracking-widest flex items-center gap-2">
+                Topik Populer
+              </span>
+            </div>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-white capitalize">
+              #{tagData.name}
+            </h1>
+            {tagData.description && (
+              <p className="text-slate-400 mt-4 max-w-2xl font-medium leading-relaxed mx-auto sm:mx-0">
+                {tagData.description}
+              </p>
+            )}
+          </div>
         </div>
 
         {/* Posts Grid */}
@@ -120,7 +120,6 @@ export default async function TagPage({ params }: { params: Promise<{ slug: stri
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
             {posts.map((post: any) => {
               const imgUrl = post.featuredImage?.node?.sourceUrl?.replace(/^https:\/\//i, 'http://') || '/images/placeholder.png';
-              const categoryName = post.categories?.nodes?.[0]?.name || 'UMUM';
               
               return (
                 <Link key={post.id} href={`/berita/${post.slug}`} className="group flex flex-col gap-4">
@@ -135,7 +134,7 @@ export default async function TagPage({ params }: { params: Promise<{ slug: stri
                   <div>
                     <div className="flex items-center gap-2 mb-2">
                       <span className="text-[10px] font-bold text-orange-500 uppercase tracking-widest">
-                        {categoryName}
+                        {tagData.name}
                       </span>
                       <span className="text-slate-600">•</span>
                       <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
@@ -158,9 +157,8 @@ export default async function TagPage({ params }: { params: Promise<{ slug: stri
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center py-24 text-center bg-slate-900/50 rounded-2xl border border-slate-800/50">
-            <Tag className="w-12 h-12 text-slate-700 mb-4" />
             <h3 className="text-2xl font-black italic text-slate-500 mb-3">Belum ada berita</h3>
-            <p className="text-slate-400 font-medium">Belum ada artikel yang diterbitkan dengan topik #{tagData.name}.</p>
+            <p className="text-slate-400 font-medium">Belum ada artikel yang membahas topik {tagData.name}.</p>
             <Link href="/" className="mt-8 text-sm font-bold uppercase tracking-widest text-orange-500 hover:text-white transition-colors">
               Kembali ke Beranda
             </Link>
