@@ -141,21 +141,24 @@ export async function GET(request: Request) {
         `;
 
         const prompt = `
-          Anda adalah jurnalis olahraga profesional "SkorAkhir". Buat artikel berita yang unik dan tajam.
+          Anda adalah jurnalis olahraga profesional "SkorAkhir". Buat artikel berita yang sangat mendalam, panjang, dan tajam (MINIMAL 400 KATA).
           
-          BAHAN BERITA:
+          BAHAN BERITA (Gunakan sebagai inti cerita):
           ${articleSource}
 
-          ATURAN:
+          ATURAN KONTEN:
           1. Berikan Judul yang clickbait namun elegan (tag <h1>).
           2. JANGAN PERNAH menyebutkan portal media asal. Klaim ini eksklusif dari "SkorAkhir".
-          3. Pecah tulisan menjadi paragraf-paragraf pendek (maksimal 3-4 kalimat). 
-          4. Gunakan tag HTML yang rapi (<h2>, <p>, <strong>).
-          5. Anda WAJIB merespon DALAM FORMAT JSON murni (tanpa tag markdown) dengan struktur berikut:
+          3. KEMBANGKAN BERITA: Walaupun bahan berita di atas singkat, Anda WAJIB mengembangkannya menjadi artikel panjang yang komprehensif. Tambahkan konteks sejarah, analisa mendalam, statistik umum, atau opini tajam layaknya komentator profesional.
+          4. Pecah tulisan menjadi paragraf-paragraf pendek agar mudah dibaca (maksimal 3-4 kalimat per paragraf). 
+          5. Gunakan subheading (<h2>) yang provokatif dan tag HTML yang rapi (<p>, <strong>).
+          
+          ATURAN FORMAT OUTPUT:
+          Anda WAJIB merespon DALAM FORMAT JSON murni (tanpa blok markdown) dengan struktur berikut:
           {
             "title": "Judul artikel tanpa tag h1",
             "category": "Pilih satu: Sepak Bola / Bulu Tangkis / MotoGP / Basket / Umum",
-            "content": "<h1>Judul</h1><p>Isi artikel...</p><h2>Subjudul</h2>..."
+            "content": "<h1>Judul</h1><p>Isi artikel yang sangat panjang...</p><h2>Subjudul</h2>..."
           }
           ${affiliateRule}
         `;
@@ -216,7 +219,7 @@ export async function GET(request: Request) {
           body: JSON.stringify({
             title: postTitle,
             content: postContent,
-            status: 'publish',
+            status: 'draft',
             categories: [categoryId],
             ...(mediaId ? { featured_media: mediaId } : {})
           })
