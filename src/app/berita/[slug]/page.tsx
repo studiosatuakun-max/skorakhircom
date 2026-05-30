@@ -80,7 +80,7 @@ async function getArticle(slug: string) {
       author: post.author?.node?.name || 'Tim Redaksi',
       content: post.content,
       excerpt: post.excerpt,
-      image: post.featuredImage?.node?.sourceUrl?.replace(/^https:\/\//i, 'http://') || '/images/placeholder.png',
+      image: post.featuredImage?.node?.sourceUrl || '/images/placeholder.png',
       tags: post.tags?.nodes?.map((t: any) => ({ name: t.name, slug: t.slug })) || [],
     };
   } catch (error) {

@@ -61,9 +61,18 @@ export default async function Header() {
             priority
           />
         </Link>
-        <Link href="/affiliate" className="bg-orange-500 text-slate-900 font-black px-4 py-2 text-xs uppercase tracking-widest hover:bg-white transition-colors transform hover:scale-105 shadow-lg shadow-orange-500/20">
-          SkorAkhir Picks
-        </Link>
+        <div className="hidden lg:flex items-center gap-6 z-10">
+          <Link href="/world-cup-2027" className="text-white hover:text-orange-500 font-bold uppercase tracking-widest text-xs transition-colors relative group">
+            World Cup '27
+            <span className="absolute -top-1 -right-4 flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
+            </span>
+          </Link>
+          <Link href="/affiliate" className="bg-orange-500 text-slate-900 font-black px-4 py-2 text-xs uppercase tracking-widest hover:bg-white transition-colors transform hover:scale-105 shadow-lg shadow-orange-500/20">
+            SkorAkhir Picks
+          </Link>
+        </div>
 
         <MegaMenuNav categoryPosts={categoryPosts} />
 

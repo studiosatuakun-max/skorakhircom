@@ -11,6 +11,7 @@ import AdBanner from '@/components/shared/AdBanner';
 import ShortsHighlights from '@/components/home/ShortsHighlights';
 import AffiliateSlider from '@/components/article/AffiliateSlider';
 import TransferRadar from '@/components/home/TransferRadar';
+import TheBenchSegment from '@/components/home/TheBenchSegment';
 import GarudaPride from '@/components/home/GarudaPride';
 import CultureSection from '@/components/home/CultureSection';
 import { getAffiliateByContext } from '@/lib/affiliateProducts';
@@ -35,6 +36,9 @@ export default async function Home() {
 
           {/* BURSA TRANSFER RADAR */}
           <TransferRadar />
+
+          {/* THE BENCH - LIPUTAN KHUSUS */}
+          <TheBenchSegment />
 
           {/* MAIN CONTENT GRID */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
