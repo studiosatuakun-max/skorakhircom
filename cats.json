@@ -1,0 +1,103 @@
+{
+  "data": {
+    "categories": {
+      "nodes": [
+        {
+          "name": "Arena E-Sport",
+          "slug": "e-sport-2"
+        },
+        {
+          "name": "Bola Volley",
+          "slug": "bola-volley"
+        },
+        {
+          "name": "Bola Volly",
+          "slug": "bola-volly"
+        },
+        {
+          "name": "Bulutangkis",
+          "slug": "bulutangkis"
+        },
+        {
+          "name": "E-Sport",
+          "slug": "e-sport"
+        },
+        {
+          "name": "Fokus MotoGp",
+          "slug": "moto-gp-2"
+        },
+        {
+          "name": "Garuda Pride",
+          "slug": "garuda-pride"
+        },
+        {
+          "name": "Kultur",
+          "slug": "kultur"
+        },
+        {
+          "name": "Moto2",
+          "slug": "moto2"
+        },
+        {
+          "name": "Moto3",
+          "slug": "moto3"
+        },
+        {
+          "name": "MotoGP",
+          "slug": "moto-gp"
+        },
+        {
+          "name": "Opini dan Analisi",
+          "slug": "opini"
+        },
+        {
+          "name": "Padel",
+          "slug": "padel"
+        },
+        {
+          "name": "Pencak Silat",
+          "slug": "pencak-silat"
+        },
+        {
+          "name": "Polling",
+          "slug": "polling"
+        },
+        {
+          "name": "Running",
+          "slug": "running"
+        },
+        {
+          "name": "Sepak Bola",
+          "slug": "sepak-bola"
+        },
+        {
+          "name": "Tenis",
+          "slug": "tenis"
+        },
+        {
+          "name": "Timnas",
+          "slug": "timnas"
+        },
+        {
+          "name": "Transfer Radar",
+          "slug": "transfer"
+        },
+        {
+          "name": "Uncategorized",
+          "slug": "uncategorized"
+        }
+      ]
+    }
+  },
+  "extensions": {
+    "debug": [
+      {
+        "type": "DEBUG_LOGS_INACTIVE",
+        "message": "GraphQL Debug logging is not active. To see debug logs, GRAPHQL_DEBUG must be enabled."
+      }
+    ],
+    "graphqlSmartCache": {
+      "graphqlObjectCache": []
+    }
+  }
+}

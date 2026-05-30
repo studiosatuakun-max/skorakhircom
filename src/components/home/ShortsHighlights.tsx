@@ -1,41 +1,42 @@
-'use client';
-
 import { Play, Heart, MessageCircle, Share2 } from 'lucide-react';
 import SafeImage from '@/components/shared/SafeImage';
 import Link from 'next/link';
+import { getShorts } from '@/lib/youtubeShorts';
 
-const shortsData = [
-  {
-    id: 1,
-    title: "What a Moment COMO Fans!!",
-    views: "1.2M",
-    thumbnail: "https://i.ytimg.com/vi/BrJqPxwIHvg/maxresdefault.jpg",
-    url: "https://www.youtube.com/shorts/BrJqPxwIHvg"
-  },
-  {
-    id: 2,
-    title: "Veda Ega Pratama 'The Rocket Boy'",
-    views: "850K",
-    thumbnail: "https://i.ytimg.com/vi/ItRNrvlrPQU/maxresdefault.jpg",
-    url: "https://www.youtube.com/shorts/ItRNrvlrPQU"
-  },
-  {
-    id: 3,
-    title: "COMO Goes to Champion League!",
-    views: "2.1M",
-    thumbnail: "https://i.ytimg.com/vi/2TR8QybgH3Q/maxresdefault.jpg",
-    url: "https://www.youtube.com/shorts/2TR8QybgH3Q"
-  },
-  {
-    id: 4,
-    title: "Bismillah MotoGP!",
-    views: "3.5M",
-    thumbnail: "https://i.ytimg.com/vi/So88xT-lM1s/maxresdefault.jpg",
-    url: "https://www.youtube.com/shorts/So88xT-lM1s"
-  }
-];
+export default async function ShortsHighlights() {
+  const shortsData = await getShorts();
 
-export default function ShortsHighlights() {
+  // Jika database kosong, tampilkan placeholder statis agar layout tetap bagus
+  const displayShorts = shortsData.length > 0 ? shortsData : [
+    {
+      id: 1,
+      title: "What a Moment COMO Fans!!",
+      views: "1.2M",
+      thumbnail: "https://i.ytimg.com/vi/BrJqPxwIHvg/maxresdefault.jpg",
+      url: "https://www.youtube.com/shorts/BrJqPxwIHvg"
+    },
+    {
+      id: 2,
+      title: "Veda Ega Pratama 'The Rocket Boy'",
+      views: "850K",
+      thumbnail: "https://i.ytimg.com/vi/ItRNrvlrPQU/maxresdefault.jpg",
+      url: "https://www.youtube.com/shorts/ItRNrvlrPQU"
+    },
+    {
+      id: 3,
+      title: "COMO Goes to Champion League!",
+      views: "2.1M",
+      thumbnail: "https://i.ytimg.com/vi/2TR8QybgH3Q/maxresdefault.jpg",
+      url: "https://www.youtube.com/shorts/2TR8QybgH3Q"
+    },
+    {
+      id: 4,
+      title: "Bismillah MotoGP!",
+      views: "3.5M",
+      thumbnail: "https://i.ytimg.com/vi/So88xT-lM1s/maxresdefault.jpg",
+      url: "https://www.youtube.com/shorts/So88xT-lM1s"
+    }
+  ];
   return (
     <section aria-labelledby="shorts-title" className="mt-12 sm:mt-16 mb-8 overflow-hidden">
       <div className="flex items-center justify-between mb-6">
@@ -55,7 +56,7 @@ export default function ShortsHighlights() {
       </div>
 
       <div className="flex overflow-x-auto gap-4 md:gap-6 pb-6 scrollbar-hide snap-x snap-mandatory px-1">
-        {shortsData.slice(0, 4).map((short) => (
+        {displayShorts.slice(0, 6).map((short) => (
           <Link href={short.url} target="_blank" rel="noopener noreferrer" key={short.id} className="relative shrink-0 snap-center sm:snap-start group cursor-pointer w-[160px] sm:w-[220px] lg:w-[260px] aspect-[9/16] rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 hover:border-orange-500 transition-colors shadow-lg block">
             
             <SafeImage 

@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { LayoutDashboard, Newspaper, ShieldAlert, FileEdit, Settings, LogOut, Bot, ShoppingCart } from 'lucide-react';
+import { LayoutDashboard, Newspaper, ShieldAlert, FileEdit, Settings, LogOut, Bot, ShoppingCart, Play } from 'lucide-react';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -25,6 +25,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <Link href="/admin/affiliate" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-slate-800/50 hover:text-white rounded-lg font-bold text-sm transition-colors">
             <ShoppingCart className="w-4 h-4 text-orange-500" />
             Kelola Promosi Affiliate
+          </Link>
+          <Link href="/admin/shorts" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-slate-800/50 hover:text-white rounded-lg font-bold text-sm transition-colors">
+            <Play className="w-4 h-4 text-red-500" />
+            Kelola YouTube Shorts
           </Link>
           <a href="https://cms.skorakhir.com/wp-admin" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-slate-800/50 hover:text-white rounded-lg font-bold text-sm transition-colors">
             <Newspaper className="w-4 h-4 text-blue-400" />
