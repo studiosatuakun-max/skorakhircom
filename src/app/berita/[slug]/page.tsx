@@ -50,6 +50,7 @@ async function getArticle(slug: string) {
         tags {
           nodes {
             name
+            slug
           }
         }
       }
@@ -72,7 +73,7 @@ async function getArticle(slug: string) {
       author: post.author?.node?.name || 'Tim Redaksi',
       content: post.content,
       image: post.featuredImage?.node?.sourceUrl?.replace(/^https:\/\//i, 'http://') || '/images/placeholder.png',
-      tags: post.tags?.nodes?.map((t: any) => t.name) || ['SPORT'],
+      tags: post.tags?.nodes?.map((t: any) => ({ name: t.name, slug: t.slug })) || [],
     };
   } catch (error) {
     console.error('Error fetching article:', error);
@@ -274,14 +275,16 @@ export default async function NewsDetail({ params }: Props) {
                 <ContentRenderer htmlContent={processedContent} />
               </ArticleWatermark>
 
-              <div className="mt-12 flex flex-wrap gap-2 pt-6 border-t border-slate-800 mb-12">
-                <span className="text-xs font-black uppercase text-slate-500 py-2 mr-2">Topik Terkait:</span>
-                {article.tags.map((tag: string) => (
-                  <Link key={tag} href="#" className="px-3 py-1.5 bg-slate-900 border border-slate-800 text-xs font-bold text-slate-300 hover:bg-orange-500 hover:text-slate-950 hover:border-orange-500 transition-colors uppercase">
-                    #{tag}
-                  </Link>
-                ))}
-              </div>
+              {article.tags.length > 0 && (
+                <div className="mt-12 flex flex-wrap items-center gap-2 pt-6 border-t border-slate-800 mb-12">
+                  <span className="text-xs font-black uppercase text-slate-500 py-2 mr-2">Topik Terkait:</span>
+                  {article.tags.map((tag: {name: string, slug: string}) => (
+                    <Link key={tag.slug} href={`/tag/${tag.slug}`} className="px-3 py-1.5 bg-slate-900 border border-slate-800 text-xs font-bold text-slate-300 hover:bg-orange-500 hover:text-slate-950 hover:border-orange-500 transition-colors uppercase rounded-md">
+                      #{tag.name}
+                    </Link>
+                  ))}
+                </div>
+              )}
 
               {/* Gear Spotlight Affiliate */}
               <div className="mb-12">
