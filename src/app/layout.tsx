@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import PwaInstallPrompt from '@/components/shared/PwaInstallPrompt';
+import Script from 'next/script';
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -37,6 +38,22 @@ export default function RootLayout({
           <PwaInstallPrompt />
         </div>
         <GoogleAnalytics gaId="G-CWPJVPBE0Z" />
+        <Script 
+          src="https://news.google.com/swg/js/v1/swg-basic.js" 
+          strategy="lazyOnload" 
+        />
+        <Script id="google-swg-init" strategy="lazyOnload">
+          {`
+            (self.SWG_BASIC = self.SWG_BASIC || []).push( basicSubscriptions => {
+              basicSubscriptions.init({
+                type: "NewsArticle",
+                isPartOfType: ["Product"],
+                isPartOfProductId: "CAowpce8DA:openaccess",
+                clientOptions: { theme: "light", lang: "id" },
+              });
+            });
+          `}
+        </Script>
       </body>
     </html>
   );
