@@ -109,13 +109,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ message: 'Tidak ada berita ditemukan.' });
     }
 
-    const latestNews = feed.items[0];
-
-    const articleSource = `
-      Judul Asli: ${latestNews.title}
-      Ringkasan Berita: ${latestNews.contentSnippet || latestNews.content || latestNews.title}
-      Sumber Link: ${latestNews.link}
-    `;
+    const topArticles = feed.items.slice(0, 3);
 
     // Ambil produk affiliate
     let affiliateRule = `5. Di setiap akhir artikel, buat satu paragraf promosi dan sisipkan kode [AFFILIATE] dummy.`;
@@ -127,110 +121,126 @@ export async function GET(request: Request) {
       }
     } catch (err) {}
 
-    const prompt = `
-      Anda adalah jurnalis olahraga profesional "SkorAkhir". Buat artikel berita yang unik dan tajam.
-      
-      BAHAN BERITA:
-      ${articleSource}
-
-      ATURAN:
-      1. Berikan Judul yang clickbait namun elegan (tag <h1>).
-      2. JANGAN PERNAH menyebutkan portal media asal. Klaim ini eksklusif dari "SkorAkhir".
-      3. Pecah tulisan menjadi paragraf-paragraf pendek (maksimal 3-4 kalimat). 
-      4. Gunakan tag HTML yang rapi (<h2>, <p>, <strong>).
-      5. Anda WAJIB merespon DALAM FORMAT JSON murni (tanpa tag markdown) dengan struktur berikut:
-      {
-        "title": "Judul artikel tanpa tag h1",
-        "category": "Pilih satu: Sepak Bola / Bulu Tangkis / MotoGP / Basket / Umum",
-        "content": "<h1>Judul</h1><p>Isi artikel...</p><h2>Subjudul</h2>..."
-      }
-      ${affiliateRule}
-    `;
-
-    let responseText = '';
-    try {
-      const completion = await groq.chat.completions.create({
-        messages: [{ role: 'user', content: prompt }],
-        model: 'llama-3.3-70b-versatile',
-        temperature: 0.7,
-        response_format: { type: 'json_object' },
-      });
-      responseText = completion.choices[0]?.message?.content || '';
-    } catch (error: any) {
-      const fallbackCompletion = await groq.chat.completions.create({
-        messages: [{ role: 'user', content: prompt }],
-        model: 'llama3-8b-8192',
-        temperature: 0.7,
-        response_format: { type: 'json_object' },
-      });
-      responseText = fallbackCompletion.choices[0]?.message?.content || '';
-    }
-    // Bersihkan dari markdown block jika AI membandel
-    responseText = responseText.replace(/^```json/m, '').replace(/^```/m, '').trim();
-    
-    let parsedData;
-    try {
-      parsedData = JSON.parse(responseText);
-    } catch(e) {
-      return NextResponse.json({ error: 'Gagal memparsing JSON dari AI', raw: responseText });
-    }
-
-    const postTitle = parsedData.title || latestNews.title;
-    const postContent = parsedData.content.replace(/<h1>.*?<\/h1>/i, '').trim();
-    const suggestedCategory = parsedData.category || 'Umum';
-
     const wpBaseUrl = process.env.WORDPRESS_API_URL?.split('/graphql')[0].replace(/\/$/, '') || 'https://cms.skorakhir.com';
     const wpUser = process.env.WP_APP_USERNAME;
     const wpPass = process.env.WP_APP_PASSWORD;
     const authHeader = 'Basic ' + Buffer.from(`${wpUser}:${wpPass}`).toString('base64');
 
     if (!wpUser || !wpPass) {
-      return NextResponse.json({ message: 'WP Credentials belum diset', data: parsedData });
+      return NextResponse.json({ error: 'WP Credentials belum diset' }, { status: 500 });
     }
 
-    // 1. Ekstrak & Upload Gambar Asli
-    let mediaId = process.env.WP_DEFAULT_MEDIA_ID ? parseInt(process.env.WP_DEFAULT_MEDIA_ID, 10) : null;
-    const ogImageUrl = await extractOgImage(latestNews.link || '');
-    if (ogImageUrl) {
-      const uploadedMediaId = await uploadImageToWP(ogImageUrl, wpBaseUrl, authHeader);
-      if (uploadedMediaId) mediaId = uploadedMediaId;
+    const results = [];
+
+    for (const newsItem of topArticles) {
+      try {
+        const articleSource = `
+          Judul Asli: ${newsItem.title}
+          Ringkasan Berita: ${newsItem.contentSnippet || newsItem.content || newsItem.title}
+          Sumber Link: ${newsItem.link}
+        `;
+
+        const prompt = `
+          Anda adalah jurnalis olahraga profesional "SkorAkhir". Buat artikel berita yang unik dan tajam.
+          
+          BAHAN BERITA:
+          ${articleSource}
+
+          ATURAN:
+          1. Berikan Judul yang clickbait namun elegan (tag <h1>).
+          2. JANGAN PERNAH menyebutkan portal media asal. Klaim ini eksklusif dari "SkorAkhir".
+          3. Pecah tulisan menjadi paragraf-paragraf pendek (maksimal 3-4 kalimat). 
+          4. Gunakan tag HTML yang rapi (<h2>, <p>, <strong>).
+          5. Anda WAJIB merespon DALAM FORMAT JSON murni (tanpa tag markdown) dengan struktur berikut:
+          {
+            "title": "Judul artikel tanpa tag h1",
+            "category": "Pilih satu: Sepak Bola / Bulu Tangkis / MotoGP / Basket / Umum",
+            "content": "<h1>Judul</h1><p>Isi artikel...</p><h2>Subjudul</h2>..."
+          }
+          ${affiliateRule}
+        `;
+
+        let responseText = '';
+        try {
+          const completion = await groq.chat.completions.create({
+            messages: [{ role: 'user', content: prompt }],
+            model: 'llama-3.3-70b-versatile',
+            temperature: 0.7,
+            response_format: { type: 'json_object' },
+          });
+          responseText = completion.choices[0]?.message?.content || '';
+        } catch (error: any) {
+          const fallbackCompletion = await groq.chat.completions.create({
+            messages: [{ role: 'user', content: prompt }],
+            model: 'llama3-8b-8192',
+            temperature: 0.7,
+            response_format: { type: 'json_object' },
+          });
+          responseText = fallbackCompletion.choices[0]?.message?.content || '';
+        }
+        
+        responseText = responseText.replace(/^```json/m, '').replace(/^```/m, '').trim();
+        
+        let parsedData;
+        try {
+          parsedData = JSON.parse(responseText);
+        } catch(e) {
+          console.error('Gagal memparsing JSON dari AI', responseText);
+          continue; // skip to next article if parsing fails
+        }
+
+        const postTitle = parsedData.title || newsItem.title;
+        const postContent = parsedData.content.replace(/<h1>.*?<\/h1>/i, '').trim();
+        const suggestedCategory = parsedData.category || 'Umum';
+
+        // 1. Ekstrak & Upload Gambar Asli
+        let mediaId = process.env.WP_DEFAULT_MEDIA_ID ? parseInt(process.env.WP_DEFAULT_MEDIA_ID, 10) : null;
+        const ogImageUrl = await extractOgImage(newsItem.link || '');
+        if (ogImageUrl) {
+          const uploadedMediaId = await uploadImageToWP(ogImageUrl, wpBaseUrl, authHeader);
+          if (uploadedMediaId) mediaId = uploadedMediaId;
+        }
+
+        // 2. Cocokkan Kategori
+        const categoryId = await getWpCategoryId(suggestedCategory, wpBaseUrl, authHeader);
+
+        // 3. Posting langsung PUBLISH
+        const wpUrl = `${wpBaseUrl}/wp-json/wp/v2/posts`;
+        const wpResponse = await fetch(wpUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': authHeader,
+            'User-Agent': 'Mozilla/5.0'
+          },
+          body: JSON.stringify({
+            title: postTitle,
+            content: postContent,
+            status: 'publish',
+            categories: [categoryId],
+            ...(mediaId ? { featured_media: mediaId } : {})
+          })
+        });
+
+        if (wpResponse.ok) {
+          const wpResult = await wpResponse.json();
+          results.push({
+            wp_post_id: wpResult.id,
+            title: postTitle,
+            category: suggestedCategory
+          });
+        } else {
+          console.error(`Gagal memposting ke WordPress: ${await wpResponse.text()}`);
+        }
+      } catch (articleErr) {
+        console.error('Error processing article:', articleErr);
+      }
     }
-
-    // 2. Cocokkan Kategori
-    const categoryId = await getWpCategoryId(suggestedCategory, wpBaseUrl, authHeader);
-
-    // 3. Posting langsung PUBLISH
-    const wpUrl = `${wpBaseUrl}/wp-json/wp/v2/posts`;
-    const wpResponse = await fetch(wpUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': authHeader,
-        'User-Agent': 'Mozilla/5.0'
-      },
-      body: JSON.stringify({
-        title: postTitle,
-        content: postContent,
-        status: 'draft',
-        categories: [categoryId],
-        ...(mediaId ? { featured_media: mediaId } : {})
-      })
-    });
-
-    if (!wpResponse.ok) {
-      const errorData = await wpResponse.text();
-      throw new Error(`Gagal memposting ke WordPress: ${errorData}`);
-    }
-
-    const wpResult = await wpResponse.json();
 
     return NextResponse.json({ 
       success: true, 
-      message: 'Berhasil membuat artikel secara Full Auto Pilot!',
-      wp_post_id: wpResult.id,
-      draft_title: postTitle,
-      category: suggestedCategory,
-      media_id: mediaId
+      message: `Berhasil memproses ${results.length} artikel terupdate secara Full Auto Pilot!`,
+      data: results
     });
 
   } catch (error: any) {
