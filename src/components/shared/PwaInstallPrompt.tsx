@@ -26,11 +26,20 @@ export default function PwaInstallPrompt() {
     // Cek apakah mode standalone (sudah di-install)
     const isInStandaloneMode = ('standalone' in window.navigator) && (window.navigator as any).standalone;
     const isPwa = window.matchMedia('(display-mode: standalone)').matches;
+    const isInstalledInStorage = localStorage.getItem('pwa_installed') === 'true';
 
     // Jika sudah di-install, jangan jalankan logika prompt
-    if (isInStandaloneMode || isPwa) return;
+    if (isInStandaloneMode || isPwa || isInstalledInStorage) return;
 
     let intervalId: NodeJS.Timeout;
+
+    // Listener jika sukses di-install via native prompt (Android/Desktop)
+    const handleAppInstalled = () => {
+      localStorage.setItem('pwa_installed', 'true');
+      setShowPrompt(false);
+      if (intervalId) clearInterval(intervalId);
+    };
+    window.addEventListener('appinstalled', handleAppInstalled);
 
     if (isIosDevice) {
       // Tampilkan prompt manual untuk iOS setelah 5 detik, lalu setiap 1 menit
@@ -43,10 +52,11 @@ export default function PwaInstallPrompt() {
       return () => {
         clearTimeout(timer);
         if (intervalId) clearInterval(intervalId);
+        window.removeEventListener('appinstalled', handleAppInstalled);
       };
     }
 
-    // Event untuk Android/Chrome
+    // Event untuk Android/Chrome (Hanya trigger jika web belum di-install)
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e);
@@ -63,6 +73,7 @@ export default function PwaInstallPrompt() {
 
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.removeEventListener('appinstalled', handleAppInstalled);
       if (intervalId) clearInterval(intervalId);
     };
   }, []);
@@ -117,14 +128,25 @@ export default function PwaInstallPrompt() {
 
       <div className="mt-2">
         {isIOS ? (
-          <div className="bg-slate-800 rounded-lg p-3 text-xs text-slate-300 flex flex-col gap-2">
-            <p className="flex items-center gap-2">
-              1. Tap icon <Share className="w-4 h-4 text-blue-400" /> di menu bawah Safari.
-            </p>
-            <p className="flex items-center gap-2">
-              2. Scroll ke bawah, lalu pilih <strong className="text-white">"Add to Home Screen"</strong>.
-            </p>
-          </div>
+          <>
+            <div className="bg-slate-800 rounded-lg p-3 text-xs text-slate-300 flex flex-col gap-2">
+              <p className="flex items-center gap-2">
+                1. Tap icon <Share className="w-4 h-4 text-blue-400" /> di menu bawah Safari.
+              </p>
+              <p className="flex items-center gap-2">
+                2. Scroll ke bawah, lalu pilih <strong className="text-white">"Add to Home Screen"</strong>.
+              </p>
+            </div>
+            <button 
+              onClick={() => {
+                localStorage.setItem('pwa_installed', 'true');
+                setShowPrompt(false);
+              }}
+              className="w-full mt-2 text-slate-400 hover:text-white font-bold text-[10px] uppercase tracking-wider py-2 transition-colors"
+            >
+              Saya sudah install
+            </button>
+          </>
         ) : (
           <button 
             onClick={handleInstallClick}
