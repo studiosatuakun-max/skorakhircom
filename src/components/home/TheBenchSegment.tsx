@@ -7,16 +7,18 @@ import { FileText, ArrowRight, BookOpen } from 'lucide-react';
 async function getBenchArticles() {
   const query = `
     query GetBenchPosts {
-      posts(first: 3) {
-        nodes {
-          id
-          title
-          slug
-          excerpt
-          date
-          featuredImage {
-            node {
-              sourceUrl
+      tag(id: "timnas-indonesia", idType: SLUG) {
+        posts(first: 3) {
+          nodes {
+            id
+            title
+            slug
+            excerpt
+            date
+            featuredImage {
+              node {
+                sourceUrl
+              }
             }
           }
         }
@@ -25,7 +27,7 @@ async function getBenchArticles() {
   `;
   try {
     const data = await fetchWP(query);
-    return data?.posts?.nodes || [];
+    return data?.tag?.posts?.nodes || [];
   } catch (error) {
     console.error('Error fetching Bench articles:', error);
     return [];
@@ -51,10 +53,10 @@ export default async function TheBenchSegment() {
           </div>
           <div>
             <h2 className="text-xl font-black italic tracking-tighter text-white uppercase">The Bench</h2>
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Liputan Khusus & In-Depth</p>
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Fokus Timnas Indonesia</p>
           </div>
         </div>
-        <Link href="/kategori/fokus" className="hidden sm:flex items-center gap-1 text-xs font-bold uppercase tracking-widest text-orange-500 hover:text-white transition-colors">
+        <Link href="/tag/timnas-indonesia" className="hidden sm:flex items-center gap-1 text-xs font-bold uppercase tracking-widest text-orange-500 hover:text-white transition-colors">
           Lihat Semua <ArrowRight className="w-3 h-3" />
         </Link>
       </div>
