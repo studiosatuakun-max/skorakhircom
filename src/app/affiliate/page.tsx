@@ -5,6 +5,8 @@ import Footer from '@/components/shared/Footer';
 import SafeImage from '@/components/shared/SafeImage';
 import { ShoppingCart, MessageCircle, TrendingUp, Zap, Search, ChevronRight } from 'lucide-react';
 import { getAffiliateByContext } from '@/lib/affiliateProducts';
+import NicheDemoSelector from '@/components/shared/NicheDemoSelector';
+import DashboardMockup from '@/components/home/DashboardMockup';
 
 export const dynamic = 'force-dynamic';
 
@@ -108,67 +110,29 @@ export default async function AffiliateLandingPage() {
           </div>
         </section>
 
-        {/* LIVE DEMO - Affiliate Grid */}
-        <section id="demo" className="py-24 bg-slate-900 relative">
+        {/* LIVE DEMO - Niche Selector */}
+        <section id="demo" className="py-24 bg-slate-900 relative border-b border-slate-800">
+          <div className="container mx-auto px-4 max-w-7xl">
+            <NicheDemoSelector initialSportsProducts={products} />
+          </div>
+        </section>
+
+        {/* DUMMY DASHBOARD SECTION */}
+        <section className="py-24 bg-slate-950 relative">
           <div className="container mx-auto px-4">
-            <div className="flex flex-col md:flex-row items-end justify-between gap-4 mb-12">
-              <div>
-                <span className="text-orange-500 font-black text-xs uppercase tracking-widest mb-2 block">
-                  Etalase Demo
-                </span>
-                <h2 className="text-3xl md:text-5xl font-black tracking-tight text-white">
-                  Katalog Affiliate
-                </h2>
-              </div>
-              <p className="text-slate-400 text-sm max-w-sm">
-                *Ini adalah contoh tampilan etalase produk affiliate yang bisa Anda kelola dengan mudah.
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <span className="text-orange-500 font-black text-xs uppercase tracking-widest mb-2 block animate-pulse">
+                Intip Dapur Rahasia
+              </span>
+              <h2 className="text-3xl md:text-5xl font-black tracking-tight text-white mb-4">
+                Panel Kontrol <span className="text-orange-500">Super Mudah</span>
+              </h2>
+              <p className="text-slate-400">
+                Anda tidak perlu pusing memikirkan hal teknis. Anda akan mendapatkan akses ke Dashboard eksklusif untuk memonitor pergerakan robot AI, trafik organik, dan lonjakan komisi Anda secara *Real-Time*.
               </p>
             </div>
-
-            {products && products.length > 0 ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-                {products.map((product, idx) => (
-                  <div key={idx} className="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden group flex flex-col hover:border-slate-600 transition-colors relative">
-                    <div className="relative aspect-square bg-slate-800 w-full overflow-hidden">
-                      <SafeImage 
-                        src={product.imageUrl} 
-                        alt={product.name} 
-                        fill 
-                        className="object-cover opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700" 
-                      />
-                      <div className="absolute top-2 right-2 bg-slate-950/80 backdrop-blur text-[10px] font-black uppercase text-orange-500 px-2 py-1 rounded shadow-lg">
-                        {product.discountBadge || 'Promo'}
-                      </div>
-                    </div>
-                    <div className="p-4 flex flex-col flex-1">
-                      <h3 className="text-white font-bold text-sm md:text-base leading-tight mb-2 line-clamp-2 flex-1 group-hover:text-orange-500 transition-colors">
-                        {product.name}
-                      </h3>
-                      <div className="flex items-center gap-2 mb-4">
-                        <span className="bg-slate-800 text-slate-300 text-[10px] font-bold px-2 py-1 uppercase rounded-md border border-slate-700">
-                          {product.platform}
-                        </span>
-                      </div>
-                      <a 
-                        href={product.affiliateUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full bg-slate-800 hover:bg-orange-500 text-white hover:text-slate-900 font-black text-xs uppercase tracking-widest py-3 flex items-center justify-center gap-2 transition-colors rounded-lg border border-slate-700 hover:border-orange-500"
-                      >
-                        <ShoppingCart className="w-4 h-4" />
-                        Cek Harga
-                      </a>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-20 bg-slate-950 rounded-xl border border-slate-800 border-dashed">
-                <ShoppingCart className="w-12 h-12 text-slate-700 mx-auto mb-4" />
-                <h3 className="text-2xl font-black italic text-slate-400">Database Kosong</h3>
-                <p className="text-slate-500 mt-2">Katalog produk affiliate sedang dalam pembaruan.</p>
-              </div>
-            )}
+            
+            <DashboardMockup />
           </div>
         </section>
 
