@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import SafeImage from '@/components/shared/SafeImage';
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart, ArrowRight } from 'lucide-react';
 import { AffiliateProduct } from '@/lib/affiliateProducts';
 import useEmblaCarousel from 'embla-carousel-react';
 import AutoScroll from 'embla-carousel-auto-scroll';
@@ -60,14 +60,14 @@ export default function EditorialShowcase({ products }: { products: AffiliatePro
 
   return (
     <section className="flex flex-col gap-6" aria-labelledby="editorial-showcase">
-      <div className="flex items-center justify-between border-b-2 border-white/20 pb-2">
-        <h2 id="editorial-showcase" className="text-2xl sm:text-3xl font-black italic tracking-tight uppercase text-white">
-          Gear Spotlight
-        </h2>
-        <span className="text-sm font-bold text-slate-400 uppercase tracking-widest hidden sm:block">
-          Rekomendasi Spesial
-        </span>
-      </div>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+          <h2 id="editorial-showcase" className="text-3xl font-black italic tracking-tighter uppercase text-slate-100 flex items-center gap-3">
+            SkorAkhir Picks
+          </h2>
+          <Link href="/affiliate" className="text-xs font-bold uppercase tracking-widest text-slate-400 hover:text-orange-500 transition-colors flex items-center gap-1 group">
+            Lihat Semua <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </div>
 
       <div className="overflow-hidden w-full relative group/carousel pb-4" ref={emblaRef}>
         <div className="flex touch-pan-y -ml-4">

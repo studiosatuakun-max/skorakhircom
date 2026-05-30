@@ -61,6 +61,9 @@ export default async function Header() {
             priority
           />
         </Link>
+        <Link href="/affiliate" className="bg-orange-500 text-slate-900 font-black px-4 py-2 text-xs uppercase tracking-widest hover:bg-white transition-colors transform hover:scale-105 shadow-lg shadow-orange-500/20">
+          SkorAkhir Picks
+        </Link>
 
         <MegaMenuNav categoryPosts={categoryPosts} />
 
