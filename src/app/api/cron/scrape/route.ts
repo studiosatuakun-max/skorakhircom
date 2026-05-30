@@ -157,6 +157,7 @@ export async function GET(request: Request) {
           Anda WAJIB merespon DALAM FORMAT JSON murni (tanpa blok markdown) dengan struktur berikut:
           {
             "title": "Judul artikel tanpa tag h1",
+            "excerpt": "Ringkasan pendek 2 kalimat untuk SEO Meta Description",
             "category": "Pilih satu: Sepak Bola / Bulu Tangkis / MotoGP / Basket / Umum",
             "content": "<h1>Judul</h1><p>Isi artikel yang sangat panjang...</p><h2>Subjudul</h2>..."
           }
@@ -194,6 +195,7 @@ export async function GET(request: Request) {
 
         const postTitle = parsedData.title || newsItem.title;
         const postContent = parsedData.content.replace(/<h1>.*?<\/h1>/i, '').trim();
+        const postExcerpt = parsedData.excerpt || '';
         const suggestedCategory = parsedData.category || 'Umum';
 
         // 1. Ekstrak & Upload Gambar Asli
@@ -219,6 +221,7 @@ export async function GET(request: Request) {
           body: JSON.stringify({
             title: postTitle,
             content: postContent,
+            excerpt: postExcerpt,
             status: 'draft',
             categories: [categoryId],
             ...(mediaId ? { featured_media: mediaId } : {})

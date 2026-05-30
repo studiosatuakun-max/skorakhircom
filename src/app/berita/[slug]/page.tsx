@@ -29,6 +29,7 @@ async function getArticle(slug: string) {
         title
         slug
         content
+        excerpt
         date
         modified
         categories {
@@ -72,6 +73,7 @@ async function getArticle(slug: string) {
       modified: post.modified || post.date,
       author: post.author?.node?.name || 'Tim Redaksi',
       content: post.content,
+      excerpt: post.excerpt,
       image: post.featuredImage?.node?.sourceUrl?.replace(/^https:\/\//i, 'http://') || '/images/placeholder.png',
       tags: post.tags?.nodes?.map((t: any) => ({ name: t.name, slug: t.slug })) || [],
     };
@@ -93,12 +95,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: 'Halaman Tidak Ditemukan - SkorAkhir' };
   }
 
+  const rawDescription = article.excerpt || article.content;
+  const cleanDescription = rawDescription.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').replace(/\n/g, ' ').trim().substring(0, 160) + '...';
+
   return {
     title: `${article.title} - SkorAkhir`,
-    description: article.content.substring(0, 150).replace(/<[^>]+>/g, '') + '...',
+    description: cleanDescription,
     openGraph: {
       title: article.title,
-      description: article.content.substring(0, 150).replace(/<[^>]+>/g, '') + '...',
+      description: cleanDescription,
       url: `/berita/${article.slug}`,
       siteName: 'SkorAkhir',
       images: [
@@ -116,7 +121,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     twitter: {
       card: 'summary_large_image',
       title: article.title,
-      description: article.content.substring(0, 150).replace(/<[^>]+>/g, '') + '...',
+      description: cleanDescription,
       images: [article.image],
     }
   };
