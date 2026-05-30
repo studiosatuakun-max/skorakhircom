@@ -27,15 +27,23 @@ export default function PwaInstallPrompt() {
     const isInStandaloneMode = ('standalone' in window.navigator) && (window.navigator as any).standalone;
     const isPwa = window.matchMedia('(display-mode: standalone)').matches;
 
-    if (isIosDevice && !isInStandaloneMode && !isPwa) {
-      // Tampilkan prompt manual untuk iOS setelah 5 detik
+    // Jika sudah di-install, jangan jalankan logika prompt
+    if (isInStandaloneMode || isPwa) return;
+
+    let intervalId: NodeJS.Timeout;
+
+    if (isIosDevice) {
+      // Tampilkan prompt manual untuk iOS setelah 5 detik, lalu setiap 1 menit
+      const showIosPrompt = () => setShowPrompt(true);
       const timer = setTimeout(() => {
-        const hasSeenPrompt = localStorage.getItem('pwa_ios_prompt_seen');
-        if (!hasSeenPrompt) {
-          setShowPrompt(true);
-        }
+        showIosPrompt();
+        intervalId = setInterval(showIosPrompt, 60000);
       }, 5000);
-      return () => clearTimeout(timer);
+
+      return () => {
+        clearTimeout(timer);
+        if (intervalId) clearInterval(intervalId);
+      };
     }
 
     // Event untuk Android/Chrome
@@ -43,17 +51,19 @@ export default function PwaInstallPrompt() {
       e.preventDefault();
       setDeferredPrompt(e);
       
-      const hasSeenPrompt = localStorage.getItem('pwa_prompt_seen');
-      if (!hasSeenPrompt) {
-        // Beri delay sedikit agar user bisa baca konten dulu
-        setTimeout(() => setShowPrompt(true), 3000);
-      }
+      // Beri delay sedikit agar user bisa baca konten dulu, lalu setiap 1 menit
+      const showAndroidPrompt = () => setShowPrompt(true);
+      setTimeout(() => {
+        showAndroidPrompt();
+        intervalId = setInterval(showAndroidPrompt, 60000);
+      }, 3000);
     };
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      if (intervalId) clearInterval(intervalId);
     };
   }, []);
 
@@ -63,18 +73,20 @@ export default function PwaInstallPrompt() {
       const { outcome } = await deferredPrompt.userChoice;
       if (outcome === 'accepted') {
         console.log('User accepted the install prompt');
+        // Jika diterima, jangan munculkan lagi
+        setShowPrompt(false);
       } else {
         console.log('User dismissed the install prompt');
+        // Jika ditolak native prompt, kita tutup UI kita (nanti 1 menit lagi kebuka sendiri)
+        setShowPrompt(false);
       }
       setDeferredPrompt(null);
-      setShowPrompt(false);
-      localStorage.setItem('pwa_prompt_seen', 'true');
     }
   };
 
   const handleClose = () => {
     setShowPrompt(false);
-    localStorage.setItem(isIOS ? 'pwa_ios_prompt_seen' : 'pwa_prompt_seen', 'true');
+    // Tidak di-save ke localStorage agar 1 menit lagi tetap muncul
   };
 
   if (!showPrompt) return null;
