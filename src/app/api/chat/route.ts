@@ -58,7 +58,7 @@ export async function POST(req: Request) {
     const { messages } = await req.json();
 
     const model = genAI.getGenerativeModel({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-1.5-flash',
       systemInstruction: `Anda adalah "SkorAkhir AI", seorang pakar dan analis olahraga yang bekerja untuk portal berita olahraga SkorAkhir.com. 
 Kepribadian Anda: Tajam, informatif, asik, bersemangat, dan kadang menyisipkan opini pedas layaknya komentator sepak bola.
 Aturan:

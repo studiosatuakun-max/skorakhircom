@@ -149,10 +149,10 @@ export async function GET(request: Request) {
 
     let result;
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
       result = await model.generateContent(prompt);
     } catch (error: any) {
-      const fallbackModel = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+      const fallbackModel = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
       result = await fallbackModel.generateContent(prompt);
     }
 
