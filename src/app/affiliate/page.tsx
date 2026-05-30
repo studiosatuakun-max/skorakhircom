@@ -44,7 +44,7 @@ export default async function AffiliateLandingPage() {
               <span className="text-xs font-bold uppercase tracking-widest text-slate-300">Live Demo System</span>
             </div>
             
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black italic tracking-tighter text-white uppercase mb-6 max-w-5xl leading-[1.1] animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tight text-white mb-6 max-w-5xl leading-[1.1] animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100">
               Mesin Pencetak <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500">Pasif Income</span> Untuk Affiliator
             </h1>
             
@@ -76,7 +76,7 @@ export default async function AffiliateLandingPage() {
         <section className="py-24 bg-slate-950 relative border-b border-slate-900">
           <div className="container mx-auto px-4">
             <div className="text-center max-w-3xl mx-auto mb-16">
-              <h2 className="text-3xl md:text-5xl font-black italic uppercase tracking-tighter text-white mb-4">
+              <h2 className="text-3xl md:text-5xl font-black tracking-tight text-white mb-4">
                 Kenapa Sistem Ini <span className="text-orange-500">Superior?</span>
               </h2>
               <p className="text-slate-400">Website ini (SkorAkhir.com) adalah bukti nyata. Dibangun dengan arsitektur Headless modern yang dirancang khusus untuk mendominasi mesin pencari.</p>
@@ -116,7 +116,7 @@ export default async function AffiliateLandingPage() {
                 <span className="text-orange-500 font-black text-xs uppercase tracking-widest mb-2 block">
                   Etalase Demo
                 </span>
-                <h2 className="text-3xl md:text-5xl font-black italic uppercase tracking-tighter text-white">
+                <h2 className="text-3xl md:text-5xl font-black tracking-tight text-white">
                   Katalog Affiliate
                 </h2>
               </div>
@@ -176,7 +176,7 @@ export default async function AffiliateLandingPage() {
         <section className="py-24 bg-orange-500 relative overflow-hidden">
           <div className="absolute inset-0 bg-[url('/images/pattern.svg')] opacity-10 mix-blend-overlay"></div>
           <div className="container mx-auto px-4 relative z-10 text-center">
-            <h2 className="text-4xl md:text-6xl font-black italic uppercase tracking-tighter text-slate-950 mb-6 max-w-4xl mx-auto leading-none">
+            <h2 className="text-4xl md:text-6xl font-black tracking-tight text-slate-950 mb-6 max-w-4xl mx-auto leading-none">
               Siap Membangun Kerajaan Affiliate Anda Sendiri?
             </h2>
             <p className="text-slate-900 font-bold md:text-xl max-w-2xl mx-auto mb-10">
