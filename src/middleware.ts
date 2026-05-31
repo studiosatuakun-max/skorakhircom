@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 // Daftar rute statis/valid utama yang BUKAN artikel (agar tidak kena redirect ke /berita/)
-const publicRoutes = ['/affiliate', '/anggota', '/berita', '/kategori', '/admin', '/api', '/_next', '/world-cup-2027', '/feed'];
+const publicRoutes = ['/affiliate', '/anggota', '/berita', '/kategori', '/admin', '/api', '/_next', '/world-cup-2026', '/feed', '/tentang-kami', '/redaksi', '/pedoman-media-siber', '/kontak', '/tag', '/polling'];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
