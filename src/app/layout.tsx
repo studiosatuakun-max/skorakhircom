@@ -19,6 +19,9 @@ export const metadata: Metadata = {
     capable: true,
     title: 'SkorAkhir',
     statusBarStyle: 'black-translucent',
+  },
+  verification: {
+    google: 'oIizUevHDh7vo6HhcwfwIXEuGIfhU-RWlrFQrM4g0mQ',
   }
 };
 
