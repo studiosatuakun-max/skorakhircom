@@ -129,6 +129,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: article.title,
       description: cleanDescription,
       images: [article.image],
+    },
+    alternates: {
+      canonical: `/berita/${article.slug}`,
     }
   };
 }
