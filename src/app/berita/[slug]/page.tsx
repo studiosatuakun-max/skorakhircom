@@ -204,6 +204,33 @@ export default async function NewsDetail({ params }: Props) {
     },
   };
 
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Beranda',
+        item: 'https://skorakhir.com/',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: article.category,
+        item: `https://skorakhir.com/kategori/${article.categorySlug}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: article.title,
+        item: `https://skorakhir.com/berita/${article.slug}`,
+      },
+    ],
+  };
+
+  const schemaData = [jsonLd, breadcrumbSchema];
+
   const renderContent = (htmlOrText: string) => {
     if (/<[a-z][\s\S]*>/i.test(htmlOrText)) {
       return htmlOrText;
@@ -222,7 +249,7 @@ export default async function NewsDetail({ params }: Props) {
       <Header />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
       />
 
       <main className="min-h-screen pt-8 pb-16">

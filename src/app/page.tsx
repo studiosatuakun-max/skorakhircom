@@ -20,9 +20,31 @@ export default async function Home() {
   // Ambil data affiliate secara dinamis untuk homepage
   const homepageAffiliates = await getAffiliateByContext('all');
 
+  const orgSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'SkorAkhir',
+    url: 'https://skorakhir.com',
+    logo: 'https://skorakhir.com/logo.png',
+    sameAs: [
+      'https://twitter.com/skorakhircom',
+      'https://instagram.com/skorakhircom',
+      'https://facebook.com/skorakhircom'
+    ],
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'customer support',
+      email: 'redaksi@skorakhir.com'
+    }
+  };
+
   return (
     <>
       <Header />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
+      />
       <main className="py-8 flex flex-col min-h-screen">
         <div className="container mx-auto px-4 space-y-12">
           
