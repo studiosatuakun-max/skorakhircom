@@ -1,5 +1,6 @@
 import React from 'react';
 import { Newspaper, ShieldAlert, Activity, User } from 'lucide-react';
+import PingSeoButton from '@/components/admin/PingSeoButton';
 
 export default function AdminDashboard() {
   return (
@@ -69,6 +70,9 @@ export default function AdminDashboard() {
           </div>
         </div>
       </div>
+
+      {/* SEO Auto Ping Module */}
+      <PingSeoButton />
     </div>
   );
 }
