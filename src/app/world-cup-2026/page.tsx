@@ -10,14 +10,14 @@ import { fetchWP } from '@/lib/wp-graphql';
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: 'World Cup 2027 Corner | SkorAkhir',
-  description: 'Liputan eksklusif, jadwal, klasemen, dan berita terbaru seputar Piala Dunia 2027 dari kacamata SkorAkhir.',
+  title: 'World Cup 2026 Corner | SkorAkhir',
+  description: 'Liputan eksklusif, jadwal, klasemen, dan berita terbaru seputar Piala Dunia 2026 dari kacamata SkorAkhir.',
 };
 
 async function getWorldCupData() {
   const query = `
     query GetWorldCupPosts {
-      tag(id: "piala-dunia-2027", idType: SLUG) {
+      tag(id: "piala-dunia-2026", idType: SLUG) {
         posts(first: 20) {
           nodes {
             id
@@ -72,11 +72,11 @@ export default async function WorldCupCorner() {
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-black italic tracking-tighter text-white uppercase leading-[0.9] mb-6">
                 World Cup<br/>
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500">
-                  2027 Corner
+                  2026 Corner
                 </span>
               </h1>
               <p className="text-lg md:text-xl text-slate-300 font-medium max-w-2xl leading-relaxed mb-10 border-l-4 border-orange-500 pl-4">
-                Pusat komando liputan Piala Dunia 2027. Ikuti persaingan, intip strategi ruang ganti, dan pantau perjuangan wakil Asia menuju puncak dunia.
+                Pusat komando liputan Piala Dunia 2026. Ikuti persaingan, intip strategi ruang ganti, dan pantau perjuangan wakil Asia menuju puncak dunia.
               </p>
               
               <div className="flex flex-wrap items-center gap-4">
@@ -91,7 +91,7 @@ export default async function WorldCupCorner() {
                   <Calendar className="w-8 h-8 text-orange-500" />
                   <div>
                     <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Kick-Off</div>
-                    <div className="text-white font-black italic uppercase">Juni 2027</div>
+                    <div className="text-white font-black italic uppercase">Juni 2026</div>
                   </div>
                 </div>
               </div>
@@ -142,7 +142,7 @@ export default async function WorldCupCorner() {
               ) : (
                 <div className="py-20 text-center bg-slate-950 rounded-xl border border-dashed border-slate-700">
                   <Activity className="w-10 h-10 text-slate-600 mx-auto mb-4" />
-                  <p className="text-slate-400 font-bold">Liputan khusus Piala Dunia 2027 sedang disiapkan oleh Tim Redaksi.</p>
+                  <p className="text-slate-400 font-bold">Liputan khusus Piala Dunia 2026 sedang disiapkan oleh Tim Redaksi.</p>
                 </div>
               )}
             </div>
@@ -153,7 +153,7 @@ export default async function WorldCupCorner() {
               <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
                 <div className="flex items-center gap-3 mb-6">
                   <Activity className="w-5 h-5 text-orange-500" />
-                  <h2 className="text-lg font-black italic tracking-tighter text-white uppercase">Road to 2027</h2>
+                  <h2 className="text-lg font-black italic tracking-tighter text-white uppercase">Road to 2026</h2>
                 </div>
                 <div className="space-y-4">
                   {[1, 2, 3, 4, 5].map((i) => (

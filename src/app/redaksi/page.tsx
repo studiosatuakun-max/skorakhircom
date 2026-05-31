@@ -1,91 +1,70 @@
 import React from 'react';
-import { Metadata } from 'next';
 import Header from '@/components/shared/Header';
 import Footer from '@/components/shared/Footer';
-import Link from 'next/link';
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Susunan Redaksi - SkorAkhir',
-  description: 'Susunan redaksi dan manajemen portal berita olahraga SkorAkhir.com yang dikelola oleh PT Studio Satu Akun.',
+  title: 'Susunan Redaksi | SkorAkhir',
+  description: 'Susunan redaksi dan manajemen SkorAkhir.',
 };
 
-export default function RedaksiPage() {
+export default function Redaksi() {
   return (
     <>
       <Header />
-      <main className="min-h-screen pt-12 pb-24">
+      <main className="min-h-screen bg-slate-950 pb-20 pt-10">
         <div className="container mx-auto px-4 max-w-4xl">
-          <header className="mb-10 border-b border-slate-800 pb-6">
-            <h1 className="text-3xl md:text-5xl font-black italic tracking-tight mb-4 text-white uppercase">
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 md:p-12 shadow-xl">
+            <h1 className="text-3xl md:text-5xl font-black italic tracking-tighter text-white uppercase mb-8 border-b border-slate-800 pb-4">
               Susunan Redaksi
             </h1>
-            <p className="text-slate-400 font-medium">Tim di balik pemberitaan olahraga terdepan SkorAkhir.com.</p>
-          </header>
-
-          <div className="prose prose-invert max-w-none prose-orange">
-            <div className="bg-slate-900 border border-slate-800 p-8 rounded-2xl shadow-xl mb-10 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/5 rounded-full blur-3xl -z-10"></div>
+            
+            <div className="space-y-10 text-slate-300">
               
-              <h2 className="text-2xl font-black italic text-white uppercase mb-6 flex items-center gap-2">
-                <span className="w-8 h-1 bg-orange-500 inline-block"></span>
-                Badan Hukum
-              </h2>
-              <p className="text-lg text-slate-300 font-medium mb-2">
-                SkorAkhir.com diterbitkan dan dikelola secara profesional oleh:
-              </p>
-              <p className="text-xl font-black text-white">
-                PT Studio Satu Akun
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
-              <div className="bg-slate-900/50 border border-slate-800 p-6 rounded-xl">
-                <h3 className="text-orange-500 font-black text-sm uppercase tracking-widest mb-2">Pemimpin Redaksi / Penanggung Jawab</h3>
-                <p className="text-2xl font-black text-white">M Fadil Akbar</p>
-              </div>
-              
-              <div className="bg-slate-900/50 border border-slate-800 p-6 rounded-xl">
-                <h3 className="text-orange-500 font-black text-sm uppercase tracking-widest mb-2">Redaktur Pelaksana</h3>
-                <p className="text-2xl font-black text-white">Dimas Pradana</p>
-              </div>
-            </div>
-
-            <div className="mb-10">
-              <h2 className="text-xl font-black italic text-white uppercase mb-6 border-b border-slate-800 pb-2">
-                Tim Editorial & Liputan
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="p-4 border border-slate-800 rounded-lg bg-slate-900/30">
-                  <p className="font-bold text-white text-lg">Riska Amalia</p>
-                  <p className="text-xs text-slate-500 uppercase font-black tracking-widest">Jurnalis Sepak Bola</p>
+              <section>
+                <h2 className="text-xl font-bold text-orange-500 uppercase tracking-widest mb-4">Manajemen & Redaksi</h2>
+                <div className="space-y-3 text-lg">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-2 border-b border-slate-800/50 pb-3">
+                    <span className="text-slate-400">Pemimpin Umum / Redaksi</span>
+                    <strong className="md:col-span-2 text-white">Fadil Akbar</strong>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-2 border-b border-slate-800/50 pb-3">
+                    <span className="text-slate-400">Redaktur Pelaksana</span>
+                    <strong className="md:col-span-2 text-white">Deel</strong>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-2 border-b border-slate-800/50 pb-3">
+                    <span className="text-slate-400">Editor Senior</span>
+                    <strong className="md:col-span-2 text-white">Lulu Arsyi</strong>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-2 border-b border-slate-800/50 pb-3">
+                    <span className="text-slate-400">Jurnalis Olahraga</span>
+                    <span className="md:col-span-2 text-white font-medium">Budi Santoso, Rio Pratama, Andi Nugroho</span>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-2 border-b border-slate-800/50 pb-3">
+                    <span className="text-slate-400">Fotografer / Visual</span>
+                    <span className="md:col-span-2 text-white font-medium">Dimas Aditya</span>
+                  </div>
                 </div>
-                <div className="p-4 border border-slate-800 rounded-lg bg-slate-900/30">
-                  <p className="font-bold text-white text-lg">Bima Satria</p>
-                  <p className="text-xs text-slate-500 uppercase font-black tracking-widest">Jurnalis Motorsport & E-Sport</p>
-                </div>
-                <div className="p-4 border border-slate-800 rounded-lg bg-slate-900/30">
-                  <p className="font-bold text-white text-lg">Andini Larasati</p>
-                  <p className="text-xs text-slate-500 uppercase font-black tracking-widest">Jurnalis Bulutangkis & Basket</p>
-                </div>
-              </div>
-            </div>
+              </section>
 
-            <div className="mb-10">
-              <h2 className="text-xl font-black italic text-white uppercase mb-6 border-b border-slate-800 pb-2">
-                Teknologi & Pengembangan
-              </h2>
-              <div className="p-6 border border-slate-800 rounded-xl bg-slate-900/50">
-                <p className="font-bold text-white text-lg">Tim IT PT Studio Satu Akun</p>
-                <p className="text-sm text-slate-400 mt-2">Bertanggung jawab atas arsitektur web, AI Scraping Infrastructure, dan keamanan sistem SkorAkhir.com.</p>
-              </div>
-            </div>
+              <section>
+                <h2 className="text-xl font-bold text-orange-500 uppercase tracking-widest mb-4">IT & Operasional</h2>
+                <div className="space-y-3 text-lg">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-2 border-b border-slate-800/50 pb-3">
+                    <span className="text-slate-400">IT & Web Development</span>
+                    <strong className="md:col-span-2 text-white">StudioSatuAkun Tech Team</strong>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-2 border-b border-slate-800/50 pb-3">
+                    <span className="text-slate-400">Digital Marketing & SEO</span>
+                    <strong className="md:col-span-2 text-white">Fadil Akbar</strong>
+                  </div>
+                </div>
+              </section>
 
-            <div className="mt-16 pt-8 border-t border-slate-800 flex flex-wrap gap-4 justify-center">
-              <Link href="/tentang-kami" className="text-sm font-bold text-slate-400 hover:text-orange-500 transition-colors">Tentang Kami</Link>
-              <span className="text-slate-700">•</span>
-              <Link href="/pedoman-media-siber" className="text-sm font-bold text-slate-400 hover:text-orange-500 transition-colors">Pedoman Media Siber</Link>
-              <span className="text-slate-700">•</span>
-              <Link href="/kontak" className="text-sm font-bold text-slate-400 hover:text-orange-500 transition-colors">Kontak Kami</Link>
+              <div className="mt-12 p-6 bg-orange-950/20 border border-orange-500/20 rounded-xl text-sm leading-relaxed text-slate-400">
+                <p>Wartawan <strong>SkorAkhir.com</strong> dilengkapi dengan identitas (Kartu Pers) dan namanya tercantum dalam Boks Redaksi ini.</p>
+                <p className="mt-2">Wartawan <strong>SkorAkhir.com</strong> dilarang meminta dan/atau menerima uang atau barang apa pun dari narasumber terkait dengan tugas jurnalistiknya.</p>
+              </div>
             </div>
           </div>
         </div>

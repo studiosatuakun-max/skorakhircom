@@ -35,23 +35,26 @@ export default async function TrendingTopics() {
 
   return (
     <div className="bg-slate-950 border border-slate-800 p-5 sm:p-6">
-      <div className="flex items-center gap-2 mb-4 sm:mb-6 border-b-2 border-white/20 pb-2">
+      <div className="flex items-center gap-2 mb-6 sm:mb-8 border-b-2 border-slate-800 pb-3">
         <div className="w-3 h-3 bg-yellow-400"></div>
-        <h2 className="text-xl sm:text-2xl font-black italic uppercase tracking-tight text-white">Trending Top 5</h2>
+        <h2 className="text-xl sm:text-2xl font-black italic uppercase tracking-tight text-white">Terpopuler</h2>
       </div>
 
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col">
         {topNews.length > 0 ? (
           topNews.map((news, index) => (
-            <Link key={news.id} href={`/berita/${news.slug}`} className="group flex gap-4 items-start pb-4 border-b border-slate-800 last:border-0 last:pb-0">
-              <span className="text-4xl font-black text-slate-700 group-hover:text-orange-500 transition-colors leading-none min-w-[24px] text-center">
+            <Link key={news.id} href={`/berita/${news.slug}`} className="group flex gap-5 items-start py-5 border-b border-slate-800/50 first:pt-0 last:border-0 last:pb-0">
+              <span 
+                className="text-[80px] font-light leading-[0.7] min-w-[50px] text-center transition-all duration-300 group-hover:[-webkit-text-stroke:1px_#facc15]"
+                style={{
+                  WebkitTextStroke: '1px #64748b', /* slate-500 for a subtler outline */
+                  color: 'transparent'
+                }}
+              >
                 {index + 1}
               </span>
-              <div className="flex-1">
-                <span className="text-[9px] sm:text-[10px] font-bold text-yellow-400 block mb-1">
-                  {news.categories?.name || 'SPORT'}
-                </span>
-                <h3 className="text-sm font-black italic group-hover:text-yellow-400 transition-colors leading-snug line-clamp-2 sm:line-clamp-3 text-slate-200">
+              <div className="flex-1 mt-2">
+                <h3 className="text-[15px] font-bold leading-relaxed text-slate-300 group-hover:text-yellow-400 transition-colors">
                   {news.title}
                 </h3>
               </div>

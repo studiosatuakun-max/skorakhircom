@@ -50,7 +50,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const staticRoutes: MetadataRoute.Sitemap = [
     {
-      url: `${baseUrl}/world-cup-2027`,
+      url: `${baseUrl}/world-cup-2026`,
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 0.9,
