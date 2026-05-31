@@ -81,7 +81,7 @@ export async function GET() {
     const pubDate = new Date(post.date).toUTCString();
     const category = post.categories?.nodes?.[0]?.name || 'Berita';
     const author = post.author?.node?.name || 'Redaksi SkorAkhir';
-    const imageUrl = post.featuredImage?.node?.sourceUrl?.replace(/^https:\/\//i, 'http://');
+    const imageUrl = post.featuredImage?.node?.sourceUrl;
 
     return `
   <item>
