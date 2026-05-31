@@ -48,6 +48,45 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('Error fetching sitemap Polls:', err);
   }
 
+  const staticRoutes: MetadataRoute.Sitemap = [
+    {
+      url: `${baseUrl}/world-cup-2027`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/affiliate`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/tentang-kami`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/redaksi`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/kontak`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/pedoman-media-siber`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    }
+  ];
+
   return [
     {
       url: baseUrl,
@@ -55,6 +94,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'always',
       priority: 1,
     },
+    ...staticRoutes,
     ...pollSitemap,
     ...wpSitemap,
   ];
