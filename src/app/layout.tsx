@@ -55,7 +55,7 @@ export default function RootLayout({
                 type: "NewsArticle",
                 isPartOfType: ["Product"],
                 isPartOfProductId: "CAowpce8DA:openaccess",
-                clientOptions: { theme: "light", lang: "id" },
+                clientOptions: { theme: "dark", lang: "id" },
               });
             });
           `}
