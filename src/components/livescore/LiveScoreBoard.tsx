@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { RefreshCw, AlertCircle, Clock, Trophy } from 'lucide-react';
 import SafeImage from '@/components/shared/SafeImage';
 
-export default function LiveScoreBoard() {
+export default function LiveScoreBoard({ isSidebar = false }: { isSidebar?: boolean }) {
   const [fixtures, setFixtures] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -39,35 +39,50 @@ export default function LiveScoreBoard() {
     return () => clearInterval(interval);
   }, []);
 
+  // Jika di sidebar, limit tampilan maks 3 pertandingan biar ga kepanjangan
+  const displayFixtures = isSidebar ? fixtures.slice(0, 3) : fixtures;
+
   return (
     <div className="w-full">
       {/* HEADER SECTION */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 pb-4 border-b border-slate-800 gap-4">
-        <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-500/10 border border-red-500/20 rounded-full mb-3">
-            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-            <span className="text-[10px] font-bold text-red-500 uppercase tracking-widest">Live Now</span>
+      {!isSidebar ? (
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 pb-4 border-b border-slate-800 gap-4">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-500/10 border border-red-500/20 rounded-full mb-3">
+              <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+              <span className="text-[10px] font-bold text-red-500 uppercase tracking-widest">Live Now</span>
+            </div>
+            <h2 className="text-2xl font-black italic text-white uppercase tracking-tight">Skor Sementara</h2>
+            <p className="text-sm text-slate-400 mt-1">Pantau hasil pertandingan yang sedang berlangsung.</p>
           </div>
-          <h2 className="text-2xl font-black italic text-white uppercase tracking-tight">Skor Sementara</h2>
-          <p className="text-sm text-slate-400 mt-1">Pantau hasil pertandingan yang sedang berlangsung.</p>
+          
+          <div className="flex items-center gap-3">
+            {lastUpdated && (
+              <span className="text-xs text-slate-500">
+                Update: {lastUpdated.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}
+              </span>
+            )}
+            <button 
+              onClick={fetchLiveScores} 
+              disabled={loading}
+              className="flex items-center gap-2 bg-slate-900 border border-slate-700 hover:border-orange-500 hover:text-orange-500 text-slate-300 px-4 py-2 rounded-lg font-bold text-xs uppercase transition-all disabled:opacity-50"
+            >
+              <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin text-orange-500' : ''}`} />
+              Refresh
+            </button>
+          </div>
         </div>
-        
-        <div className="flex items-center gap-3">
-          {lastUpdated && (
-            <span className="text-xs text-slate-500">
-              Update: {lastUpdated.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}
-            </span>
-          )}
-          <button 
-            onClick={fetchLiveScores} 
-            disabled={loading}
-            className="flex items-center gap-2 bg-slate-900 border border-slate-700 hover:border-orange-500 hover:text-orange-500 text-slate-300 px-4 py-2 rounded-lg font-bold text-xs uppercase transition-all disabled:opacity-50"
-          >
-            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin text-orange-500' : ''}`} />
-            Refresh
+      ) : (
+        <div className="flex items-center justify-between mb-4 border-b-2 border-white/20 pb-2">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+            <h2 className="text-xl font-black italic tracking-tight uppercase text-white">Live Score</h2>
+          </div>
+          <button onClick={fetchLiveScores} disabled={loading} className="text-slate-400 hover:text-orange-500">
+            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
           </button>
         </div>
-      </div>
+      )}
 
       {/* ERROR STATE */}
       {error && (
@@ -108,19 +123,19 @@ export default function LiveScoreBoard() {
 
       {/* EMPTY STATE */}
       {!loading && fixtures.length === 0 && !error && (
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-12 flex flex-col items-center text-center">
-          <div className="w-16 h-16 rounded-full bg-slate-800 flex items-center justify-center mb-4">
-            <Clock className="w-8 h-8 text-slate-500" />
+        <div className={`bg-slate-900 border border-slate-800 rounded-2xl flex flex-col items-center text-center ${isSidebar ? 'p-6' : 'p-12'}`}>
+          <div className="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center mb-4">
+            <Clock className="w-6 h-6 text-slate-500" />
           </div>
-          <h3 className="text-white font-bold text-lg mb-2">Tidak Ada Pertandingan Live</h3>
-          <p className="text-slate-400 text-sm max-w-md">Saat ini sedang tidak ada pertandingan resmi yang berlangsung. Silakan kembali nanti.</p>
+          <h3 className="text-white font-bold text-sm mb-1">Tidak Ada Pertandingan Live</h3>
+          {!isSidebar && <p className="text-slate-400 text-sm max-w-md">Saat ini sedang tidak ada pertandingan resmi yang berlangsung. Silakan kembali nanti.</p>}
         </div>
       )}
 
       {/* FIXTURES GRID */}
       {fixtures.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {fixtures.map((fixture) => (
+        <div className={`grid gap-4 ${isSidebar ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'}`}>
+          {displayFixtures.map((fixture) => (
             <div key={fixture.fixture.id} className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-orange-500/50 transition-colors shadow-lg group relative">
               {/* League Header */}
               <div className="bg-slate-950/50 px-4 py-3 border-b border-slate-800 flex items-center justify-between">
@@ -176,6 +191,14 @@ export default function LiveScoreBoard() {
               </div>
             </div>
           ))}
+        </div>
+      )}
+      
+      {isSidebar && fixtures.length > 3 && (
+        <div className="mt-4 text-center">
+          <a href="/livescore" className="text-xs font-bold text-orange-500 hover:text-white uppercase tracking-widest border border-orange-500/50 hover:border-orange-500 rounded-full px-4 py-2 transition-all">
+            Lihat Semua Livescore
+          </a>
         </div>
       )}
     </div>

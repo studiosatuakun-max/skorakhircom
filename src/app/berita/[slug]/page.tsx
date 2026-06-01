@@ -17,6 +17,7 @@ import PostViewer from '@/components/article/PostViewer';
 import GarudaPrideSidebar from '@/components/article/GarudaPrideSidebar';
 import EditorialShowcase from '@/components/home/EditorialShowcase';
 import GarudaBanner from '@/components/home/GarudaBanner';
+import LiveScoreBoard from '@/components/livescore/LiveScoreBoard';
 import { getAffiliateByContext } from '@/lib/affiliateProducts';
 
 import { fetchWP } from '@/lib/wp-graphql';
@@ -360,6 +361,8 @@ export default async function NewsDetail({ params }: Props) {
 
             {/* Kolom Kanan: Sidebar */}
             <aside className="lg:col-span-4 mt-8 lg:mt-0 flex flex-col gap-8">
+              <LiveScoreBoard isSidebar={true} />
+              
               <TrendingTopics />
               
               <div className="sticky top-24 flex flex-col gap-8">
