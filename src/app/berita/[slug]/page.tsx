@@ -47,6 +47,7 @@ async function getArticle(slug: string) {
         author {
           node {
             name
+            slug
           }
         }
         featuredImage {
@@ -78,6 +79,7 @@ async function getArticle(slug: string) {
       date: post.date,
       modified: post.modified || post.date,
       author: post.author?.node?.name || 'Tim Redaksi',
+      authorSlug: post.author?.node?.slug || 'redaksi',
       content: post.content,
       excerpt: post.excerpt,
       image: post.featuredImage?.node?.sourceUrl || '/images/placeholder.png',
@@ -288,7 +290,12 @@ export default async function NewsDetail({ params }: Props) {
                       {article.author.charAt(0)}
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-slate-200">Oleh <span className="text-orange-500">{article.author}</span></p>
+                      <p className="text-sm font-bold text-slate-200">
+                        Oleh{' '}
+                        <Link href={`/author/${article.authorSlug}`} className="text-orange-500 hover:text-white transition-colors underline decoration-orange-500/30 underline-offset-4">
+                          {article.author}
+                        </Link>
+                      </p>
                       <p className="text-[10px] uppercase font-bold text-slate-500">Jurnalis SkorAkhir</p>
                       <PostViewer slug={article.slug} />
                     </div>

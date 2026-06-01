@@ -17,12 +17,7 @@ const nextConfig: NextConfig = {
         permanent: true, // 301 Redirect
       },
       // Redirect Tag WordPress (Dibuang ke home) - DIHAPUS karena sekarang Tag punya halaman sendiri.
-      // Redirect Author WordPress
-      {
-        source: '/author/:slug*',
-        destination: '/',
-        permanent: true,
-      },
+      // Redirect Author WordPress (DIHAPUS, Author sekarang punya halaman sendiri)
       // Redirect URL format Tanggal (e.g. /2023/12/judul-berita/)
       {
         source: '/:year(\\d{4})/:month(\\d{2})/:slug',
