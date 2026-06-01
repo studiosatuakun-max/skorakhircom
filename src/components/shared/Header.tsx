@@ -61,8 +61,11 @@ export default async function Header() {
             priority
           />
         </Link>
-        <div className="hidden lg:flex items-center gap-6 z-10">
-          <Link href="/affiliate" className="bg-orange-500 text-slate-900 font-black px-4 py-2 text-xs uppercase tracking-widest hover:bg-white transition-colors transform hover:scale-105 shadow-lg shadow-orange-500/20">
+        <div className="hidden lg:flex items-center gap-4 z-10">
+          <Link href="/livescore" className="flex items-center gap-2 border border-slate-700 text-slate-300 font-bold px-4 py-2 text-xs uppercase tracking-widest hover:text-orange-500 hover:border-orange-500 transition-all rounded-md">
+            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> Livescore
+          </Link>
+          <Link href="/affiliate" className="bg-orange-500 text-slate-900 font-black px-4 py-2 text-xs uppercase tracking-widest hover:bg-white transition-colors transform hover:scale-105 shadow-lg shadow-orange-500/20 rounded-md">
             SkorAkhir Picks
           </Link>
         </div>
