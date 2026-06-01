@@ -42,11 +42,11 @@ export default function PwaInstallPrompt() {
     window.addEventListener('appinstalled', handleAppInstalled);
 
     if (isIosDevice) {
-      // Tampilkan prompt manual untuk iOS setelah 5 detik, lalu setiap 1 menit
+      // Tampilkan prompt manual untuk iOS setelah 5 detik, lalu setiap 5 menit
       const showIosPrompt = () => setShowPrompt(true);
       const timer = setTimeout(() => {
         showIosPrompt();
-        intervalId = setInterval(showIosPrompt, 60000);
+        intervalId = setInterval(showIosPrompt, 300000);
       }, 5000);
 
       return () => {
@@ -61,11 +61,11 @@ export default function PwaInstallPrompt() {
       e.preventDefault();
       setDeferredPrompt(e);
       
-      // Beri delay sedikit agar user bisa baca konten dulu, lalu setiap 1 menit
+      // Beri delay sedikit agar user bisa baca konten dulu, lalu setiap 5 menit
       const showAndroidPrompt = () => setShowPrompt(true);
       setTimeout(() => {
         showAndroidPrompt();
-        intervalId = setInterval(showAndroidPrompt, 60000);
+        intervalId = setInterval(showAndroidPrompt, 300000);
       }, 3000);
     };
 
@@ -88,7 +88,7 @@ export default function PwaInstallPrompt() {
         setShowPrompt(false);
       } else {
         console.log('User dismissed the install prompt');
-        // Jika ditolak native prompt, kita tutup UI kita (nanti 1 menit lagi kebuka sendiri)
+        // Jika ditolak native prompt, kita tutup UI kita (nanti 5 menit lagi kebuka sendiri)
         setShowPrompt(false);
       }
       setDeferredPrompt(null);
@@ -97,7 +97,7 @@ export default function PwaInstallPrompt() {
 
   const handleClose = () => {
     setShowPrompt(false);
-    // Tidak di-save ke localStorage agar 1 menit lagi tetap muncul
+    // Tidak di-save ke localStorage agar 5 menit lagi tetap muncul
   };
 
   if (!showPrompt) return null;
