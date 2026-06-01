@@ -12,8 +12,8 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://skorakhircom.vercel.app'),
-  title: 'Skor Akhir & Skor Sementara | Portal Berita Olahraga Terupdate',
-  description: 'Pantau hasil skor akhir dan update skor sementara pertandingan Sepak Bola, MotoGP, E-Sport, dan olahraga lainnya secara real-time dan terpercaya.',
+  title: 'Skor Akhir, Skor Sementara & Livescore | Portal Berita Olahraga',
+  description: 'Pantau hasil skor akhir, update skor sementara, dan livescore pertandingan Sepak Bola, MotoGP, E-Sport, dan olahraga lainnya secara real-time dan terpercaya.',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
