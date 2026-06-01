@@ -14,7 +14,12 @@ async function getAnalyticsData() {
 
   const supabase = createClient(supabaseUrl, supabaseKey);
 
-  // Ambil data klik terbaru
+  // Ambil total klik seluruhnya
+  const { count: totalClicksCount } = await supabase
+    .from('affiliate_clicks')
+    .select('*', { count: 'exact', head: true });
+
+  // Ambil data klik terbaru untuk feed
   const { data: recentClicks, error } = await supabase
     .from('affiliate_clicks')
     .select('*')
@@ -25,14 +30,19 @@ async function getAnalyticsData() {
     return { error: error.message };
   }
 
+  // Ambil data untuk menghitung Top Produk (maksimal 1000 data terakhir supaya tidak berat)
+  const { data: clicksForStats } = await supabase
+    .from('affiliate_clicks')
+    .select('product_name')
+    .order('created_at', { ascending: false })
+    .limit(1000);
+
   // Hitung agregasi (Klik per produk)
   const productStats: Record<string, number> = {};
-  let totalClicks = 0;
 
-  if (recentClicks) {
-    recentClicks.forEach((click: any) => {
+  if (clicksForStats) {
+    clicksForStats.forEach((click: any) => {
       productStats[click.product_name] = (productStats[click.product_name] || 0) + 1;
-      totalClicks++;
     });
   }
 
@@ -41,7 +51,7 @@ async function getAnalyticsData() {
     .sort((a, b) => b[1] - a[1])
     .map(([name, clicks]) => ({ name, clicks }));
 
-  return { recentClicks, topProducts, totalClicks };
+  return { recentClicks, topProducts, totalClicks: totalClicksCount || 0 };
 }
 
 export default async function AnalyticsDashboard() {
@@ -72,7 +82,7 @@ export default async function AnalyticsDashboard() {
                   <h2 className="font-bold text-sm uppercase tracking-wider">Total Clicks</h2>
                 </div>
                 <div className="text-5xl font-black text-white mb-1">{data.totalClicks}</div>
-                <p className="text-xs text-slate-500">Dari 50 data terakhir</p>
+                <p className="text-xs text-slate-500">Sepanjang Waktu</p>
               </div>
 
               {/* Card Top Produk */}

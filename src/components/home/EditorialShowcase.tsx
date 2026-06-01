@@ -76,7 +76,7 @@ export default function EditorialShowcase({ products }: { products: AffiliatePro
               <div className="group relative rounded-xl overflow-hidden bg-slate-900 border border-slate-800 hover:border-orange-500 transition-colors flex flex-col h-full shadow-lg">
                 {/* Image Box - Lebih Kecil */}
                 <Link 
-                  href={`/api/track?url=${encodeURIComponent(product.affiliateUrl)}&platform=${product.platform.toLowerCase()}`}
+                  href={`/api/track?url=${encodeURIComponent(product.affiliateUrl)}&product=${encodeURIComponent(product.name)}&platform=${product.platform.toLowerCase()}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="relative w-full aspect-video sm:aspect-square bg-slate-950/50 flex items-center justify-center overflow-hidden block"
@@ -99,7 +99,7 @@ export default function EditorialShowcase({ products }: { products: AffiliatePro
                     {product.platform}
                   </span>
                   <Link
-                    href={`/api/track?url=${encodeURIComponent(product.affiliateUrl)}&platform=${product.platform.toLowerCase()}`}
+                    href={`/api/track?url=${encodeURIComponent(product.affiliateUrl)}&product=${encodeURIComponent(product.name)}&platform=${product.platform.toLowerCase()}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -122,7 +122,7 @@ export default function EditorialShowcase({ products }: { products: AffiliatePro
                     
                     {/* Tracker Link */}
                     <Link 
-                      href={`/api/track?url=${encodeURIComponent(product.affiliateUrl)}&platform=${product.platform.toLowerCase()}`}
+                      href={`/api/track?url=${encodeURIComponent(product.affiliateUrl)}&product=${encodeURIComponent(product.name)}&platform=${product.platform.toLowerCase()}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="bg-orange-500 hover:bg-yellow-400 text-slate-950 w-8 h-8 flex items-center justify-center rounded-full transition-all active:scale-95 group-hover:-rotate-12 group-hover:shadow-[0_0_10px_rgba(249,115,22,0.5)]"
