@@ -6,7 +6,7 @@ import SafeImage from '@/components/shared/SafeImage';
 export default function AdBanner() {
   return (
     <div className="w-full my-8 flex justify-center items-center px-4 md:px-0">
-      <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="w-full max-w-5xl grid grid-cols-2 md:grid-cols-2 gap-2 md:gap-4">
         
         {/* BANNER 1: THE ORENZ MERCHANDISE */}
         <Link href="https://www.instagram.com/theorenz_merch/?hl=en" target="_blank" rel="noopener noreferrer" className="w-full h-[90px] md:h-[120px] bg-slate-900 border border-slate-800 flex overflow-hidden group hover:border-orange-500 transition-colors relative rounded-xl">
@@ -36,8 +36,8 @@ export default function AdBanner() {
           </div>
         </Link>
 
-        {/* BANNER 2: WORLD CUP 2027 CORNER */}
-        <Link href="/world-cup-2027" className="w-full h-[90px] md:h-[120px] bg-slate-900 border border-slate-800 flex overflow-hidden group hover:border-yellow-500 transition-colors relative rounded-xl">
+        {/* BANNER 2: WORLD CUP 2026 CORNER */}
+        <Link href="/berita/world-cup-2027" className="w-full h-[90px] md:h-[120px] bg-slate-900 border border-slate-800 flex overflow-hidden group hover:border-yellow-500 transition-colors relative rounded-xl">
           <div className="absolute right-0 top-0 bottom-0 w-1/2 bg-gradient-to-l from-yellow-500/20 to-transparent"></div>
           
           <div className="flex-1 flex flex-col justify-center px-4 md:px-6 relative z-10">
@@ -46,10 +46,10 @@ export default function AdBanner() {
                 <span className="w-1.5 h-1.5 rounded-full bg-red-600"></span> Live Hub
               </span>
             </div>
-            <h3 className="text-white font-black italic text-sm md:text-xl uppercase tracking-tight group-hover:text-yellow-500 transition-colors line-clamp-1">
-              World Cup '27
+            <h3 className="text-white font-black italic text-xs md:text-xl uppercase tracking-tight group-hover:text-yellow-500 transition-colors line-clamp-1">
+              World Cup '26
             </h3>
-            <p className="text-slate-400 font-bold text-[9px] md:text-[10px] uppercase tracking-widest mt-0.5">
+            <p className="text-slate-400 font-bold text-[8px] md:text-[10px] uppercase tracking-widest mt-0.5 line-clamp-1">
               Klasemen & Berita Eksklusif
             </p>
           </div>
