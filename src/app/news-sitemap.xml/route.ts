@@ -18,7 +18,15 @@ export async function GET() {
   let posts: any[] = [];
   try {
     const data = await fetchWP(query);
-    posts = data?.posts?.nodes || [];
+    const allPosts = data?.posts?.nodes || [];
+    
+    // Google News Guidelines: Sitemap ONLY contains articles from the last 48 hours (2 days)
+    const fortyEightHoursAgo = new Date(Date.now() - 48 * 60 * 60 * 1000);
+    
+    posts = allPosts.filter((post: any) => {
+      const postDate = new Date(post.date);
+      return postDate >= fortyEightHoursAgo;
+    });
   } catch (error) {
     console.error('Failed to fetch posts for news sitemap:', error);
   }
