@@ -43,7 +43,7 @@ export default function RootLayout({
           {children}
           <PwaInstallPrompt />
         </div>
-        <GoogleAnalytics gaId="G-CWPJVPBE0Z" />
+        <GoogleAnalytics gaId="G-3Q0KYKESH3" />
         <Script 
           src="https://news.google.com/swg/js/v1/swg-basic.js" 
           strategy="lazyOnload" 
