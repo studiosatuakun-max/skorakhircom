@@ -24,15 +24,29 @@ export default async function TransferRadar() {
     `;
     const data = await fetchWP(query);
     transferNews = (data?.posts?.nodes || []).map((post: any, index: number) => {
-      const tag = post.tags?.nodes?.[0]?.name?.toUpperCase() || 'RUMOR';
+      let tag = post.tags?.nodes?.[0]?.name?.toUpperCase();
+      const title = (post.title || '').toUpperCase();
+      
       let color = 'bg-slate-500';
-      if (tag.includes('DONE')) color = 'bg-green-500';
-      else if (tag.includes('HOT')) color = 'bg-orange-500';
-      else if (tag.includes('NEGOTIATION')) color = 'bg-blue-500';
+      let typeText = tag || 'RUMOR';
+
+      // Pengecekan kombinasi dari Tag atau Title
+      const textToSearch = `${tag || ''} ${title}`;
+
+      if (textToSearch.includes('DONE') || textToSearch.includes('RESMI') || textToSearch.includes('SEPAKAT') || textToSearch.includes('HERE WE GO')) {
+        color = 'bg-green-500';
+        if (!tag) typeText = 'DONE DEAL';
+      } else if (textToSearch.includes('HOT') || textToSearch.includes('PANAS') || textToSearch.includes('DEAL')) {
+        color = 'bg-orange-500';
+        if (!tag) typeText = 'HOT RUMOR';
+      } else if (textToSearch.includes('NEGO') || textToSearch.includes('PEMBICARAAN') || textToSearch.includes('INCAR')) {
+        color = 'bg-blue-500';
+        if (!tag) typeText = 'NEGOTIATION';
+      }
       
       return {
         id: post.id || index,
-        type: tag,
+        type: typeText,
         text: post.title,
         color,
       };
