@@ -37,7 +37,7 @@ export default function AdBanner() {
         </Link>
 
         {/* BANNER 2: WORLD CUP 2026 CORNER */}
-        <Link href="/berita/world-cup-2027" className="w-full h-[90px] md:h-[120px] bg-slate-900 border border-slate-800 flex overflow-hidden group hover:border-yellow-500 transition-colors relative rounded-xl">
+        <Link href="/world-cup-2026" className="w-full h-[90px] md:h-[120px] bg-slate-900 border border-slate-800 flex overflow-hidden group hover:border-yellow-500 transition-colors relative rounded-xl">
           <div className="absolute right-0 top-0 bottom-0 w-1/2 bg-gradient-to-l from-yellow-500/20 to-transparent"></div>
           
           <div className="flex-1 flex flex-col justify-center px-4 md:px-6 relative z-10">

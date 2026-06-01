@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 async function getWorldCupData() {
   const query = `
     query GetWorldCupPosts {
-      tag(id: "piala-dunia-2026", idType: SLUG) {
+      category(id: "piala-dunia-2026", idType: SLUG) {
         posts(first: 20) {
           nodes {
             id
@@ -37,8 +37,8 @@ async function getWorldCupData() {
   `;
   try {
     const data = await fetchWP(query);
-    // Jika tag belum ada, balikin array kosong
-    return data?.tag?.posts?.nodes || [];
+    // Jika kategori belum ada, balikin array kosong
+    return data?.category?.posts?.nodes || [];
   } catch (error) {
     console.error('Error fetching World Cup articles:', error);
     return [];
@@ -84,7 +84,7 @@ export default async function WorldCupCorner() {
                   <Trophy className="w-8 h-8 text-yellow-500" />
                   <div>
                     <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Tuan Rumah</div>
-                    <div className="text-white font-black italic uppercase">FIFA 2027</div>
+                    <div className="text-white font-black italic uppercase">AMERIKA 2026</div>
                   </div>
                 </div>
                 <div className="bg-slate-900/80 backdrop-blur border border-slate-700 rounded-xl p-4 flex items-center gap-4 min-w-[200px]">
