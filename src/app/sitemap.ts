@@ -2,6 +2,8 @@ import { MetadataRoute } from 'next';
 import { fetchWP } from '@/lib/wp-graphql';
 import { supabase } from '@/lib/supabase';
 
+export const revalidate = 3600; // Cache selama 1 jam agar artikel baru selalu muncul
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://skorakhir.com';
 
