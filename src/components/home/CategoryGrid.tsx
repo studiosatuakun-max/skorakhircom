@@ -38,9 +38,9 @@ async function getCategoryPosts(categoryName: string) {
 }
 
 export default async function CategoryGrid() {
-  const [sepakBola, volly, motoGp, bulutangkis, esport] = await Promise.all([
-    getCategoryPosts('sepak-bola'),
-    getCategoryPosts('bola-volly'),
+  const [ligaInggris, ligaChampions, motoGp, bulutangkis, esport] = await Promise.all([
+    getCategoryPosts('liga-inggris'),
+    getCategoryPosts('liga-champions'),
     getCategoryPosts('moto-gp'),
     getCategoryPosts('bulutangkis'),
     getCategoryPosts('e-sport'),
@@ -48,20 +48,20 @@ export default async function CategoryGrid() {
   
   const categoriesData = [
     {
-      title: 'ARENA SEPAK BOLA',
-      slug: 'sepak-bola',
+      title: 'LIGA INGGRIS',
+      slug: 'liga-inggris',
       themeColorBg: 'bg-orange-500',
       themeColorText: 'text-slate-900',
       hoverColorText: 'group-hover:text-orange-700',
-      news: sepakBola
+      news: ligaInggris
     },
     {
-      title: 'BLOK BOLA VOLLY',
-      slug: 'bola-volly',
+      title: 'LIGA CHAMPIONS',
+      slug: 'liga-champions',
       themeColorBg: 'bg-yellow-400',
       themeColorText: 'text-white',
       hoverColorText: 'group-hover:text-yellow-400',
-      news: volly
+      news: ligaChampions
     },
     {
       title: 'FOKUS MOTO GP',

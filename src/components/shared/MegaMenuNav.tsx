@@ -9,10 +9,10 @@ export type MegaMenuCategoryPosts = {
 };
 
 const categories = [
-  { name: '⚽ Sepak Bola', slug: '/kategori/sepak-bola' },
-  { name: '🏸 Bulutangkis', slug: '/kategori/bulutangkis' },
+  { name: '⚽ Liga Inggris', slug: '/kategori/liga-inggris' },
+  { name: '🏆 Liga Champions', slug: '/kategori/liga-champions' },
   { name: '🏎️ MotoGP', slug: '/kategori/moto-gp' },
-  { name: '🎮 E-Sport', slug: '/kategori/e-sport' },
+  { name: '🏸 Bulutangkis', slug: '/kategori/bulutangkis' },
 ];
 
 export default function MegaMenuNav({ categoryPosts }: { categoryPosts: MegaMenuCategoryPosts }) {
