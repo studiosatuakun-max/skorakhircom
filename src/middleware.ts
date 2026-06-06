@@ -6,13 +6,6 @@ const publicRoutes = ['/affiliate', '/anggota', '/berita', '/kategori', '/admin'
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const hostname = request.headers.get('host') || '';
-
-  // --- 0. ENFORCE NON-WWW (SEO Best Practice) ---
-  if (hostname.startsWith('www.')) {
-    const newHost = hostname.replace('www.', '');
-    return NextResponse.redirect(`https://${newHost}${pathname}${request.nextUrl.search}`, 301);
-  }
 
   // --- 1. ADMIN AUTHENTICATION ---
   // Hanya kunci route /admin/... tapi kecualikan /admin/login
