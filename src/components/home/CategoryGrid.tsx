@@ -29,7 +29,7 @@ async function getCategoryPosts(categoryName: string) {
       title: post.title,
       slug: post.slug,
       created_at: post.date,
-      featured_image: post.featuredImage?.node?.sourceUrl?.replace(/^https:\/\//i, 'http://') || '/images/placeholder.png',
+      featured_image: post.featuredImage?.node?.sourceUrl || '/images/placeholder.png',
     }));
   } catch (error) {
     console.error(`Failed to fetch category ${categoryName}:`, error);

@@ -16,7 +16,7 @@ export default function SafeImage({ src, fallbackSrc = '/images/placeholder.png'
       {...props}
       src={imgSrc || fallbackSrc}
       alt={alt || 'Image'}
-      unoptimized={hasError} // Hindari server crash kalau URL rusak
+      unoptimized={true} // BUKAN hasError, paksa unoptimized agar bypass Next.js image optimizer yang sering di-block WP
       onError={() => {
         if (!hasError) {
           setImgSrc(fallbackSrc);
