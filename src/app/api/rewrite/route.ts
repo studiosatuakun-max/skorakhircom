@@ -1,4 +1,4 @@
-import Groq from 'groq-sdk';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
@@ -9,14 +9,16 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Text cannot be empty' }, { status: 400 });
     }
 
-    const apiKey = process.env.GROQ_API_KEY;
+    // Gunakan key dari env (HARUS diset di Vercel Dashboard)
+    const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
-      return NextResponse.json({ error: 'Groq API key not configured' }, { status: 500 });
+      return NextResponse.json({ error: 'Gemini API key not configured' }, { status: 500 });
     }
 
-    const groq = new Groq({ apiKey });
+    const genAI = new GoogleGenerativeAI(apiKey);
+    // Menggunakan model gemini-1.5-pro karena ini untuk rewriting yang butuh reasoning kuat
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
 
-    // Gunakan Llama-3 8B atau 70B yang sangat handal untuk text processing
     const prompt = `Anda adalah jurnalis olahraga senior, analis taktik, dan ahli SEO untuk portal berita olahraga "SkorAkhir".
 Gaya penulisan Anda: Tajam, analitis, mendalam (in-depth), energik, dan ala jurnalisme premium internasional.
 
@@ -40,26 +42,22 @@ ${text}
 """
 `;
 
-    const chatCompletion = await groq.chat.completions.create({
-      messages: [
-        {
-          role: "user",
-          content: prompt,
-        },
-      ],
-      model: "llama-3.3-70b-versatile", // Model Llama terbaru yang disupport Groq
-      temperature: 0.3, // Turunkan temperature agar lebih faktual dan tidak berhalusinasi
-      max_tokens: 4000,
+    const result = await model.generateContent({
+      contents: [{ role: "user", parts: [{ text: prompt }] }],
+      generationConfig: {
+        temperature: 0.3,
+        maxOutputTokens: 8192,
+      }
     });
 
-    let outputText = chatCompletion.choices[0]?.message?.content || "";
-    // Bersihkan sisa markdown barangkali Llama masih ngeyel
+    let outputText = result.response.text() || "";
+    // Bersihkan sisa markdown barangkali Gemini masih ngeyel
     outputText = outputText.replace(/^```html\n?/, '').replace(/\n?```$/, '').trim();
 
     return NextResponse.json({ revisedText: outputText }, { status: 200 });
 
   } catch (error: any) {
-    console.error("Groq Rewrite Error:", error);
+    console.error("Gemini Rewrite Error:", error);
     return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 });
   }
 }

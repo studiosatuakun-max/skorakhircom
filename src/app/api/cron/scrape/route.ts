@@ -1,14 +1,15 @@
 import { NextResponse } from 'next/server';
 import Parser from 'rss-parser';
 import * as cheerio from 'cheerio';
-import Groq from 'groq-sdk';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { supabase } from '@/lib/supabase';
 
 export const maxDuration = 60; // Extend Vercel timeout
 
 // Inisialisasi API
 const parser = new Parser();
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+const apiKey = process.env.GEMINI_API_KEY || '';
+const genAI = new GoogleGenerativeAI(apiKey);
 
 // Fungsi pembantu untuk decode URL Google News
 function decodeGoogleNewsUrl(url: string) {
@@ -102,8 +103,8 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Keyword required' }, { status: 400 });
     }
 
-    // 1. Cari Berita di Google News
-    const feed = await parser.parseURL(`https://news.google.com/rss/search?q=${encodeURIComponent(keyword)}&hl=id&gl=ID&ceid=ID:id`);
+    // 1. Cari Berita di Google News (Portal Luar Negeri / Bahasa Inggris)
+    const feed = await parser.parseURL(`https://news.google.com/rss/search?q=${encodeURIComponent(keyword)}&hl=en-US&gl=US&ceid=US:en`);
     
     if (feed.items.length === 0) {
       return NextResponse.json({ message: 'Tidak ada berita ditemukan.' });
@@ -141,46 +142,47 @@ export async function GET(request: Request) {
         `;
 
         const prompt = `
-          Anda adalah jurnalis olahraga profesional "SkorAkhir". Buat artikel berita yang sangat mendalam, panjang, dan tajam (MINIMAL 400 KATA).
+          Anda adalah jurnalis olahraga senior dan analis taktik untuk "SkorAkhir".
+          Tugas Utama: Terjemahkan dan kembangkan sumber berita luar negeri di bawah ini menjadi artikel Bahasa Indonesia yang SANGAT PANJANG, tajam, dan komprehensif (MINIMAL 600 KATA).
           
-          BAHAN BERITA (Gunakan sebagai inti cerita):
+          BAHAN BERITA MENTAH (Dari Portal Luar Negeri):
           ${articleSource}
 
-          ATURAN KONTEN:
-          1. Berikan Judul yang clickbait namun elegan (tag <h1>).
-          2. JANGAN PERNAH menyebutkan portal media asal. Klaim ini eksklusif dari "SkorAkhir".
-          3. KEMBANGKAN BERITA: Walaupun bahan berita di atas singkat, Anda WAJIB mengembangkannya menjadi artikel panjang yang komprehensif. Tambahkan konteks sejarah, analisa mendalam, statistik umum, atau opini tajam layaknya komentator profesional.
-          4. Pecah tulisan menjadi paragraf-paragraf pendek agar mudah dibaca (maksimal 3-4 kalimat per paragraf). 
-          5. Gunakan subheading (<h2>) yang provokatif dan tag HTML yang rapi (<p>, <strong>).
+          ATURAN KONTEN (Hukuman jika dilanggar):
+          1. JANGAN MERANGKUM. Anda WAJIB MENGEMBANGKAN inti cerita dengan detail tambahan yang relevan (sejarah pertemuan, statistik, gaya main).
+          2. Terjemahkan ke Bahasa Indonesia dengan gaya jurnalisme premium (elegan, berapi-api, "Quiet Luxury").
+          3. JANGAN PERNAH menghilangkan nama pemain, pelatih, skor, atau menit krusial yang ada di teks asli. Semuanya harus masuk.
+          4. Buat satu bagian khusus untuk "Review & Analisis Pertandingan".
+          5. Pecah menjadi paragraf-paragraf dengan minimal 3-4 tag <h2> yang provokatif.
+          6. Judul harus clickbait namun elegan (tag <h1>).
+          7. JANGAN menyebutkan nama portal media asal. Berita ini eksklusif milik "SkorAkhir".
           
           ATURAN FORMAT OUTPUT:
-          Anda WAJIB merespon DALAM FORMAT JSON murni (tanpa blok markdown) dengan struktur berikut:
+          Anda WAJIB merespon DALAM FORMAT JSON murni (tanpa blok markdown) dengan struktur:
           {
             "title": "Judul artikel tanpa tag h1",
-            "excerpt": "Ringkasan pendek 2 kalimat untuk SEO Meta Description",
+            "excerpt": "Ringkasan 2 kalimat untuk SEO Meta Description",
             "category": "Pilih satu: Sepak Bola / Bulu Tangkis / MotoGP / Basket / Umum",
-            "content": "<h1>Judul</h1><p>Isi artikel yang sangat panjang...</p><h2>Subjudul</h2>..."
+            "content": "<h1>Judul</h1><p>Isi artikel...</p><h2>Subjudul</h2>..."
           }
           ${affiliateRule}
         `;
 
         let responseText = '';
         try {
-          const completion = await groq.chat.completions.create({
-            messages: [{ role: 'user', content: prompt }],
-            model: 'llama-3.3-70b-versatile',
-            temperature: 0.7,
-            response_format: { type: 'json_object' },
+          const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+          const completion = await model.generateContent({
+            contents: [{ role: "user", parts: [{ text: prompt }] }],
+            generationConfig: {
+              temperature: 0.3,
+              maxOutputTokens: 8192,
+              responseMimeType: "application/json"
+            }
           });
-          responseText = completion.choices[0]?.message?.content || '';
+          responseText = completion.response.text() || '';
         } catch (error: any) {
-          const fallbackCompletion = await groq.chat.completions.create({
-            messages: [{ role: 'user', content: prompt }],
-            model: 'llama3-8b-8192',
-            temperature: 0.7,
-            response_format: { type: 'json_object' },
-          });
-          responseText = fallbackCompletion.choices[0]?.message?.content || '';
+          console.error("Gemini Auto-Scraper Error:", error);
+          continue; // Lewati artikel ini jika AI gagal
         }
         
         responseText = responseText.replace(/^```json/m, '').replace(/^```/m, '').trim();
