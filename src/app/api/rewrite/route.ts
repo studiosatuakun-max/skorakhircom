@@ -19,17 +19,20 @@ export async function POST(req: NextRequest) {
     // Gunakan Llama-3 8B atau 70B yang sangat handal untuk text processing
     const prompt = `Anda adalah jurnalis olahraga senior, analis taktik, dan ahli SEO untuk portal berita olahraga "SkorAkhir".
 Gaya penulisan Anda: Tajam, analitis, mendalam (in-depth), energik, dan ala jurnalisme premium internasional.
-Tugas Anda: Merombak (rewrite) sekaligus MEMPERKAYA artikel berita berikut menjadi artikel baru yang sangat panjang, mendalam, dan komprehensif. Jangan buat artikel yang terlalu pendek.
 
-Panduan Wajib:
-1. Struktur Mendalam: Artikel harus panjang dan komprehensif. Pecah menjadi beberapa sub-topik dengan minimal 3-4 tag <h2> yang menarik.
-2. Review Pertandingan & Analisis: Buat analisis tajam tentang jalannya pertandingan (match review), taktik yang digunakan, dan momen-momen krusial (turning point) yang terjadi di lapangan.
-3. Kaya Data & Fakta: Masukkan dan sorot semua data penting (skor, statistik, menit gol) dari teks asli. Jangan ada fakta krusial yang terlewat.
-4. Format HTML Semantik: Gunakan <p> untuk paragraf, <ul>/<li> untuk daftar fakta atau statistik penting, dan <blockquote> untuk kutipan wawancara/narasumber.
-5. Local Pride: Jika relevan dengan Indonesia, berikan sentuhan narasi "Local Pride" yang membanggakan.
-6. Rekomendasi Afiliasi (WAJIB 1-2 produk): Sisipkan rekomendasi perlengkapan olahraga/jersey yang relevan menggunakan format shortcode ini di dalam paragraf terpisah:
+TUGAS UTAMA: 
+Tulis ulang (rewrite) teks berita di bawah ini menjadi sebuah artikel panjang (minimal 600 kata).
+DILARANG KERAS MENYINGKAT ATAU MERANGKUM (SUMMARIZE) teks asli. Anda harus MENGEMBANGKAN (EXPAND) ceritanya.
+
+Aturan Wajib (Hukuman jika dilanggar):
+1. JANGAN PERNAH menghilangkan SATU PUN nama pemain, nama pelatih, menit gol, atau data statistik yang ada di teks asli. Semuanya WAJIB dimasukkan kembali ke artikel baru Anda secara detail.
+2. JANGAN membuat kalimat generik (seperti "Pemain AS merasa puas" atau "Pelatih AS senang"). Sebutkan NAMA MEREKA secara spesifik sesuai teks asli.
+3. Pecah artikel menjadi beberapa sub-topik dengan minimal 3-4 tag <h2> yang memikat.
+4. Buat satu sesi khusus untuk "Review & Analisis Taktik" yang mendalam tentang jalannya pertandingan.
+5. Gunakan format HTML Semantik: <p> untuk paragraf, <ul>/<li> untuk daftar fakta, dan <blockquote> untuk kutipan.
+6. Sisipkan 1 rekomendasi afiliasi menggunakan format:
    <p>[AFFILIATE name="Nama Produk" price="Rp X.XXX.XXX" url="https://link-affiliate.com" image="https://domain.com/image.jpg" platform="Shopee" badge="Pilihan Editor"]</p>
-7. Output MURNI HTML: DILARANG KERAS menggunakan pengantar, penutup, atau blok markdown \`\`\`html. Langsung keluarkan elemen HTML siap pakai.
+7. Output MURNI HTML, tanpa pengantar atau blok markdown.
 
 Teks Asli:
 """
@@ -45,7 +48,7 @@ ${text}
         },
       ],
       model: "llama-3.3-70b-versatile", // Model Llama terbaru yang disupport Groq
-      temperature: 0.7,
+      temperature: 0.3, // Turunkan temperature agar lebih faktual dan tidak berhalusinasi
       max_tokens: 4000,
     });
 
