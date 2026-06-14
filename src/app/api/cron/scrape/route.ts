@@ -34,7 +34,7 @@ async function extractArticleData(url: string) {
     const $ = cheerio.load(html);
     
     let ogImage = $('meta[property="og:image"]').attr('content');
-    ogImage = ogImage && !ogImage.includes('google') ? ogImage : null;
+    ogImage = ogImage && !ogImage.includes('google') ? ogImage : undefined;
     
     $('script, style, nav, header, footer, aside, .ad, .advertisement').remove();
     let fullText = '';
