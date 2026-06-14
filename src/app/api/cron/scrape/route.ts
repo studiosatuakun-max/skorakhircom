@@ -25,19 +25,28 @@ function decodeGoogleNewsUrl(url: string) {
   return url;
 }
 
-// Fungsi pembantu untuk fetch gambar OG dari link berita asli
-async function extractOgImage(url: string) {
+// Fungsi pembantu untuk fetch gambar OG dan teks dari link berita asli
+async function extractArticleData(url: string) {
   try {
     const realUrl = decodeGoogleNewsUrl(url);
     const res = await fetch(realUrl, { redirect: 'follow', headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36' } });
     const html = await res.text();
     const $ = cheerio.load(html);
-    let ogImage = $('meta[property="og:image"]').attr('content');
     
-    return ogImage && !ogImage.includes('google') ? ogImage : null;
+    let ogImage = $('meta[property="og:image"]').attr('content');
+    ogImage = ogImage && !ogImage.includes('google') ? ogImage : null;
+    
+    $('script, style, nav, header, footer, aside, .ad, .advertisement').remove();
+    let fullText = '';
+    $('p').each((i, el) => {
+      const p = $(el).text().trim();
+      if (p.length > 40) fullText += p + '\\n\\n';
+    });
+    
+    return { ogImage, fullText: fullText.substring(0, 8000) };
   } catch (e) {
-    console.error("Gagal ekstrak gambar OG:", e);
-    return null;
+    console.error("Gagal ekstrak data artikel:", e);
+    return { ogImage: null, fullText: "" };
   }
 }
 
@@ -135,9 +144,10 @@ export async function GET(request: Request) {
 
     for (const newsItem of topArticles) {
       try {
+        const articleData = await extractArticleData(newsItem.link || '');
         const articleSource = `
           Judul Asli: ${newsItem.title}
-          Ringkasan Berita: ${newsItem.contentSnippet || newsItem.content || newsItem.title}
+          Isi Berita Lengkap: ${articleData.fullText || newsItem.contentSnippet || newsItem.title}
           Sumber Link: ${newsItem.link}
         `;
 
@@ -205,9 +215,8 @@ export async function GET(request: Request) {
 
         // 1. Ekstrak & Upload Gambar Asli
         let mediaId = process.env.WP_DEFAULT_MEDIA_ID ? parseInt(process.env.WP_DEFAULT_MEDIA_ID, 10) : null;
-        const ogImageUrl = await extractOgImage(newsItem.link || '');
-        if (ogImageUrl) {
-          const uploadedMediaId = await uploadImageToWP(ogImageUrl, wpBaseUrl, authHeader);
+        if (articleData.ogImage) {
+          const uploadedMediaId = await uploadImageToWP(articleData.ogImage, wpBaseUrl, authHeader);
           if (uploadedMediaId) mediaId = uploadedMediaId;
         }
 
