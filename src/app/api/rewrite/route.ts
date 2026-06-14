@@ -16,8 +16,8 @@ export async function POST(req: NextRequest) {
     }
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    // Menggunakan model gemini-1.5-pro karena ini untuk rewriting yang butuh reasoning kuat
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+    // Menggunakan model gemini-2.5-flash karena gemini-1.5-pro sudah obsolete di 2026 dan bebas limit
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     const prompt = `Anda adalah jurnalis olahraga senior, analis taktik, dan ahli SEO untuk portal berita olahraga "SkorAkhir".
 Gaya penulisan Anda: Tajam, analitis, mendalam (in-depth), energik, dan ala jurnalisme premium internasional.

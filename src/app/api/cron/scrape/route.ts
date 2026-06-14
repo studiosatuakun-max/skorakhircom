@@ -170,7 +170,7 @@ export async function GET(request: Request) {
 
         let responseText = '';
         try {
-          const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+          const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
           const completion = await model.generateContent({
             contents: [{ role: "user", parts: [{ text: prompt }] }],
             generationConfig: {
@@ -185,10 +185,13 @@ export async function GET(request: Request) {
           continue; // Lewati artikel ini jika AI gagal
         }
         
-        responseText = responseText.replace(/^```json/m, '').replace(/^```/m, '').trim();
-        
         let parsedData;
         try {
+          const jsonStart = responseText.indexOf('{');
+          const jsonEnd = responseText.lastIndexOf('}');
+          if (jsonStart !== -1 && jsonEnd !== -1) {
+            responseText = responseText.substring(jsonStart, jsonEnd + 1);
+          }
           parsedData = JSON.parse(responseText);
         } catch(e) {
           console.error('Gagal memparsing JSON dari AI', responseText);
