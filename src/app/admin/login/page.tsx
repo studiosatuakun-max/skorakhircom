@@ -25,9 +25,8 @@ export default function LoginPage() {
       const data = await res.json();
 
       if (res.ok) {
-        // Berhasil login
-        router.push('/admin/berita');
-        router.refresh(); // Refresh biar middleware baca cookie terbaru
+        // Berhasil login - Gunakan hard redirect agar cookie terdeteksi middleware
+        window.location.href = '/admin/berita';
       } else {
         setError(data.error || 'Autentikasi Gagal');
       }
