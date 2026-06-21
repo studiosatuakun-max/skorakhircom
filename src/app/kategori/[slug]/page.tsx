@@ -46,7 +46,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const categoryData = await getCategoryData(slug);
   
   if (!categoryData) {
-    return { title: 'Kategori Tidak Ditemukan | SkorAkhir' };
+    return { 
+      title: 'Kategori Tidak Ditemukan | SkorAkhir',
+      robots: { index: false, follow: false }
+    };
   }
   
   return {

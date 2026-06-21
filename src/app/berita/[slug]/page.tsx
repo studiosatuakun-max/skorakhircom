@@ -101,7 +101,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const article = await getArticle(slug);
 
   if (!article) {
-    return { title: 'Halaman Tidak Ditemukan - SkorAkhir' };
+    return { 
+      title: 'Halaman Tidak Ditemukan - SkorAkhir',
+      robots: { index: false, follow: false }
+    };
   }
 
   const rawDescription = article.excerpt || article.content;

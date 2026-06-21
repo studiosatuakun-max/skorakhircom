@@ -46,7 +46,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const tagData = await getTagData(slug);
   
   if (!tagData) {
-    return { title: 'Tag Tidak Ditemukan | SkorAkhir' };
+    return { 
+      title: 'Tag Tidak Ditemukan | SkorAkhir',
+      robots: { index: false, follow: false }
+    };
   }
   
   return {
