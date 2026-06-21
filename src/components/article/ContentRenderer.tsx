@@ -2,7 +2,7 @@ import React from 'react';
 import parse, { Element, HTMLReactParserOptions, domToReact } from 'html-react-parser';
 import AffiliateSlider from './AffiliateSlider';
 import AffiliateCard from '../shared/AffiliateCard';
-import { padelAffiliates } from '@/lib/affiliateProducts';
+import { padelAffiliates, editorsDeals } from '@/lib/affiliateProducts';
 
 interface ContentRendererProps {
   htmlContent: string;
@@ -16,6 +16,14 @@ const getText = (node: any): string => {
 
 export default function ContentRenderer({ htmlContent }: ContentRendererProps) {
   let hasInjectedSlider = false;
+
+  // Auto-inject affiliate jika artikel tidak memiliki shortcode [AFFILIATE]
+  if (!htmlContent.includes('[AFFILIATE') && editorsDeals && editorsDeals.length > 0) {
+    const randomProduct = editorsDeals[Math.floor(Math.random() * editorsDeals.length)];
+    const badgeStr = randomProduct.discountBadge ? ` badge="${randomProduct.discountBadge}"` : '';
+    const autoShortcode = `\n\n<p>[AFFILIATE name="${randomProduct.name}" price="${randomProduct.price}" url="${randomProduct.affiliateUrl}" image="${randomProduct.imageUrl}" platform="${randomProduct.platform}"${badgeStr}]</p>`;
+    htmlContent += autoShortcode;
+  }
 
   // Menerima tanda kutip biasa ("), smart quotes (” atau “), dan double prime (″)
   const sliderRegex = /(?:<p>)?\s*\[SLIDER\s+title=["“”″]([^"“”″]+)["“”″]\]\s*(?:<\/p>)?([\s\S]*?)(?:<p>)?\s*\[\/SLIDER\]\s*(?:<\/p>)?/gi;
