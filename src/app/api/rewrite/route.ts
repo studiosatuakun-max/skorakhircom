@@ -23,18 +23,24 @@ export async function POST(req: NextRequest) {
 Gaya penulisan Anda: Tajam, analitis, mendalam (in-depth), energik, dan ala jurnalisme premium internasional.
 
 TUGAS UTAMA: 
-Tulis ulang (rewrite) teks berita di bawah ini menjadi sebuah artikel panjang (minimal 600 kata).
-DILARANG KERAS MENYINGKAT ATAU MERANGKUM (SUMMARIZE) teks asli. Anda harus MENGEMBANGKAN (EXPAND) ceritanya.
+Tulis ulang (rewrite) teks berita mentah di bawah ini menjadi sebuah artikel berita Bahasa Indonesia yang SANGAT PANJANG, tajam, dan komprehensif.
 
-Aturan Wajib (Hukuman jika dilanggar):
-1. JANGAN PERNAH menghilangkan SATU PUN nama pemain, nama pelatih, menit gol, atau data statistik yang ada di teks asli. Semuanya WAJIB dimasukkan kembali ke artikel baru Anda secara detail.
-2. JANGAN membuat kalimat generik (seperti "Pemain AS merasa puas" atau "Pelatih AS senang"). Sebutkan NAMA MEREKA secara spesifik sesuai teks asli.
-3. Pecah artikel menjadi beberapa sub-topik dengan minimal 3-4 tag <h2> yang memikat.
-4. Buat satu sesi khusus untuk "Review & Analisis Taktik" yang mendalam tentang jalannya pertandingan.
-5. Gunakan format HTML Semantik: <p> untuk paragraf, <ul>/<li> untuk daftar fakta, dan <blockquote> untuk kutipan.
-6. Sisipkan 1 rekomendasi afiliasi menggunakan format:
-   <p>[AFFILIATE name="Nama Produk" price="Rp X.XXX.XXX" url="https://link-affiliate.com" image="https://domain.com/image.jpg" platform="Shopee" badge="Pilihan Editor"]</p>
-7. Output MURNI HTML, tanpa pengantar atau blok markdown.
+ATURAN KONTEN (Hukuman jika dilanggar):
+1. JANGAN MERANGKUM. Anda WAJIB MENGEMBANGKAN inti cerita. Jika teks asli menyebut nama pemain, Anda wajib menyebutkan namanya, rekam jejak, atau statistiknya.
+2. JANGAN PERNAH menghilangkan nama pemain, nama pelatih, angka skor, persentase penguasaan bola, nama klub, atau menit terjadinya gol yang ada di teks asli!
+3. Gunakan gaya jurnalisme olahraga premium internasional (tajam, analitis, "Quiet Luxury").
+4. Buat satu bagian khusus dengan tag <h2> yang berisi "Review & Analisis Pertandingan".
+5. Buat artikel ini menjadi minimal 4 paragraf besar, dengan subjudul <h2> sebagai pemisah agar tidak bosan dibaca.
+6. Buat judul artikel yang sangat menarik dan panjang (SEO Friendly).
+7. SEO KEYWORD (WAJIB): Sisipkan frasa "skor akhir" (huruf kecil, sebagai bagian dari kalimat jalannya pertandingan/hasil) minimal 4 kali secara natural.
+8. BRANDING (WAJIB): Sebut nama redaksi "SkorAkhir" (huruf besar) minimal 2 kali (misal: "Analisis eksklusif redaksi SkorAkhir...").
+9. INTERNAL LINKING (WAJIB): Jika Anda menyebut nama pemain atau pelatih yang terkenal, JADIKAN NAMA TERSEBUT SEBAGAI LINK HTML yang mengarah ke halaman tag-nya.
+   Contoh format link: <a href="https://www.skorakhir.com/tag/VedaEgaPratama">Veda Ega Pratama</a>.
+   (Hapus spasi pada URL tag, gunakan huruf besar-kecil sesuai nama aslinya seperti contoh VedaEgaPratama). Lakukan ini pada 3-5 nama tokoh utama.
+10. Gunakan format HTML Semantik: <p> untuk paragraf, <ul>/<li> untuk daftar fakta, dan <blockquote> untuk kutipan.
+11. Sisipkan 1 rekomendasi afiliasi menggunakan format:
+    <p>[AFFILIATE name="Nama Produk" price="Rp X.XXX.XXX" url="https://link-affiliate.com" image="https://domain.com/image.jpg" platform="Shopee" badge="Pilihan Editor"]</p>
+12. Output MURNI HTML, tanpa pengantar atau blok markdown.
 
 Teks Asli:
 """

@@ -166,6 +166,11 @@ export async function GET(request: Request) {
           5. Pecah menjadi paragraf-paragraf dengan minimal 3-4 tag <h2> yang provokatif.
           6. Judul harus clickbait namun elegan (tag <h1>).
           7. JANGAN menyebutkan nama portal media asal. Berita ini eksklusif milik "SkorAkhir".
+          8. SEO KEYWORD (WAJIB): Sisipkan frasa "skor akhir" (huruf kecil, sebagai bagian dari kalimat jalannya pertandingan/hasil) minimal 4 kali secara natural.
+          9. BRANDING (WAJIB): Sebut nama redaksi "SkorAkhir" (huruf besar) minimal 2 kali (misal: "Analisis eksklusif redaksi SkorAkhir...").
+          10. INTERNAL LINKING (WAJIB): Jika Anda menyebut nama pemain atau pelatih yang terkenal, JADIKAN NAMA TERSEBUT SEBAGAI LINK HTML yang mengarah ke halaman tag-nya.
+              Contoh format link: <a href="https://www.skorakhir.com/tag/VedaEgaPratama">Veda Ega Pratama</a>.
+              (Hapus spasi pada URL tag, gunakan huruf besar-kecil sesuai nama aslinya seperti contoh VedaEgaPratama). Lakukan ini pada 3-5 nama tokoh utama.
           
           ATURAN FORMAT OUTPUT:
           Anda WAJIB merespon DALAM FORMAT JSON murni (tanpa blok markdown) dengan struktur:
