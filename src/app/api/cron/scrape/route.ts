@@ -98,6 +98,39 @@ async function getWpCategoryId(keywordFromAI: string, wpUrl: string, authHeader:
   }
 }
 
+// Fungsi untuk memproses Tags (mencari atau membuat baru)
+async function getOrCreateWpTags(tags: string[], wpUrl: string, authHeader: string) {
+  const tagIds = [];
+  if (!Array.isArray(tags)) return [];
+  for (const tagName of tags) {
+    if (!tagName || typeof tagName !== 'string') continue;
+    try {
+      const searchRes = await fetch(`${wpUrl}/wp-json/wp/v2/tags?search=${encodeURIComponent(tagName)}`, {
+        headers: { 'Authorization': authHeader }
+      });
+      const existingTags = await searchRes.json();
+      const exactMatch = existingTags.find((t: any) => t.name.toLowerCase() === tagName.toLowerCase());
+      
+      if (exactMatch) {
+        tagIds.push(exactMatch.id);
+      } else {
+        const createRes = await fetch(`${wpUrl}/wp-json/wp/v2/tags`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': authHeader },
+          body: JSON.stringify({ name: tagName })
+        });
+        if (createRes.ok) {
+          const newTag = await createRes.json();
+          tagIds.push(newTag.id);
+        }
+      }
+    } catch(e) {
+      console.error('Error processing tag:', tagName, e);
+    }
+  }
+  return tagIds;
+}
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -178,8 +211,10 @@ export async function GET(request: Request) {
             "title": "Judul artikel tanpa tag h1",
             "excerpt": "Ringkasan 2 kalimat untuk SEO Meta Description",
             "category": "Pilih satu: Sepak Bola / Bulu Tangkis / MotoGP / Basket / Umum",
+            "tags": ["Tag 1", "Tag 2", "Tag 3"],
             "content": "<h1>Judul</h1><p>Isi artikel...</p><h2>Subjudul</h2>..."
           }
+          *Catatan untuk tags: Buat 3-5 tags spesifik yang relevan dengan artikel (misal: nama pemain, nama klub, nama kompetisi).
           ${affiliateRule}
         `;
 
@@ -217,6 +252,7 @@ export async function GET(request: Request) {
         const postContent = parsedData.content.replace(/<h1>.*?<\/h1>/i, '').trim();
         const postExcerpt = parsedData.excerpt || '';
         const suggestedCategory = parsedData.category || 'Umum';
+        const suggestedTags = parsedData.tags || [];
 
         // 1. Ekstrak & Upload Gambar Asli
         let mediaId = process.env.WP_DEFAULT_MEDIA_ID ? parseInt(process.env.WP_DEFAULT_MEDIA_ID, 10) : null;
@@ -225,8 +261,9 @@ export async function GET(request: Request) {
           if (uploadedMediaId) mediaId = uploadedMediaId;
         }
 
-        // 2. Cocokkan Kategori
+        // 2. Cocokkan Kategori & Tags
         const categoryId = await getWpCategoryId(suggestedCategory, wpBaseUrl, authHeader);
+        const tagIds = await getOrCreateWpTags(suggestedTags, wpBaseUrl, authHeader);
 
         // 3. Posting langsung PUBLISH
         const wpUrl = `${wpBaseUrl}/wp-json/wp/v2/posts`;
@@ -243,6 +280,7 @@ export async function GET(request: Request) {
             excerpt: postExcerpt,
             status: 'draft',
             categories: [categoryId],
+            tags: tagIds,
             ...(mediaId ? { featured_media: mediaId } : {})
           })
         });
