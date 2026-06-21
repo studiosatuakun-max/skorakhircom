@@ -343,7 +343,7 @@ export default async function NewsDetail({ params }: Props) {
               </ArticleWatermark>
 
               {/* Gear Spotlight Affiliate */}
-              <div className="mb-12">
+              <div className="mt-16 mb-12">
                 <EditorialShowcase products={editorsDeals} />
               </div>
 
