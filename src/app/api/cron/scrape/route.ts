@@ -112,8 +112,8 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Keyword required' }, { status: 400 });
     }
 
-    // 1. Cari Berita di Google News (Portal Luar Negeri / Bahasa Inggris)
-    const feed = await parser.parseURL(`https://news.google.com/rss/search?q=${encodeURIComponent(keyword)}&hl=en-US&gl=US&ceid=US:en`);
+    // 1. Cari Berita di Google News (Portal Luar Negeri / Bahasa Inggris) - Dikunci ke 24 jam terakhir
+    const feed = await parser.parseURL(`https://news.google.com/rss/search?q=${encodeURIComponent(keyword + ' when:1d')}&hl=en-US&gl=US&ceid=US:en`);
     
     if (feed.items.length === 0) {
       return NextResponse.json({ message: 'Tidak ada berita ditemukan.' });
@@ -153,7 +153,7 @@ export async function GET(request: Request) {
 
         const prompt = `
           Anda adalah jurnalis olahraga senior dan analis taktik untuk "SkorAkhir".
-          Tugas Utama: Terjemahkan dan kembangkan sumber berita luar negeri di bawah ini menjadi artikel Bahasa Indonesia yang SANGAT PANJANG, tajam, dan komprehensif (MINIMAL 600 KATA).
+          Tugas Utama: Terjemahkan dan kembangkan sumber berita luar negeri di bawah ini menjadi artikel Bahasa Indonesia yang SANGAT PANJANG, tajam, dan komprehensif (MINIMAL 1000 KATA).
           
           BAHAN BERITA MENTAH (Dari Portal Luar Negeri):
           ${articleSource}
